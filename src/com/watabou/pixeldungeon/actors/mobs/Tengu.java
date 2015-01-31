@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,14 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Badges;
+<<<<<<< HEAD
 import com.nyrds.pixeldungeon.ml.R;
+=======
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 import com.watabou.pixeldungeon.Badges.Badge;
 import com.watabou.pixeldungeon.Dungeon;
+import com.watabou.pixeldungeon.R;
+import com.watabou.pixeldungeon.Statistics;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.blobs.ToxicGas;
@@ -49,6 +54,11 @@ public class Tengu extends Mob {
 	private static final int JUMP_DELAY = 5;
 	
 	{
+<<<<<<< HEAD
+=======
+		name = Dungeon.depth == Statistics.deepestFloor ? Game.getVar(R.string.Tengu_Name1) : Game.getVar(R.string.Tengu_Name2);
+
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 		spriteClass = TenguSprite.class;
 		
 		HP = HT = 120;
@@ -152,7 +162,7 @@ public class Tengu extends Mob {
 		} while (
 			!Level.fieldOfView[newPos] || 
 			!Level.passable[newPos] || 
-			Level.adjacent( newPos, enemy.pos ) ||
+			(enemy != null && Level.adjacent( newPos, enemy.pos )) ||
 			Actor.findChar( newPos ) != null);
 		
 		sprite.move( pos, newPos );

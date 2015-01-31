@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,14 @@
  */
 package com.watabou.pixeldungeon.items.potions;
 
+
 import com.watabou.noosa.Game;
+<<<<<<< HEAD
 import com.nyrds.pixeldungeon.ml.R;
+=======
+import com.watabou.pixeldungeon.Badges;
+import com.watabou.pixeldungeon.R;
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import com.watabou.pixeldungeon.utils.GLog;
@@ -36,8 +42,11 @@ public class PotionOfMight extends PotionOfStrength {
 		hero.STR++;
 		hero.HT += 5;
 		hero.HP += 5;
+
 		hero.sprite.showStatus( CharSprite.POSITIVE, Game.getVar(R.string.PotionOfMight_StaApply));
 		GLog.p(Game.getVar(R.string.PotionOfMight_Apply));
+
+		Badges.validateStrengthAttained();
 	}
 	
 	@Override

@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +91,6 @@ public class Viscosity extends Glyph {
 		public void storeInBundle( Bundle bundle ) {
 			super.storeInBundle( bundle );
 			bundle.put( DAMAGE, damage );
-			
 		}
 		
 		@Override
@@ -121,7 +120,11 @@ public class Viscosity extends Glyph {
 		
 		@Override
 		public String toString() {
+<<<<<<< HEAD
 			return Utils.format( TXT_DEFERED_DAMAGE, damage );
+=======
+			return Utils.format(Game.getVar(R.string.Viscosity_BufInfo1), damage );
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 		}
 		
 		@Override
@@ -131,9 +134,14 @@ public class Viscosity extends Glyph {
 				target.damage( 1, this );
 				if (target == Dungeon.hero && !target.isAlive()) {
 					// FIXME
+<<<<<<< HEAD
 					Glyph glyph = new Viscosity();
 					Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, glyph.name(), Dungeon.depth ) );
 					GLog.n( TXT_KILLED_YOU, glyph.name() );
+=======
+					Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, Game.getVar(R.string.Viscosity_BufName), Dungeon.depth ) );
+					GLog.n(Game.getVar(R.string.Viscosity_BufInfo2));
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 					
 					Badges.validateDeathFromGlyph();
 				}
@@ -148,7 +156,6 @@ public class Viscosity extends Glyph {
 				detach();
 				
 			}
-			
 			return true;
 		}
 	}

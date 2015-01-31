@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,12 @@ package com.watabou.pixeldungeon.items.potions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
+<<<<<<< HEAD
 import com.nyrds.pixeldungeon.ml.R;
+=======
+import com.watabou.pixeldungeon.Dungeon;
+import com.watabou.pixeldungeon.R;
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.blobs.Fire;
 import com.watabou.pixeldungeon.scenes.GameScene;
@@ -34,13 +39,14 @@ public class PotionOfLiquidFlame extends Potion {
 	@Override
 	public void shatter( int cell ) {
 		
-		setKnown();
+		if (Dungeon.visible[cell]) {
+			setKnown();
+			
+			splash( cell );
+			Sample.INSTANCE.play( Assets.SND_SHATTER );
+		}
 		
-		splash( cell );
-		Sample.INSTANCE.play( Assets.SND_SHATTER );
-		
-		Fire fire = Blob.seed( cell, 2, Fire.class );
-		GameScene.add( fire );
+		GameScene.add( Blob.seed( cell, 2, Fire.class ) );
 	}
 	
 	@Override

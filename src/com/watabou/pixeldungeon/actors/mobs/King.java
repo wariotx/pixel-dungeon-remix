@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,18 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.Dungeon;
+<<<<<<< HEAD
 import com.nyrds.pixeldungeon.ml.R;
+=======
+import com.watabou.pixeldungeon.R;
+import com.watabou.pixeldungeon.Statistics;
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.blobs.ToxicGas;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.buffs.Paralysis;
+import com.watabou.pixeldungeon.actors.buffs.Vertigo;
 import com.watabou.pixeldungeon.effects.Flare;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.items.ArmorKit;
@@ -52,6 +58,11 @@ public class King extends Mob {
 	private static final int MAX_ARMY_SIZE	= 5;
 	
 	{
+<<<<<<< HEAD
+=======
+		name = Dungeon.depth == Statistics.deepestFloor ? Game.getVar(R.string.King_Name1) : Game.getVar(R.string.King_Name2);
+
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 		spriteClass = KingSprite.class;
 		
 		HP = HT = 300;
@@ -159,9 +170,8 @@ public class King extends Mob {
 				passable[((Char)actor).pos] = false;
 			}
 		}
-		
-		int undeadsToSummon = maxArmySize() - Undead.count;
 
+		int undeadsToSummon = maxArmySize() - Undead.count;
 		PathFinder.buildDistanceMap( pos, passable, undeadsToSummon );
 		PathFinder.distance[pos] = Integer.MAX_VALUE;
 		int dist = 1;
@@ -171,14 +181,14 @@ public class King extends Mob {
 			do {
 				for (int j=0; j < Level.LENGTH; j++) {
 					if (PathFinder.distance[j] == dist) {
-						
+
 						Undead undead = new Undead();
 						undead.pos = j;
 						GameScene.add( undead );
-						
+
 						WandOfBlink.appear( undead, j );
 						new Flare( 3, 32 ).color( 0x000000, false ).show( undead.sprite, 2f ) ;
-						
+
 						PathFinder.distance[j] = Integer.MAX_VALUE;
 						
 						continue undeadLabel;
@@ -213,6 +223,7 @@ public class King extends Mob {
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
 	static {
 		IMMUNITIES.add( Paralysis.class );
+		IMMUNITIES.add( Vertigo.class );
 	}
 	
 	@Override
@@ -221,7 +232,7 @@ public class King extends Mob {
 	}
 	
 	public static class Undead extends Mob {
-		
+
 		public static int count = 0;
 		
 		{

@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,14 @@
  */
 package com.watabou.pixeldungeon.plants;
 
+
 import com.watabou.noosa.Game;
+<<<<<<< HEAD
 import com.watabou.pixeldungeon.Dungeon;
 import com.nyrds.pixeldungeon.ml.R;
+=======
+import com.watabou.pixeldungeon.R;
+>>>>>>> 98a8333fff3a7deb0185a1c0346bf6b3feb4e454
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.blobs.ConfusionGas;
@@ -42,7 +47,7 @@ public class Dreamweed extends Plant {
 		super.activate( ch );
 		
 		if (ch != null) {
-			GameScene.add( Blob.seed( pos, 300 + 20 * Dungeon.depth, ConfusionGas.class ) );
+			GameScene.add( Blob.seed( pos, 400, ConfusionGas.class ) );
 		}
 	}
 	

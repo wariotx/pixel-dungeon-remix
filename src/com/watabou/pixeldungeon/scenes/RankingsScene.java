@@ -24,6 +24,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.ui.Button;
+import com.watabou.noosa.ui.Component;
 import com.watabou.pixeldungeon.Assets;
 import com.nyrds.pixeldungeon.ml.R;
 import com.watabou.pixeldungeon.PixelDungeon;
@@ -34,6 +35,7 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.ui.Archs;
 import com.watabou.pixeldungeon.ui.ExitButton;
 import com.watabou.pixeldungeon.ui.Icons;
+import com.watabou.pixeldungeon.ui.ScrollPane;
 import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.windows.WndError;
 import com.watabou.pixeldungeon.windows.WndRanking;
@@ -92,45 +94,59 @@ public class RankingsScene extends PixelScene {
 			
 			int pos = 0;
 			
+			ScrollPane list = new ScrollPane( new Component() );
+			add( list );
+			
+			list.setRect(
+					left,
+					top,
+					w,
+					rowHeight * 5);
+
+			//list.scrollTo( 0, 0 );
+			Component content = list.content();
+			content.clear();
+
 			for (Rankings.Record rec : Rankings.INSTANCE.records) {
 				Record row = new Record( pos, pos == Rankings.INSTANCE.lastRecord, rec );
-				row.setRect( left, top + pos * rowHeight, w - left * 2, rowHeight );
-				add( row );
-				
+				row.setRect( 0, pos * rowHeight, w - left * 2, rowHeight );
+				content.add( row );
 				pos++;
 			}
 			
-			if (Rankings.INSTANCE.totalNumber >= Rankings.TABLE_SIZE) {
-				BitmapText label = PixelScene.createText( TXT_TOTAL, 8 );
-				label.hardlight( DEFAULT_COLOR );
-				label.measure();
-				add( label );
-
-				BitmapText happy = PixelScene.createText( Integer.toString( Rankings.INSTANCE.happyWonNumber ), 8 );
-				happy.hardlight( HAPPY_COLOR );
-				happy.measure();
-				add( happy );
-				
-				BitmapText won = PixelScene.createText(  "/" + Integer.toString( Rankings.INSTANCE.wonNumber ), 8 );
-				won.hardlight( Window.TITLE_COLOR );
-				won.measure();
-				add( won );
-				
-				BitmapText total = PixelScene.createText( "/" + Rankings.INSTANCE.totalNumber, 8 );
-				total.hardlight( DEFAULT_COLOR );
-				total.measure();
-				total.x = align( (w - total.width()) / 2 );
-				total.y = align( top + pos * rowHeight + GAP );
-				add( total );
-				
-				float tw = label.width() + won.width() + happy.width() + total.width();
-				label.x = align( (w - tw) / 2 );
-				happy.x = label.x + label.width();
-				won.x   = happy.x + happy.width();
-				total.x = won.x + won.width();
-				label.y = happy.y = won.y = total.y = align( top + pos * rowHeight + GAP );
-			}
+			content.setSize(w-left *2, rowHeight * pos);
 			
+			pos = Math.max(5, pos);
+			
+			BitmapText label = PixelScene.createText( TXT_TOTAL, 8 );
+			label.hardlight( DEFAULT_COLOR );
+			label.measure();
+			add( label );
+
+			BitmapText happy = PixelScene.createText( Integer.toString( Rankings.INSTANCE.happyWonNumber ), 8 );
+			happy.hardlight( HAPPY_COLOR );
+			happy.measure();
+			add( happy );
+			
+			BitmapText won = PixelScene.createText(  "/" + Integer.toString( Rankings.INSTANCE.wonNumber ), 8 );
+			won.hardlight( Window.TITLE_COLOR );
+			won.measure();
+			add( won );
+			
+			BitmapText total = PixelScene.createText( "/" + Rankings.INSTANCE.totalNumber, 8 );
+			total.hardlight( DEFAULT_COLOR );
+			total.measure();
+			total.x = align( (w - total.width()) / 2 );
+			total.y = align( top + pos * rowHeight + GAP );
+			add( total );
+			
+			float tw = label.width() + won.width() + happy.width() + total.width();
+			label.x = align( (w - tw) / 2 );
+			happy.x = label.x + label.width();
+			won.x   = happy.x + happy.width();
+			total.x = won.x + won.width();
+			label.y = happy.y = won.y = total.y = align( top + pos * rowHeight + GAP );
+		
 		} else {
 			
 			BitmapText title = PixelScene.createText( TXT_NO_GAMES, 8 );
@@ -245,11 +261,13 @@ public class RankingsScene extends PixelScene {
 		
 		@Override
 		protected void onClick() {
+			/*
 			if (rec.gameFile.length() > 0) {
 				parent.add( new WndRanking( rec.gameFile ) );
 			} else {
 				parent.add( new WndError( TXT_NO_INFO ) );
 			}
+			*/
 		}
 	}
 }

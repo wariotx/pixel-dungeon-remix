@@ -22,6 +22,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.pixeldungeon.scenes.PixelScene;
+import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
@@ -99,14 +100,13 @@ public class ScrollPane extends Component {
 		@Override
 		protected void onClick( Touch touch ) {
 			if (dragging) {
-				
+				GLog.i("onClick");
 				dragging = false;
 				
 			} else {
 				
 				PointF p = content.camera.screenToCamera( (int)touch.current.x, (int)touch.current.y );
 				ScrollPane.this.onClick( p.x, p.y );
-
 			}
 		}	
 		
@@ -116,12 +116,14 @@ public class ScrollPane extends Component {
 		private PointF lastPos = new PointF();
 		
 		@Override
-		protected void onDrag( Touch t ) {		
+		protected void onDrag( Touch t ) {
+			GLog.i("onDrag");
 			if (dragging) {
 				
 				Camera c = content.camera;
 				
 				c.scroll.offset( PointF.diff( lastPos, t.current ).invScale( c.zoom ) );
+				
 				if (c.scroll.x + width > content.width()) {
 					c.scroll.x = content.width() - width;
 				}
@@ -135,6 +137,8 @@ public class ScrollPane extends Component {
 					c.scroll.y = 0;
 				}
 				
+				GLog.i("%3.2f - %3.2f | %3.2f - %3.2f", t.current.x, lastPos.x ,t.current.y, lastPos.y);
+				GLog.i("%3.2f %3.2f", c.scroll.x,c.scroll.y);
 				
 				lastPos.set( t.current );	
 				

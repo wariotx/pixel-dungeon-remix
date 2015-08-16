@@ -36,7 +36,7 @@ public enum Rankings {
 	
 	INSTANCE;
 	
-	public static final int TABLE_SIZE	= 6;
+	public static final int[] TABLE_SIZE	= {11, 26, 51, 101};
 	
 	public static final String RANKINGS_FILE = "rankings.dat";
 	public static final String DETAILS_FILE  = "game_%d.dat";
@@ -79,7 +79,7 @@ public enum Rankings {
 		
 		lastRecord = records.indexOf( rec );
 		int size = records.size();
-		if (size > TABLE_SIZE) {
+		if (size > TABLE_SIZE[PixelDungeon.donated()]) {
 			
 			Record removedGame;
 			if (lastRecord == size - 1) {

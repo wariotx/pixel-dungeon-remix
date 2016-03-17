@@ -1,4 +1,4 @@
-Remixed Pixel Dungeon [![Build Status](https://travis-ci.org/NYRDS/pixel-dungeon-remix.svg?branch=master)](https://travis-ci.org/NYRDS/pixel-dungeon-remix)
+Remixed Pixel Dungeon [![Build Status](https://travis-ci.org/wariotx/pixel-dungeon-remix.svg?branch=master)](https://travis-ci.org/wariotx/pixel-dungeon-remix)
 =====================
 
 Classic roguelike with pixel graphics and simple interface.

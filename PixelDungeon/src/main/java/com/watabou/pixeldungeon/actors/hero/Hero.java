@@ -137,6 +137,7 @@ public class Hero extends Char {
 	private static final String TXT_SEARCH = Game.getVar(R.string.Hero_Search);
 
 	public static final int STARTING_STR = 10;
+	public static final int MAX_PETS_COUNT = 4;
 
 	private static final float TIME_TO_REST = 1f;
 	private static final float TIME_TO_SEARCH = 2f;
@@ -175,8 +176,12 @@ public class Hero extends Char {
 	private ArrayList<Mob> visibleEnemies;
 	private Collection<Mob> pets = new ArrayList<>();
 
-	public void addPet(Mob pet) {
+	public boolean addPet(Mob pet) {
+		if(pets.size() >= MAX_PETS_COUNT) {
+			return false;
+		}
 		pets.add(pet);
+		return true;
 	}
 
 	private int difficulty;

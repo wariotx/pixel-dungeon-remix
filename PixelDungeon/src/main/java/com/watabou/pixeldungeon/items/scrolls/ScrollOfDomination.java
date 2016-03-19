@@ -29,9 +29,10 @@ public class ScrollOfDomination extends Scroll {
 		}
 		
 		if(!mobsInSight.isEmpty()) {
-			Mob pet = Random.element(mobsInSight);
-			Mob.makePet(pet, getCurUser());
-			new Flare( 3, 32 ).show( pet.getSprite(), 2f );
+			Mob pet = Mob.makePet(Random.element(mobsInSight), getCurUser());
+			if(pet != null) {
+				new Flare(3, 32).show(pet.getSprite(), 2f);
+			}
 		}
 		
 		Dungeon.observe();

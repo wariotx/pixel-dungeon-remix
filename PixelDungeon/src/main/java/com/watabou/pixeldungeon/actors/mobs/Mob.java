@@ -99,8 +99,10 @@ public abstract class Mob extends Char {
 	}
 
 	public static Mob makePet(Mob pet, Hero hero) {
+		if( !hero.addPet(pet) ){
+			return null;
+		}
 		pet.setFraction(Fraction.HEROES);
-		hero.addPet(pet);
 
 		return pet;
 	}

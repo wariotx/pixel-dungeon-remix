@@ -100,6 +100,7 @@ public abstract class Mob extends Char {
 
 	public static Mob makePet(Mob pet, Hero hero) {
 		if( !hero.addPet(pet) ){
+			GLog.n("Failed to make pet!");
 			return null;
 		}
 		pet.setFraction(Fraction.HEROES);

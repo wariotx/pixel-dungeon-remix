@@ -32,6 +32,7 @@ import com.watabou.pixeldungeon.actors.buffs.Invisibility;
 import com.watabou.pixeldungeon.actors.buffs.Light;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.hero.HeroClass;
+import com.watabou.pixeldungeon.actors.mobs.Fraction;
 import com.watabou.pixeldungeon.actors.mobs.Mimic;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.actors.mobs.npcs.Blacksmith;
@@ -568,6 +569,12 @@ public class Dungeon {
 				int pos = ((Char) actor).getPos();
 				if (visible[pos]) {
 					passable[pos] = false;
+					// FIXME: should detect pets
+					if(actor instanceof Mob) {
+						if(((Mob) actor).fraction() == Fraction.HEROES) {
+							passable[pos] = true;
+						}
+					}
 				}
 			}
 		}

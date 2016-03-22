@@ -616,7 +616,18 @@ public class Hero extends Char {
 
 			ready();
 			getSprite().turnTo(getPos(), npc.getPos());
-			if (!npc.interact(this)) {
+			Buff wallWalkerBuff = buff(RingOfStoneWalking.StoneWalking.class);
+			int target = npc.getPos();
+			boolean interacted = npc.isPet();
+			if (( wallWalkerBuff == null &&
+				    (Dungeon.level.passable[target] || Dungeon.level.avoid[target] || npc.isWallWalker()) &&
+				    (Dungeon.level.passable[getPos()] || Dungeon.level.avoid[getPos()]) ) ||
+				( wallWalkerBuff != null &&
+					 Dungeon.level.solid[target] &&
+					 Dungeon.level.solid[getPos()]) ) {
+				interacted = npc.interact(this);
+			}
+			if (!interacted) {
 				actAttack(new HeroAction.Attack(npc));
 			}
 			return false;

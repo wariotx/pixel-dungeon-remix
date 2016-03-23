@@ -17,6 +17,6 @@ public interface Knowledge<T extends KnowableItem> {
 
 	ItemStatusHandler<T> getHandler();
 
-	boolean isKnown(Class<? extends T> scroll);
-	void setKnown(Class<? extends T> scroll);
+	boolean isKnown(Class<? extends T> aClass);
+	void setKnown(Class<? extends T> aClass);
 }

@@ -85,12 +85,12 @@ public enum ScrollsKnowledge implements Knowledge<Scroll>{
 		return handler;
 	}
 
-	public boolean isKnown(Class<? extends Scroll> scroll) {
-		return handler.isKnown(scroll);
+	public boolean isKnown(Class<? extends Scroll> aClass) {
+		return handler.isKnown(aClass);
 	}
 
-	public void setKnown(Class<? extends Scroll> scroll) {
-		handler.know(scroll);
+	public void setKnown(Class<? extends Scroll> aClass) {
+		handler.know(aClass);
 	}
 
 	@SuppressWarnings("unchecked")

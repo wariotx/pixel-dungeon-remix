@@ -29,8 +29,8 @@ import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.effects.Splash;
 import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.ItemStatusHandler;
 import com.watabou.pixeldungeon.items.KnowableItem;
+import com.watabou.pixeldungeon.items.PotionsKnowledge;
 import com.watabou.pixeldungeon.items.food.Food;
 import com.watabou.pixeldungeon.items.food.RottenFood;
 import com.watabou.pixeldungeon.items.scrolls.Scroll;
@@ -38,7 +38,6 @@ import com.watabou.pixeldungeon.items.weapon.missiles.Arrow;
 import com.watabou.pixeldungeon.levels.Terrain;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.ItemSprite;
-import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.windows.WndBag;
 import com.watabou.pixeldungeon.windows.WndOptions;
@@ -68,39 +67,6 @@ public class Potion extends KnowableItem {
 	private static final float TIME_TO_DRINK = 1f;
 	private static final float TIME_TO_MOISTEN = 1f;
 	
-	private static final Class<?>[] potions = {
-		PotionOfHealing.class, 
-		PotionOfExperience.class, 
-		PotionOfToxicGas.class, 
-		PotionOfLiquidFlame.class,
-		PotionOfStrength.class,
-		PotionOfParalyticGas.class,
-		PotionOfLevitation.class,
-		PotionOfMindVision.class, 
-		PotionOfPurity.class,
-		PotionOfInvisibility.class,
-		PotionOfMight.class,
-		PotionOfFrost.class
-	};
-	
-	private static String[] colors = null;
-	
-	private static final Integer[] images = {
-		ItemSpriteSheet.POTION_TURQUOISE, 
-		ItemSpriteSheet.POTION_CRIMSON, 
-		ItemSpriteSheet.POTION_AZURE, 
-		ItemSpriteSheet.POTION_JADE, 
-		ItemSpriteSheet.POTION_GOLDEN, 
-		ItemSpriteSheet.POTION_MAGENTA, 
-		ItemSpriteSheet.POTION_CHARCOAL, 
-		ItemSpriteSheet.POTION_IVORY, 
-		ItemSpriteSheet.POTION_AMBER, 
-		ItemSpriteSheet.POTION_BISTRE, 
-		ItemSpriteSheet.POTION_INDIGO, 
-		ItemSpriteSheet.POTION_SILVER};
-
-	private static ItemStatusHandler<Potion> handler;
-	
 	private String color;
 	
 	{	
@@ -111,30 +77,23 @@ public class Potion extends KnowableItem {
 	
 	private boolean shatterd = false;
 	
-	private static String[] getColors(){
-		if(colors == null){
-			colors = Game.getVars(R.array.Potion_Colors);
-		}
-		return colors;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public static void initColors() {
-		handler = new ItemStatusHandler<>((Class<? extends Potion>[]) potions, getColors(), images);
+		PotionsKnowledge.getInstance().init();
 	}
 	
 	public static void save( Bundle bundle ) {
-		handler.save( bundle );
+		PotionsKnowledge.getInstance().getHandler().save( bundle );
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<>((Class<? extends Potion>[]) potions, getColors(), images, bundle);
+		PotionsKnowledge.getInstance().init(bundle);
 	}
 	
 	public Potion() {
-		image = handler.image( this );
-		color = handler.label( this );
+		image = PotionsKnowledge.getInstance().getHandler().image( this );
+		color = PotionsKnowledge.getInstance().getHandler().label( this );
 	}
 	
 	@Override
@@ -264,16 +223,16 @@ public class Potion extends KnowableItem {
 		Sample.INSTANCE.play( Assets.SND_SHATTER );
 		splash( cell );
 	}
-	
+
 	public boolean isKnown() {
-		return handler.isKnown( this );
+		return PotionsKnowledge.getInstance().isKnown( this.getClass() );
 	}
-	
+
 	public void setKnown() {
 		if (!isKnown()) {
-			handler.know( this );
+			PotionsKnowledge.getInstance().setKnown(this.getClass());
 		}
-		
+
 		Badges.validateAllPotionsIdentified();
 	}
 	
@@ -294,18 +253,6 @@ public class Potion extends KnowableItem {
 	@Override
 	public boolean isUpgradable() {
 		return false;
-	}
-	
-	public static HashSet<Class<? extends Potion>> getKnown() {
-		return handler.known();
-	}
-	
-	public static HashSet<Class<? extends Potion>> getUnknown() {
-		return handler.unknown();
-	}
-	
-	public static boolean allKnown() {
-		return handler.known().size() == potions.length;
 	}
 	
 	protected void splash( int cell ) {		

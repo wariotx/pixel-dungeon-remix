@@ -24,6 +24,7 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.items.Item;
+import com.watabou.pixeldungeon.items.PotionsKnowledge;
 import com.watabou.pixeldungeon.items.potions.Potion;
 import com.watabou.pixeldungeon.items.ScrollsKnowledge;
 import com.watabou.pixeldungeon.scenes.GameScene;
@@ -127,7 +128,7 @@ public class WndCatalogus extends WndTabbed {
 		list.scrollTo( 0, 0 );
 		
 		float pos = 0;
-		for (Class<? extends Item> itemClass : showPotions ? Potion.getKnown() : ScrollsKnowledge.getInstance().getKnown()) {
+		for (Class<? extends Item> itemClass : showPotions ? PotionsKnowledge.getInstance().getKnown() : ScrollsKnowledge.getInstance().getKnown()) {
 			ListItem item = new ListItem( itemClass );
 			item.setRect( 0, pos, width, ITEM_HEIGHT );
 			content.add( item );
@@ -136,7 +137,7 @@ public class WndCatalogus extends WndTabbed {
 			pos += item.height();
 		}
 		
-		for (Class<? extends Item> itemClass : showPotions ? Potion.getUnknown() : ScrollsKnowledge.getInstance().getUnknown()) {
+		for (Class<? extends Item> itemClass : showPotions ? PotionsKnowledge.getInstance().getUnknown() : ScrollsKnowledge.getInstance().getUnknown()) {
 			ListItem item = new ListItem( itemClass );
 			item.setRect( 0, pos, width, ITEM_HEIGHT );
 			content.add( item );

@@ -28,6 +28,7 @@ import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.actors.mobs.Senior;
 import com.watabou.pixeldungeon.actors.mobs.Shielded;
 import com.watabou.pixeldungeon.items.Item;
+import com.watabou.pixeldungeon.items.PotionsKnowledge;
 import com.watabou.pixeldungeon.items.bags.PotionBelt;
 import com.watabou.pixeldungeon.items.bags.ScrollHolder;
 import com.watabou.pixeldungeon.items.bags.SeedPouch;
@@ -433,7 +434,7 @@ public class Badges {
 
 	public static void validateAllPotionsIdentified() {
 		if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-				!local.contains(Badge.ALL_POTIONS_IDENTIFIED) && Potion.allKnown()) {
+				!local.contains(Badge.ALL_POTIONS_IDENTIFIED) && PotionsKnowledge.getInstance().allKnown()) {
 
 			Badge badge = Badge.ALL_POTIONS_IDENTIFIED;
 			local.add(badge);

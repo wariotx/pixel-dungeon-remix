@@ -30,6 +30,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.effects.Splash;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.ItemStatusHandler;
+import com.watabou.pixeldungeon.items.KnowableItem;
 import com.watabou.pixeldungeon.items.food.Food;
 import com.watabou.pixeldungeon.items.food.RottenFood;
 import com.watabou.pixeldungeon.items.scrolls.Scroll;
@@ -43,7 +44,7 @@ import com.watabou.pixeldungeon.windows.WndBag;
 import com.watabou.pixeldungeon.windows.WndOptions;
 import com.watabou.utils.Bundle;
 
-public class Potion extends Item {
+public class Potion extends KnowableItem {
 	
 	public static final String AC_DRINK	  = Game.getVar(R.string.Potion_ACDrink);
 	public static final String AC_MOISTEN = Game.getVar(R.string.Potion_ACMoisten);
@@ -97,7 +98,7 @@ public class Potion extends Item {
 		ItemSpriteSheet.POTION_BISTRE, 
 		ItemSpriteSheet.POTION_INDIGO, 
 		ItemSpriteSheet.POTION_SILVER};
-	
+
 	private static ItemStatusHandler<Potion> handler;
 	
 	private String color;
@@ -276,12 +277,6 @@ public class Potion extends Item {
 		Badges.validateAllPotionsIdentified();
 	}
 	
-	@Override
-	public Item identify() {
-		setKnown();
-		return this;
-	}
-	
 	protected String color() {
 		return color;
 	}
@@ -294,11 +289,6 @@ public class Potion extends Item {
 	@Override
 	public String info() {
 		return isKnown() ? desc() : String.format(Game.getVar(R.string.Potion_Info), color);
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return isKnown();
 	}
 	
 	@Override

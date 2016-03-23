@@ -131,12 +131,6 @@ public abstract class Scroll extends KnowableItem {
 
 		Badges.validateAllScrollsIdentified();
 	}
-
-	@Override
-	public Item identify() {
-		setKnown();
-		return super.identify();
-	}
 	
 	@Override
 	public String name() {

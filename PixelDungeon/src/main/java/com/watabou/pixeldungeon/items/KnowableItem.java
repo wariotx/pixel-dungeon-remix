@@ -11,4 +11,10 @@ public abstract class KnowableItem extends Item implements Knowable{
 	public boolean isIdentified() {
 		return isKnown();
 	}
+
+	@Override
+	public Item identify() {
+		setKnown();
+		return this;
+	}
 }

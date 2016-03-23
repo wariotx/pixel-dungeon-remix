@@ -131,11 +131,28 @@ public class ItemStatusHandler<T extends Item> {
 	public boolean isKnown( T item ) {
 		return known.contains( item.getClass() );
 	}
+
+	public boolean isKnown(Class<? extends T> item_class) {
+		return known.contains( item_class );
+	}
 	
 	@SuppressWarnings("unchecked")
 	public void know( T item ) {
 		known.add( (Class<? extends T>)item.getClass() );
 		
+		if (known.size() == items.length - 1) {
+			for (int i=0; i < items.length; i++) {
+				if (!known.contains( items[i] )) {
+					known.add( items[i] );
+					break;
+				}
+			}
+		}
+	}
+
+	public void know( Class<? extends T> item_class ) {
+		known.add( item_class );
+
 		if (known.size() == items.length - 1) {
 			for (int i=0; i < items.length; i++) {
 				if (!known.contains( items[i] )) {

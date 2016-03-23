@@ -28,17 +28,17 @@ public class Ankh extends Item {
 		name = Game.getVar(R.string.Ankh_Name);
 		image = ItemSpriteSheet.ANKH;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public int price() {
 		return 50 * quantity();

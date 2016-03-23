@@ -33,37 +33,37 @@ import com.watabou.utils.Random;
 public class Potential extends Glyph {
 
 	private static final String TXT_POTENTIAL = Game.getVar(R.string.Potential_Txt);
-	
-	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x66CCEE );
-	
-	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level() );
-		
-		if (Dungeon.level.adjacent( attacker.getPos(), defender.getPos() ) && Random.Int( level + 7 ) >= 6) {
-			
-			int dmg = Random.IntRange( 1, damage );
-			attacker.damage( dmg, LightningTrap.LIGHTNING );
-			dmg = Random.IntRange( 1, dmg );
-			defender.damage( dmg, LightningTrap.LIGHTNING );
-			
-			checkOwner( defender );
+	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing(0x66CCEE);
+
+	@Override
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+
+		int level = Math.max(0, armor.level());
+
+		if (Dungeon.level.adjacent(attacker.getPos(), defender.getPos()) && Random.Int(level + 7) >= 6) {
+
+			int dmg = Random.IntRange(1, damage);
+			attacker.damage(dmg, LightningTrap.LIGHTNING);
+			dmg = Random.IntRange(1, dmg);
+			defender.damage(dmg, LightningTrap.LIGHTNING);
+
+			checkOwner(defender);
 			if (defender == Dungeon.hero) {
-				Camera.main.shake( 2, 0.3f );
+				Camera.main.shake(2, 0.3f);
 			}
-			
+
 			int[] points = {attacker.getPos(), defender.getPos()};
-			attacker.getSprite().getParent().add( new Lightning( points, 2, null ) );
+			attacker.getSprite().getParent().add(new Lightning(points, 2, null));
 
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_POTENTIAL, weaponName );
+	public String name(String weaponName) {
+		return String.format(TXT_POTENTIAL, weaponName);
 	}
 
 	@Override

@@ -5,5 +5,6 @@ package com.watabou.pixeldungeon.items;
  */
 public interface Knowable {
 	boolean isKnown();
+
 	void setKnown();
 }

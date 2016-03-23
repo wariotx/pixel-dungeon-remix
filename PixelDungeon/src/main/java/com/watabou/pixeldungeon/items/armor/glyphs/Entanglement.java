@@ -35,34 +35,34 @@ import com.watabou.utils.Random;
 public class Entanglement extends Glyph {
 
 	private static final String TXT_ENTANGLEMENT = Game.getVar(R.string.Entanglement_Txt);
-	
-	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x448822 );
-	
-	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage ) {
 
-		int level = Math.max( 0, armor.level() );
-		
-		if (Random.Int( 4 ) == 0) {
-			
-			Buff.prolong( defender, Roots.class, 5 - level / 5 );
-			Buff.affect( defender, Earthroot.Armor.class ).level( 5 * (level + 1) );
-			CellEmitter.bottom( defender.getPos() ).start( EarthParticle.FACTORY, 0.05f, 8 );
-			Camera.main.shake( 1, 0.4f );
-			
+	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing(0x448822);
+
+	@Override
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+
+		int level = Math.max(0, armor.level());
+
+		if (Random.Int(4) == 0) {
+
+			Buff.prolong(defender, Roots.class, 5 - level / 5);
+			Buff.affect(defender, Earthroot.Armor.class).level(5 * (level + 1));
+			CellEmitter.bottom(defender.getPos()).start(EarthParticle.FACTORY, 0.05f, 8);
+			Camera.main.shake(1, 0.4f);
+
 		}
 
 		return damage;
 	}
-	
+
 	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_ENTANGLEMENT, weaponName );
+	public String name(String weaponName) {
+		return String.format(TXT_ENTANGLEMENT, weaponName);
 	}
 
 	@Override
 	public Glowing glowing() {
 		return GREEN;
 	}
-		
+
 }

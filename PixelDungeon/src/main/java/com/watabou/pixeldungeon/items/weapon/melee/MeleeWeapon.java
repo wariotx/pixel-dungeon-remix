@@ -26,72 +26,72 @@ import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Random;
 
 public class MeleeWeapon extends Weapon {
-	
+
 	private int tier;
-	
-	public MeleeWeapon( int tier, float acu, float dly ) {
+
+	public MeleeWeapon(int tier, float acu, float dly) {
 		this.tier = tier;
-		
+
 		ACU = acu;
 		DLY = dly;
-		
+
 		STR = typicalSTR();
-		
+
 		MIN = min();
 		MAX = max();
 	}
-	
+
 	protected int min() {
 		return tier;
 	}
-	
+
 	protected int max() {
-		return (int)((tier * tier - tier + 10) / ACU * DLY);
+		return (int) ((tier * tier - tier + 10) / ACU * DLY);
 	}
-	
+
 	@Override
 	public Item upgrade() {
-		return upgrade( false );
+		return upgrade(false);
 	}
-	
-	public Item upgrade( boolean enchant ) {
-		STR--;		
+
+	public Item upgrade(boolean enchant) {
+		STR--;
 		MIN++;
 		MAX += tier;
-		
-		return super.upgrade( enchant );
+
+		return super.upgrade(enchant);
 	}
-	
+
 	public Item safeUpgrade() {
-		return upgrade( getEnchantment() != null );
+		return upgrade(getEnchantment() != null);
 	}
-	
+
 	@Override
-	public Item degrade() {		
+	public Item degrade() {
 		STR++;
 		MIN--;
 		MAX -= tier;
 		return super.degrade();
 	}
-	
+
 	public int typicalSTR() {
 		return 8 + tier * 2;
 	}
-	
+
 	@Override
 	public String info() {
 		final String p = "\n\n";
-		
-		StringBuilder info = new StringBuilder( desc() );
 
-		String typical  = Game.getVar(R.string.MeleeWeapon_Info1b);
+		StringBuilder info = new StringBuilder(desc());
+
+		String typical = Game.getVar(R.string.MeleeWeapon_Info1b);
 		String upgraded = Game.getVar(R.string.MeleeWeapon_Info1c);
 		String degraded = Game.getVar(R.string.MeleeWeapon_Info1d);
 		String quality = levelKnown && level() != 0 ? (level() > 0 ? upgraded : degraded) : typical;
 		info.append(p);
 		info.append(Utils.capitalize(String.format(Game.getVar(R.string.MeleeWeapon_Info1a), name, quality, tier)));
 		info.append(" ");
-		
+
 		if (levelKnown) {
 			info.append(String.format(Game.getVar(R.string.MeleeWeapon_Info2a), (MIN + (MAX - MIN) / 2)));
 		} else {
@@ -123,13 +123,13 @@ public class MeleeWeapon extends Weapon {
 
 		info.append(" ");
 		switch (imbue) {
-		case SPEED:
-			info.append(Game.getVar(R.string.MeleeWeapon_Info4a));
-			break;
-		case ACCURACY:
-			info.append(Game.getVar(R.string.MeleeWeapon_Info4b));
-			break;
-		case NONE:
+			case SPEED:
+				info.append(Game.getVar(R.string.MeleeWeapon_Info4a));
+				break;
+			case ACCURACY:
+				info.append(Game.getVar(R.string.MeleeWeapon_Info4b));
+				break;
+			case NONE:
 		}
 
 		info.append(" ");
@@ -137,7 +137,7 @@ public class MeleeWeapon extends Weapon {
 			info.append(Game.getVar(R.string.MeleeWeapon_Info5));
 		}
 
-		if (levelKnown && Dungeon.hero.belongings.backpack.items.contains( this )) {
+		if (levelKnown && Dungeon.hero.belongings.backpack.items.contains(this)) {
 			info.append(p);
 			if (STR > Dungeon.hero.effectiveSTR()) {
 				info.append(String.format(Game.getVar(R.string.MeleeWeapon_Info6a), name));
@@ -146,20 +146,20 @@ public class MeleeWeapon extends Weapon {
 				info.append(String.format(Game.getVar(R.string.MeleeWeapon_Info6b), name));
 			}
 		}
-		
-		if (isEquipped( Dungeon.hero )) {
+
+		if (isEquipped(Dungeon.hero)) {
 			info.append(p);
-			info.append(String.format(Game.getVar(R.string.MeleeWeapon_Info7a), name, (cursed ? Game.getVar(R.string.MeleeWeapon_Info7b) : "")) ); 
+			info.append(String.format(Game.getVar(R.string.MeleeWeapon_Info7a), name, (cursed ? Game.getVar(R.string.MeleeWeapon_Info7b) : "")));
 		} else {
 			if (cursedKnown && cursed) {
 				info.append(p);
 				info.append(String.format(Game.getVar(R.string.MeleeWeapon_Info7c), name));
 			}
 		}
-		
+
 		return info.toString();
 	}
-	
+
 	@Override
 	public int price() {
 		int price = 20 * (1 << (tier - 1));
@@ -181,15 +181,15 @@ public class MeleeWeapon extends Weapon {
 		}
 		return price;
 	}
-	
+
 	@Override
 	public Item random() {
 		super.random();
-		
-		if (Random.Int( 10 + level() ) == 0) {
-			enchant( Enchantment.random() );
+
+		if (Random.Int(10 + level()) == 0) {
+			enchant(Enchantment.random());
 		}
-		
+
 		return this;
 	}
 }

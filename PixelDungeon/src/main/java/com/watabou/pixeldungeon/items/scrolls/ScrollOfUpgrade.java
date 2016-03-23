@@ -30,26 +30,26 @@ import com.watabou.pixeldungeon.windows.WndBag;
 public class ScrollOfUpgrade extends InventoryScroll {
 
 	private static final String TXT_LOOKS_BETTER = Game.getVar(R.string.ScrollOfUpgrade_LooksBetter);
-	
+
 	{
 		inventoryTitle = Game.getVar(R.string.ScrollOfUpgrade_InvTitle);
 		mode = WndBag.Mode.UPGRADEABLE;
 	}
-	
-	@Override
-	protected void onItemSelected( Item item ) {
 
-		ScrollOfRemoveCurse.uncurse( Dungeon.hero, item );
+	@Override
+	protected void onItemSelected(Item item) {
+
+		ScrollOfRemoveCurse.uncurse(Dungeon.hero, item);
 		item.upgrade();
-		
-		GLog.p( TXT_LOOKS_BETTER, item.name() );
-		
-		Badges.validateItemLevelAquired( item );
-		
-		upgrade( getCurUser() );
+
+		GLog.p(TXT_LOOKS_BETTER, item.name());
+
+		Badges.validateItemLevelAquired(item);
+
+		upgrade(getCurUser());
 	}
-	
-	public static void upgrade( Hero hero ) {
-		hero.getSprite().emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
+
+	public static void upgrade(Hero hero) {
+		hero.getSprite().emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
 	}
 }

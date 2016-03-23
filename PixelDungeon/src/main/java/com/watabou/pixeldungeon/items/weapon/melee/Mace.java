@@ -25,11 +25,11 @@ public class Mace extends MeleeWeapon {
 	{
 		image = ItemSpriteSheet.MACE;
 	}
-	
+
 	public Mace() {
-		super( 3, 1f, 0.8f );
+		super(3, 1f, 0.8f);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Mace_Info);

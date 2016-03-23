@@ -35,72 +35,72 @@ import java.util.ArrayList;
 
 abstract public class Food extends Item {
 
-	public static final float TIME_TO_EAT	= 3f;
-	
+	public static final float TIME_TO_EAT = 3f;
+
 	public static final String AC_EAT = Game.getVar(R.string.Food_ACEat);
-	
-	public float energy   = 0;
+
+	public float energy = 0;
 	public String message = Game.getVar(R.string.Food_Message);
-	
+
 	{
 		stackable = true;
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_EAT );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_EAT);
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
-		if (action.equals( AC_EAT )) {
-			
-			detach( hero.belongings.backpack );
-			
-			hero.buff( Hunger.class ).satisfy(energy);
-			GLog.i( message );
-			
+	public void execute(Hero hero, String action) {
+		if (action.equals(AC_EAT)) {
+
+			detach(hero.belongings.backpack);
+
+			hero.buff(Hunger.class).satisfy(energy);
+			GLog.i(message);
+
 			switch (hero.heroClass) {
-			case WARRIOR:
-				if (hero.hp() < hero.ht()) {
-					hero.hp(Math.min( hero.hp() + 5, hero.ht() ));
-					hero.getSprite().emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				}
-				break;
-			case MAGE:
-				hero.belongings.charge( false );
-				ScrollOfRecharging.charge( hero );
-				break;
-			case ROGUE:
-			case HUNTRESS:
-			case ELF:
-				break;
+				case WARRIOR:
+					if (hero.hp() < hero.ht()) {
+						hero.hp(Math.min(hero.hp() + 5, hero.ht()));
+						hero.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
+					}
+					break;
+				case MAGE:
+					hero.belongings.charge(false);
+					ScrollOfRecharging.charge(hero);
+					break;
+				case ROGUE:
+				case HUNTRESS:
+				case ELF:
+					break;
 			}
-			
-			hero.getSprite().operate( hero.getPos() );
+
+			hero.getSprite().operate(hero.getPos());
 			hero.busy();
-			SpellSprite.show( hero, SpellSprite.FOOD );
-			Sample.INSTANCE.play( Assets.SND_EAT );
-			
-			hero.spend( TIME_TO_EAT );
-			
+			SpellSprite.show(hero, SpellSprite.FOOD);
+			Sample.INSTANCE.play(Assets.SND_EAT);
+
+			hero.spend(TIME_TO_EAT);
+
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
-			
+
 		} else {
-		
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;

@@ -33,35 +33,35 @@ import com.watabou.utils.Random;
 public class Multiplicity extends Glyph {
 
 	private static final String TXT_MULTIPLICITY = Game.getVar(R.string.Multiplicity_Txt);
-	
-	private static ItemSprite.Glowing PINK = new ItemSprite.Glowing( 0xCCAA88 );
-	
-	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level() );
-		
-		if (Random.Int( level / 2 + 6 ) >= 5) {
-			
+	private static ItemSprite.Glowing PINK = new ItemSprite.Glowing(0xCCAA88);
+
+	@Override
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+
+		int level = Math.max(0, armor.level());
+
+		if (Random.Int(level / 2 + 6) >= 5) {
+
 			int imgCell = Dungeon.level.getEmptyCellNextTo(defender.getPos());
 
 			if (Dungeon.level.cellValid(imgCell)) {
-				MirrorImage mob = new MirrorImage((Hero)defender);
+				MirrorImage mob = new MirrorImage((Hero) defender);
 				Dungeon.level.spawnMob(mob);
-				WandOfBlink.appear( mob, imgCell );
-				
-				defender.damage( Random.IntRange( 1, defender.ht() / 6 ), /*attacker*/ this );
-				checkOwner( defender );
+				WandOfBlink.appear(mob, imgCell);
+
+				defender.damage(Random.IntRange(1, defender.ht() / 6), /*attacker*/ this);
+				checkOwner(defender);
 			}
-			
+
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_MULTIPLICITY, weaponName );
+	public String name(String weaponName) {
+		return String.format(TXT_MULTIPLICITY, weaponName);
 	}
 
 	@Override

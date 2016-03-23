@@ -27,41 +27,41 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
 public class Javelin extends MissileWeapon {
-	
+
 	public Javelin() {
-		this( 1 );
+		this(1);
 	}
-	
-	public Javelin( int number ) {
+
+	public Javelin(int number) {
 		super();
 
 		image = ItemSpriteSheet.JAVELIN;
-		
+
 		STR = 15;
-		
+
 		MIN = 2;
 		MAX = 15;
-		
+
 		quantity(number);
 	}
-	
+
 	@Override
-	public void proc( Char attacker, Char defender, int damage ) {
-		super.proc( attacker, defender, damage );
-		Buff.prolong( defender, Cripple.class, Cripple.DURATION );
+	public void proc(Char attacker, Char defender, int damage) {
+		super.proc(attacker, defender, damage);
+		Buff.prolong(defender, Cripple.class, Cripple.DURATION);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Javelin_Info);
 	}
-	
+
 	@Override
 	public Item random() {
-		quantity(Random.Int( 5, 15 ));
+		quantity(Random.Int(5, 15));
 		return this;
 	}
-	
+
 	@Override
 	public int price() {
 		return 15 * quantity();

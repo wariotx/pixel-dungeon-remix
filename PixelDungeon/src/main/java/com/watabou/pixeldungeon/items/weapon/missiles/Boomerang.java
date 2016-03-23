@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 package com.watabou.pixeldungeon.items.weapon.missiles;
+
 import com.watabou.noosa.Game;
 import com.nyrds.pixeldungeon.ml.R;
 import com.watabou.pixeldungeon.actors.Char;
@@ -32,65 +33,65 @@ public class Boomerang extends MissileWeapon {
 	{
 		name = Game.getVar(R.string.Boomerang_Name);
 		image = ItemSpriteSheet.BOOMERANG;
-		
+
 		STR = 10;
-		
+
 		MIN = 1;
 		MAX = 4;
-		
+
 		stackable = false;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return true;
 	}
-	
+
 	@Override
 	public Item upgrade() {
-		return upgrade( false );
+		return upgrade(false);
 	}
-	
+
 	@Override
-	public Item upgrade( boolean enchant ) {
+	public Item upgrade(boolean enchant) {
 		MIN += 1;
 		MAX += 2;
-		super.upgrade( enchant );
-		
+		super.upgrade(enchant);
+
 		updateQuickslot();
-		
+
 		return this;
 	}
-	
+
 	@Override
 	public Item degrade() {
 		MIN -= 1;
 		MAX -= 2;
 		return super.degrade();
 	}
-	
+
 	@Override
-	public Weapon enchant( Enchantment ench ) {
+	public Weapon enchant(Enchantment ench) {
 		while (ench instanceof Piercing || ench instanceof Swing) {
 			ench = Enchantment.random();
 		}
-		
-		return super.enchant( ench );
+
+		return super.enchant(ench);
 	}
-	
+
 	@Override
-	public void proc( Char attacker, Char defender, int damage ) {
-		super.proc( attacker, defender, damage );
-		if (attacker instanceof Hero && ((Hero)attacker).rangedWeapon == this) {
-			circleBack( defender.getPos(), (Hero)attacker );
+	public void proc(Char attacker, Char defender, int damage) {
+		super.proc(attacker, defender, damage);
+		if (attacker instanceof Hero && ((Hero) attacker).rangedWeapon == this) {
+			circleBack(defender.getPos(), (Hero) attacker);
 		}
 	}
-	
+
 	@Override
-	protected void miss( int cell ) {
-		circleBack( cell, getCurUser() );
+	protected void miss(int cell) {
+		circleBack(cell, getCurUser());
 	}
-	
+
 	private void circleBack(int from, Hero owner) {
 
 		((MissileSprite) getCurUser().getSprite().getParent()
@@ -104,20 +105,20 @@ public class Boomerang extends MissileWeapon {
 			getCurUser().collect(this);
 		}
 	}
-	
+
 	private boolean throwEquiped;
-	
+
 	@Override
-	public void cast( Hero user, int dst ) {
-		throwEquiped = isEquipped( user );
-		super.cast( user, dst );
+	public void cast(Hero user, int dst) {
+		throwEquiped = isEquipped(user);
+		super.cast(user, dst);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Boomerang_Info);
 	}
-	
+
 	@Override
 	public boolean isFliesStraight() {
 		return false;

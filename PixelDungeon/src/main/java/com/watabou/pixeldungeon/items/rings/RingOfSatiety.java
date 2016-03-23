@@ -21,17 +21,17 @@ import com.watabou.noosa.Game;
 import com.nyrds.pixeldungeon.ml.R;
 
 public class RingOfSatiety extends Ring {
-	
+
 	@Override
-	protected RingBuff buff( ) {
+	protected RingBuff buff() {
 		return new Satiety();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ? Game.getVar(R.string.RingOfSatiety_Info) : super.desc();
 	}
-	
+
 	public class Satiety extends RingBuff {
 	}
 }

@@ -31,76 +31,77 @@ import com.watabou.utils.Random;
 
 public class Codex extends Item {
 
-	private static final String TXT_BLINDED	= Game.getVar(R.string.Codex_Blinded);
-	
+	private static final String TXT_BLINDED = Game.getVar(R.string.Codex_Blinded);
+
 	public static final float TIME_TO_READ = 1;
-	
-	public static final String AC_READ	= Game.getVar(R.string.Codex_ACRead);
+
+	public static final String AC_READ = Game.getVar(R.string.Codex_ACRead);
 
 	private static String idTag = "id";
-	private int    maxId = 0;
-	
-	private int    id;
+	private int maxId = 0;
 
-	public Codex(){
+	private int id;
+
+	public Codex() {
 		stackable = false;
-		image     = ItemSpriteSheet.CODEX;
-		maxId     = Game.getVars(R.array.Codex_Story).length;
-		id        = Random.Int(maxId);
+		image = ItemSpriteSheet.CODEX;
+		maxId = Game.getVars(R.array.Codex_Story).length;
+		id = Random.Int(maxId);
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_READ );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_READ);
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
-		if (action.equals( AC_READ )) {
-			
-			if (hero.buff( Blindness.class ) != null) {
-				GLog.w( TXT_BLINDED );
+	public void execute(Hero hero, String action) {
+		if (action.equals(AC_READ)) {
+
+			if (hero.buff(Blindness.class) != null) {
+				GLog.w(TXT_BLINDED);
 				return;
 			}
-			
+
 			setCurUser(hero);
-			
+
 			WndStory.showCustomStory(Game.getVars(R.array.Codex_Story)[id]);
 		} else {
-			
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
-	public void restoreFromBundle( Bundle bundle ) {
+	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		id   = bundle.getInt( idTag );
-		if(!(id < maxId)){
+		id = bundle.getInt(idTag);
+		if (!(id < maxId)) {
 			id = Random.Int(maxId);
 		}
 	}
 
 	@Override
-	public void storeInBundle( Bundle bundle ) {
+	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		bundle.put(idTag, id);	}
-	
+		bundle.put(idTag, id);
+	}
+
 	@Override
-	public int price(){
+	public int price() {
 		return 5;
 	}
 }

@@ -38,42 +38,42 @@ import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class WandOfFirebolt extends SimpleWand  {
+public class WandOfFirebolt extends SimpleWand {
 
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap(int cell) {
 
 		int level = effectiveLevel();
-		
-		for (int i=1; i < Ballistica.distance - 1; i++) {
+
+		for (int i = 1; i < Ballistica.distance - 1; i++) {
 			int c = Ballistica.trace[i];
 			if (Dungeon.level.flammable[c]) {
-				GameScene.add( Blob.seed( c, 1, Fire.class ) );
+				GameScene.add(Blob.seed(c, 1, Fire.class));
 			}
 		}
-		
-		GameScene.add( Blob.seed( cell, 1, Fire.class ) );
-					
-		Char ch = Actor.findChar( cell );
+
+		GameScene.add(Blob.seed(cell, 1, Fire.class));
+
+		Char ch = Actor.findChar(cell);
 		if (ch != null) {
-			
-			ch.damage( Random.Int( 1, 8 + level * level ), this );
-			Buff.affect( ch, Burning.class ).reignite( ch );
-			
-			ch.getSprite().emitter().burst( FlameParticle.FACTORY, 5 );
-			
+
+			ch.damage(Random.Int(1, 8 + level * level), this);
+			Buff.affect(ch, Burning.class).reignite(ch);
+
+			ch.getSprite().emitter().burst(FlameParticle.FACTORY, 5);
+
 			if (ch == getCurUser() && !ch.isAlive()) {
-				Dungeon.fail( Utils.format( ResultDescriptions.WAND, name, Dungeon.depth ) );
+				Dungeon.fail(Utils.format(ResultDescriptions.WAND, name, Dungeon.depth));
 				GLog.n(Game.getVar(R.string.WandOfFirebolt_Info1));
 			}
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.fire( wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+
+	protected void fx(int cell, Callback callback) {
+		MagicMissile.fire(wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback);
+		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WandOfFirebolt_Info);

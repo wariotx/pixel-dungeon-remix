@@ -43,53 +43,53 @@ public class WandOfAvalanche extends SimpleWand {
 	{
 		hitChars = false;
 	}
-	
+
 	@Override
-	protected void onZap( int cell ) {
-		
-		Sample.INSTANCE.play( Assets.SND_ROCKS );
-		
+	protected void onZap(int cell) {
+
+		Sample.INSTANCE.play(Assets.SND_ROCKS);
+
 		int level = effectiveLevel();
-		
-		Ballistica.distance = Math.min( Ballistica.distance, 8 + level );
-		
+
+		Ballistica.distance = Math.min(Ballistica.distance, 8 + level);
+
 		int size = 1 + level / 3;
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), size );
-		
-		for (int i=0; i < Dungeon.level.getLength(); i++) {
-			
+		PathFinder.buildDistanceMap(cell, BArray.not(Dungeon.level.solid, null), size);
+
+		for (int i = 0; i < Dungeon.level.getLength(); i++) {
+
 			int d = PathFinder.distance[i];
-			
+
 			if (d < Integer.MAX_VALUE) {
-				
-				Char ch = Actor.findChar( i ); 
+
+				Char ch = Actor.findChar(i);
 				if (ch != null) {
-					
+
 					ch.getSprite().flash();
-					
-					ch.damage( Random.Int( 2, 6 + (size - d) * 2 ), this );
-					
-					if (ch.isAlive() && Random.Int( 2 + d ) == 0) {
-						Buff.prolong( ch, Paralysis.class, Random.IntRange( 2, 6 ) );
+
+					ch.damage(Random.Int(2, 6 + (size - d) * 2), this);
+
+					if (ch.isAlive() && Random.Int(2 + d) == 0) {
+						Buff.prolong(ch, Paralysis.class, Random.IntRange(2, 6));
 					}
 				}
 
-				CellEmitter.get( i ).start( Speck.factory( Speck.ROCK ), 0.07f, 3 + (size - d) );
-				Camera.main.shake( 3, 0.07f * (3 + (size - d)) );
+				CellEmitter.get(i).start(Speck.factory(Speck.ROCK), 0.07f, 3 + (size - d));
+				Camera.main.shake(3, 0.07f * (3 + (size - d)));
 			}
 		}
-		
+
 		if (getCurUser() != null && !getCurUser().isAlive()) {
-			Dungeon.fail( Utils.format( ResultDescriptions.WAND, name, Dungeon.depth ) );
+			Dungeon.fail(Utils.format(ResultDescriptions.WAND, name, Dungeon.depth));
 			GLog.n(Game.getVar(R.string.WandOfAvalanche_Info1));
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.earth( wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+
+	protected void fx(int cell, Callback callback) {
+		MagicMissile.earth(wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback);
+		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WandOfAvalanche_Info);

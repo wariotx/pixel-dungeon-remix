@@ -36,75 +36,75 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.utils.GLog;
 
 public class RogueArmor extends ClassArmor {
-	
-	private static final String TXT_FOV       = Game.getVar(R.string.RogueArmor_Fov);
+
+	private static final String TXT_FOV = Game.getVar(R.string.RogueArmor_Fov);
 	private static final String TXT_NOT_ROGUE = Game.getVar(R.string.RogueArmor_NotRogue);
-	
-	private static final String AC_SPECIAL = Game.getVar(R.string.RogueArmor_ACSpecial); 
-	
+
+	private static final String AC_SPECIAL = Game.getVar(R.string.RogueArmor_ACSpecial);
+
 	{
 		image = 16;
 	}
-	
+
 	@Override
 	public String special() {
 		return AC_SPECIAL;
 	}
-	
+
 	@Override
-	public void doSpecial() {			
-		GameScene.selectCell( teleporter );
+	public void doSpecial() {
+		GameScene.selectCell(teleporter);
 	}
-	
+
 	@Override
-	public boolean doEquip( Hero hero ) {
+	public boolean doEquip(Hero hero) {
 		if (hero.heroClass == HeroClass.ROGUE) {
-			return super.doEquip( hero );
+			return super.doEquip(hero);
 		} else {
-			GLog.w( TXT_NOT_ROGUE );
+			GLog.w(TXT_NOT_ROGUE);
 			return false;
 		}
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.RogueArmor_Desc);
 	}
-	
-	protected static CellSelector.Listener teleporter = new  CellSelector.Listener() {
-		
+
+	protected static CellSelector.Listener teleporter = new CellSelector.Listener() {
+
 		@Override
-		public void onSelect( Integer target ) {
+		public void onSelect(Integer target) {
 			if (target != null) {
 
-				if (!Dungeon.level.fieldOfView[target] || 
-					!(Dungeon.level.passable[target] || Dungeon.level.avoid[target]) || 
-					Actor.findChar( target ) != null) {
-					
-					GLog.w( TXT_FOV );
+				if (!Dungeon.level.fieldOfView[target] ||
+						!(Dungeon.level.passable[target] || Dungeon.level.avoid[target]) ||
+						Actor.findChar(target) != null) {
+
+					GLog.w(TXT_FOV);
 					return;
 				}
-				
+
 				getCurUser().hp(getCurUser().hp() - (getCurUser().hp() / 3));
-				
+
 				for (Mob mob : Dungeon.level.mobs) {
 					if (Dungeon.level.fieldOfView[mob.getPos()]) {
-						Buff.prolong( mob, Blindness.class, 2 );
+						Buff.prolong(mob, Blindness.class, 2);
 						mob.state = mob.WANDERING;
-						mob.getSprite().emitter().burst( Speck.factory( Speck.LIGHT ), 4 );
+						mob.getSprite().emitter().burst(Speck.factory(Speck.LIGHT), 4);
 					}
 				}
-				
-				WandOfBlink.appear( getCurUser(), target );
-				CellEmitter.get( target ).burst( Speck.factory( Speck.WOOL ), 10 );
-				Sample.INSTANCE.play( Assets.SND_PUFF );
-				Dungeon.level.press( target, getCurUser() );
+
+				WandOfBlink.appear(getCurUser(), target);
+				CellEmitter.get(target).burst(Speck.factory(Speck.WOOL), 10);
+				Sample.INSTANCE.play(Assets.SND_PUFF);
+				Dungeon.level.press(target, getCurUser());
 				Dungeon.observe();
-				
-				getCurUser().spendAndNext( Actor.TICK );
+
+				getCurUser().spendAndNext(Actor.TICK);
 			}
 		}
-		
+
 		@Override
 		public String prompt() {
 			return Game.getVar(R.string.RogueArmor_Prompt);

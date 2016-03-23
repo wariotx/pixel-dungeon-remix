@@ -38,113 +38,113 @@ import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.pixeldungeon.windows.WndBag;
 import com.watabou.utils.Random;
 
-public class WandOfMagicMissile extends SimpleWand  {
+public class WandOfMagicMissile extends SimpleWand {
 
-	public static final String AC_DISENCHANT    = Game.getVar(R.string.WandOfMagicMissile_ACDisenchant);
-	
-	private static final String TXT_SELECT_WAND	= Game.getVar(R.string.WandOfMagicMissile_SelectWand);
-	
+	public static final String AC_DISENCHANT = Game.getVar(R.string.WandOfMagicMissile_ACDisenchant);
+
+	private static final String TXT_SELECT_WAND = Game.getVar(R.string.WandOfMagicMissile_SelectWand);
+
 	private static final String TXT_DISENCHANTED = Game.getVar(R.string.WandOfMagicMissile_Desinchanted);
-	
-	private static final float TIME_TO_DISENCHANT	= 2f;
-	
+
+	private static final float TIME_TO_DISENCHANT = 2f;
+
 	private boolean disenchantEquipped;
-	
+
 	{
 		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
 		if (effectiveLevel() > 0) {
-			actions.add( AC_DISENCHANT );
+			actions.add(AC_DISENCHANT);
 		}
 		return actions;
 	}
-	
+
 	@Override
-	protected void onZap( int cell ) {
-		
-		Char ch = Actor.findChar( cell );
+	protected void onZap(int cell) {
+
+		Char ch = Actor.findChar(cell);
 		if (ch != null) {
-			
+
 			int level = effectiveLevel();
-			
-			ch.damage( Random.Int( 1, 6 + level * 2 ), this );
-			
-			ch.getSprite().burst( 0xFF99CCFF, level / 2 + 2 );
-			
+
+			ch.damage(Random.Int(1, 6 + level * 2), this);
+
+			ch.getSprite().burst(0xFF99CCFF, level / 2 + 2);
+
 			if (ch == getCurUser() && !ch.isAlive()) {
-				Dungeon.fail( Utils.format( ResultDescriptions.WAND, name, Dungeon.depth ) );
+				Dungeon.fail(Utils.format(ResultDescriptions.WAND, name, Dungeon.depth));
 				GLog.n(Game.getVar(R.string.WandOfMagicMissile_Info1));
 			}
 		}
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
-		if (action.equals( AC_DISENCHANT )) {
-			
+	public void execute(Hero hero, String action) {
+		if (action.equals(AC_DISENCHANT)) {
+
 			if (hero.belongings.weapon == this) {
 				disenchantEquipped = true;
 				hero.belongings.weapon = null;
 				updateQuickslot();
 			} else {
 				disenchantEquipped = false;
-				detach( hero.belongings.backpack );
+				detach(hero.belongings.backpack);
 			}
-			
+
 			setCurUser(hero);
-			GameScene.selectItem( itemSelector, WndBag.Mode.WAND, TXT_SELECT_WAND );
-			
+			GameScene.selectItem(itemSelector, WndBag.Mode.WAND, TXT_SELECT_WAND);
+
 		} else {
-		
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	@Override
 	protected boolean isKnown() {
 		return true;
 	}
-	
+
 	@Override
 	public void setKnown() {
 	}
-	
+
 	protected int initialCharges() {
 		return 3;
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WandOfMagicMissile_Info);
 	}
-	
+
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
-		public void onSelect( Item item ) {
+		public void onSelect(Item item) {
 			if (item != null) {
-				
-				Sample.INSTANCE.play( Assets.SND_EVOKE );
-				ScrollOfUpgrade.upgrade( getCurUser() );
-				evoke( getCurUser() );
-				
-				GLog.w( TXT_DISENCHANTED, item.name() );
-				
+
+				Sample.INSTANCE.play(Assets.SND_EVOKE);
+				ScrollOfUpgrade.upgrade(getCurUser());
+				evoke(getCurUser());
+
+				GLog.w(TXT_DISENCHANTED, item.name());
+
 				item.upgrade();
-				getCurUser().spendAndNext( TIME_TO_DISENCHANT );
-				
-				Badges.validateItemLevelAquired( item );
-				
+				getCurUser().spendAndNext(TIME_TO_DISENCHANT);
+
+				Badges.validateItemLevelAquired(item);
+
 			} else {
 				if (disenchantEquipped) {
 					getCurUser().belongings.weapon = WandOfMagicMissile.this;
 					WandOfMagicMissile.this.updateQuickslot();
 				} else {
-					collect( getCurUser().belongings.backpack );
+					collect(getCurUser().belongings.backpack);
 				}
 			}
 		}

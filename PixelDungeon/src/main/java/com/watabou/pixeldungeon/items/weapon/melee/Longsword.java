@@ -25,11 +25,11 @@ public class Longsword extends MeleeWeapon {
 	{
 		image = ItemSpriteSheet.LONG_SWORD;
 	}
-	
+
 	public Longsword() {
-		super( 4, 1f, 1f );
+		super(4, 1f, 1f);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Longsword_Info);

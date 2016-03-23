@@ -23,85 +23,85 @@ import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
 public class GladiatorArmor extends ClassArmor {
-	
-	private static int LEAP_TIME	= 1;
-	private static int SHOCK_TIME	= 3;
-	
-	private static final String AC_SPECIAL = Game.getVar(R.string.WarriorArmor_ACSpecial); 
-	
-	private static final String TXT_NOT_WARRIOR	= Game.getVar(R.string.WarriorArmor_NotWarrior);
-	
+
+	private static int LEAP_TIME = 1;
+	private static int SHOCK_TIME = 3;
+
+	private static final String AC_SPECIAL = Game.getVar(R.string.WarriorArmor_ACSpecial);
+
+	private static final String TXT_NOT_WARRIOR = Game.getVar(R.string.WarriorArmor_NotWarrior);
+
 	{
 		image = 7;
 	}
-	
+
 	@Override
 	public String special() {
 		return AC_SPECIAL;
 	}
-	
+
 	@Override
 	public void doSpecial() {
-		GameScene.selectCell( leaper );
+		GameScene.selectCell(leaper);
 	}
-	
+
 	@Override
-	public boolean doEquip( Hero hero ) {
+	public boolean doEquip(Hero hero) {
 		if (hero.heroClass == HeroClass.WARRIOR && hero.subClass == HeroSubClass.GLADIATOR) {
-			return super.doEquip( hero );
+			return super.doEquip(hero);
 		} else {
-			GLog.w( TXT_NOT_WARRIOR );
+			GLog.w(TXT_NOT_WARRIOR);
 			return false;
 		}
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WarriorArmor_Desc);
 	}
-	
-	protected static CellSelector.Listener leaper = new  CellSelector.Listener() {
-		
+
+	protected static CellSelector.Listener leaper = new CellSelector.Listener() {
+
 		@Override
-		public void onSelect( Integer target ) {
+		public void onSelect(Integer target) {
 			if (target != null && target != getCurUser().getPos()) {
-				
-				int cell = Ballistica.cast( getCurUser().getPos(), target, false, true );
-				if (Actor.findChar( cell ) != null && cell != getCurUser().getPos()) {
+
+				int cell = Ballistica.cast(getCurUser().getPos(), target, false, true);
+				if (Actor.findChar(cell) != null && cell != getCurUser().getPos()) {
 					cell = Ballistica.trace[Ballistica.distance - 2];
 				}
-				
+
 				getCurUser().hp(getCurUser().hp() - (getCurUser().hp() / 3));
-				
+
 				getCurUser().checkIfFurious();
-				
+
 				Invisibility.dispel(getCurUser());
-				
+
 				final int dest = cell;
 				getCurUser().busy();
-				((HeroSprite)getCurUser().getSprite()).jump( getCurUser().getPos(), cell, new Callback() {
+				((HeroSprite) getCurUser().getSprite()).jump(getCurUser().getPos(), cell, new Callback() {
 					@Override
 					public void call() {
-						getCurUser().move( dest );
-						Dungeon.level.press( dest, getCurUser() );
+						getCurUser().move(dest);
+						Dungeon.level.press(dest, getCurUser());
 						Dungeon.observe();
-						
-						for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-							Char mob = Actor.findChar( getCurUser().getPos() + Level.NEIGHBOURS8[i] );
+
+						for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
+							Char mob = Actor.findChar(getCurUser().getPos() + Level.NEIGHBOURS8[i]);
 							if (mob != null && mob != getCurUser()) {
-								Buff.prolong( mob, Paralysis.class, SHOCK_TIME );
+								Buff.prolong(mob, Paralysis.class, SHOCK_TIME);
 							}
 						}
-						
-						CellEmitter.center( dest ).burst( Speck.factory( Speck.DUST ), 10 );
-						Camera.main.shake( 2, 0.5f );
-						
-						getCurUser().spendAndNext( LEAP_TIME );
+
+						CellEmitter.center(dest).burst(Speck.factory(Speck.DUST), 10);
+						Camera.main.shake(2, 0.5f);
+
+						getCurUser().spendAndNext(LEAP_TIME);
 					}
-				} );
+				});
 			}
 		}
-		
+
 		@Override
 		public String prompt() {
 			return Game.getVar(R.string.WarriorArmor_Prompt);

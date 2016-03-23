@@ -25,11 +25,11 @@ public class Glaive extends MeleeWeapon {
 	{
 		image = ItemSpriteSheet.GLAIVE;
 	}
-	
+
 	public Glaive() {
-		super( 5, 1f, 1f );
+		super(5, 1f, 1f);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Glaive_Info);

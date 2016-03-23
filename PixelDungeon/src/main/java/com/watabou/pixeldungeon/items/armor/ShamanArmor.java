@@ -16,49 +16,49 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.utils.GLog;
 
 public class ShamanArmor extends ClassArmor {
-	
+
 	private static final String TXT_NOT_ELF = Game.getVar(R.string.ElfArmor_NotElf);
-	private static final String AC_SPECIAL = Game.getVar(R.string.ElfArmor_ACSpecial); 
-	
+	private static final String AC_SPECIAL = Game.getVar(R.string.ElfArmor_ACSpecial);
+
 	public ShamanArmor() {
 		image = 15;
-	}	
-	
+	}
+
 	@Override
 	public String special() {
 		return AC_SPECIAL;
 	}
-	
+
 	@Override
 	public void doSpecial() {
-		
+
 		for (Mob mob : Dungeon.level.mobs) {
 			if (Dungeon.level.fieldOfView[mob.getPos()]) {
-				GameScene.add( Blob.seed( mob.getPos(), 100, Regrowth.class ) );
+				GameScene.add(Blob.seed(mob.getPos(), 100, Regrowth.class));
 			}
 		}
-		
+
 		getCurUser().hp(getCurUser().hp() - (getCurUser().hp() / 3));
-		
-		getCurUser().spend( Actor.TICK );
-		getCurUser().getSprite().operate( getCurUser().getPos() );
+
+		getCurUser().spend(Actor.TICK);
+		getCurUser().getSprite().operate(getCurUser().getPos());
 		getCurUser().busy();
-		
-		Sample.INSTANCE.play( Assets.SND_READ );
-		
-		GameScene.add( Blob.seed( getCurUser().getPos(), 100, Regrowth.class ) );
+
+		Sample.INSTANCE.play(Assets.SND_READ);
+
+		GameScene.add(Blob.seed(getCurUser().getPos(), 100, Regrowth.class));
 	}
-	
+
 	@Override
-	public boolean doEquip( Hero hero ) {
+	public boolean doEquip(Hero hero) {
 		if (hero.heroClass == HeroClass.ELF && hero.subClass == HeroSubClass.SHAMAN) {
-			return super.doEquip( hero );
+			return super.doEquip(hero);
 		} else {
-			GLog.w( TXT_NOT_ELF );
+			GLog.w(TXT_NOT_ELF);
 			return false;
 		}
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.ElfArmor_Desc);

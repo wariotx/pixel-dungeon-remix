@@ -25,11 +25,11 @@ public class BattleAxe extends MeleeWeapon {
 	{
 		image = ItemSpriteSheet.BATTLE_AXE;
 	}
-	
+
 	public BattleAxe() {
-		super( 4, 1.2f, 1f );
+		super(4, 1.2f, 1f);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.BattleAxe_Info);

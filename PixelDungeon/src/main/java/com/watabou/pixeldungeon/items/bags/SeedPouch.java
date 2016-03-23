@@ -25,15 +25,15 @@ public class SeedPouch extends Bag {
 
 	{
 		image = ItemSpriteSheet.POUCH;
-		
+
 		size = 8;
 	}
-	
+
 	@Override
-	public boolean grab( Item item ) {
+	public boolean grab(Item item) {
 		return item instanceof Plant.Seed;
 	}
-	
+
 	@Override
 	public int price() {
 		return 50;

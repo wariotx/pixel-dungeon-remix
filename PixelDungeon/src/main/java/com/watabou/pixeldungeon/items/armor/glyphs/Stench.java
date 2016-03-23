@@ -33,28 +33,28 @@ import com.watabou.utils.Random;
 public class Stench extends Glyph {
 
 	private static final String TXT_STENCH = Game.getVar(R.string.Stench_Txt);
-	
-	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x22CC44 );
-	
-	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level() );
-		
-		if (Dungeon.level.adjacent( attacker.getPos(), defender.getPos() ) && Random.Int( level + 5 ) >= 4) {
-			
-			GameScene.add( Blob.seed( attacker.getPos(), 20, ToxicGas.class ) );
-			
+	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing(0x22CC44);
+
+	@Override
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+
+		int level = Math.max(0, armor.level());
+
+		if (Dungeon.level.adjacent(attacker.getPos(), defender.getPos()) && Random.Int(level + 5) >= 4) {
+
+			GameScene.add(Blob.seed(attacker.getPos(), 20, ToxicGas.class));
+
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_STENCH, weaponName );
+	public String name(String weaponName) {
+		return String.format(TXT_STENCH, weaponName);
 	}
-	
+
 	@Override
 	public Glowing glowing() {
 		return GREEN;

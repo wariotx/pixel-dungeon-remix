@@ -34,59 +34,59 @@ import java.util.ArrayList;
 public class MissileWeapon extends Weapon {
 
 	private static final String TXT_MISSILES = Game.getVar(R.string.MissileWeapon_Missiles);
-	private static final String TXT_YES      = Game.getVar(R.string.MissileWeapon_Yes);
-	private static final String TXT_NO       = Game.getVar(R.string.MissileWeapon_No);
+	private static final String TXT_YES = Game.getVar(R.string.MissileWeapon_Yes);
+	private static final String TXT_NO = Game.getVar(R.string.MissileWeapon_No);
 	private static final String TXT_R_U_SURE = Game.getVar(R.string.MissileWeapon_Sure);
-	
+
 	{
 		stackable = true;
 		levelKnown = true;
 		defaultAction = AC_THROW;
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
 		if (hero.heroClass != HeroClass.HUNTRESS && hero.heroClass != HeroClass.ROGUE) {
-			actions.remove( AC_EQUIP );
-			actions.remove( AC_UNEQUIP );
+			actions.remove(AC_EQUIP);
+			actions.remove(AC_UNEQUIP);
 		}
 		return actions;
 	}
 
 	@Override
-	protected void onThrow( int cell ) {
-		Char enemy = Actor.findChar( cell );
+	protected void onThrow(int cell) {
+		Char enemy = Actor.findChar(cell);
 		if (enemy == null || enemy == getCurUser()) {
-			super.onThrow( cell );
+			super.onThrow(cell);
 		} else {
-			if (!getCurUser().shoot( enemy, this )) {
-				miss( cell );
+			if (!getCurUser().shoot(enemy, this)) {
+				miss(cell);
 			}
 		}
 	}
-	
-	protected void miss( int cell ) {
-		
-		if(this instanceof Arrow) {
+
+	protected void miss(int cell) {
+
+		if (this instanceof Arrow) {
 			Arrow arrow = (Arrow) this;
-			if(arrow.firedFrom != null ) {
+			if (arrow.firedFrom != null) {
 				arrow.firedFrom.onMiss();
 			}
 		}
-		
-		super.onThrow( cell );
+
+		super.onThrow(cell);
 	}
-	
+
 	@Override
 	public void proc(Char attacker, Char defender, int damage) {
 
 		super.proc(attacker, defender, damage);
-		
-		if(this instanceof Arrow) {
+
+		if (this instanceof Arrow) {
 			Arrow arrow = (Arrow) this;
-			if(arrow.firedFrom != null && arrow.firedFrom.isEnchanted()) {
-				arrow.firedFrom.getEnchantment().proc( arrow.firedFrom, attacker, defender, damage );
+			if (arrow.firedFrom != null && arrow.firedFrom.isEnchanted()) {
+				arrow.firedFrom.getEnchantment().proc(arrow.firedFrom, attacker, defender, damage);
 			}
 		}
 
@@ -101,47 +101,49 @@ public class MissileWeapon extends Weapon {
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean doEquip( final Hero hero ) {
-		GameScene.show( 
-			new WndOptions( TXT_MISSILES, TXT_R_U_SURE, TXT_YES, TXT_NO ) {
-				@Override
-				protected void onSelect(int index) {
-					if (index == 0) {
-						MissileWeapon.super.doEquip( hero );
+	public boolean doEquip(final Hero hero) {
+		GameScene.show(
+				new WndOptions(TXT_MISSILES, TXT_R_U_SURE, TXT_YES, TXT_NO) {
+					@Override
+					protected void onSelect(int index) {
+						if (index == 0) {
+							MissileWeapon.super.doEquip(hero);
+						}
 					}
-				};
-			}
+
+					;
+				}
 		);
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public Item random() {
 		return this;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public String info() {
-		
-		StringBuilder info = new StringBuilder( desc() );
-		
-		info.append(String.format(Game.getVar(R.string.MissileWeapon_Info1),MIN + (MAX - MIN) / 2));
+
+		StringBuilder info = new StringBuilder(desc());
+
+		info.append(String.format(Game.getVar(R.string.MissileWeapon_Info1), MIN + (MAX - MIN) / 2));
 		info.append(" ");
 
-		if (Dungeon.hero.belongings.backpack.items.contains( this )) {
+		if (Dungeon.hero.belongings.backpack.items.contains(this)) {
 			if (STR > Dungeon.hero.effectiveSTR()) {
 				info.append(String.format(Game.getVar(R.string.MissileWeapon_Info2), name));
 			}
@@ -149,14 +151,14 @@ public class MissileWeapon extends Weapon {
 				info.append(String.format(Game.getVar(R.string.MissileWeapon_Info3), name));
 			}
 		}
-		
-		if (isEquipped( Dungeon.hero )) {
-			info.append(String.format(Game.getVar(R.string.MissileWeapon_Info4), name)); 
+
+		if (isEquipped(Dungeon.hero)) {
+			info.append(String.format(Game.getVar(R.string.MissileWeapon_Info4), name));
 		}
-		
+
 		return info.toString();
 	}
-	
+
 	@Override
 	public boolean isFliesStraight() {
 		return true;

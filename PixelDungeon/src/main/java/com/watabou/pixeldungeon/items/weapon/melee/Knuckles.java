@@ -25,11 +25,11 @@ public class Knuckles extends MeleeWeapon {
 	{
 		image = ItemSpriteSheet.KNUCKLEDUSTER;
 	}
-	
+
 	public Knuckles() {
-		super( 1, 1f, 0.5f );
+		super(1, 1f, 0.5f);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Knuckles_Info);

@@ -23,19 +23,19 @@ import com.watabou.pixeldungeon.items.Item;
 
 
 public class ClothArmor extends Armor {
-	
+
 	public ClothArmor() {
-		super( 1 );
+		super(1);
 		image = 0;
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.ClothArmor_Desc);
 	}
-	
+
 	@Override
-	public Item burn(int cell){
+	public Item burn(int cell) {
 		return null;
 	}
 }

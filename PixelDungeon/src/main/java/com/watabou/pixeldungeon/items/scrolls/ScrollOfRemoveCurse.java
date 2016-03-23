@@ -31,54 +31,54 @@ import com.watabou.pixeldungeon.utils.GLog;
 
 public class ScrollOfRemoveCurse extends Scroll {
 
-	private static final String TXT_PROCCED	= Game.getVar(R.string.ScrollOfRemoveCurse_Proced);
-	private static final String TXT_NOT_PROCCED	= Game.getVar(R.string.ScrollOfRemoveCurse_NoProced);
-	
+	private static final String TXT_PROCCED = Game.getVar(R.string.ScrollOfRemoveCurse_Proced);
+	private static final String TXT_NOT_PROCCED = Game.getVar(R.string.ScrollOfRemoveCurse_NoProced);
+
 	@Override
 	protected void doRead() {
-		
-		new Flare( 6, 32 ).show( getCurUser().getSprite(), 2f ) ;
-		Sample.INSTANCE.play( Assets.SND_READ );
+
+		new Flare(6, 32).show(getCurUser().getSprite(), 2f);
+		Sample.INSTANCE.play(Assets.SND_READ);
 		Invisibility.dispel(getCurUser());
-		
-		boolean procced = uncurse( getCurUser(), getCurUser().belongings.backpack.items.toArray(new Item[getCurUser().belongings.backpack.items.size()]));
-		procced = uncurse( getCurUser(), 
-			getCurUser().belongings.weapon, 
-			getCurUser().belongings.armor, 
-			getCurUser().belongings.ring1, 
-			getCurUser().belongings.ring2 ) || procced;
-		
-		Weakness.detach( getCurUser(), Weakness.class );
-		
+
+		boolean procced = uncurse(getCurUser(), getCurUser().belongings.backpack.items.toArray(new Item[getCurUser().belongings.backpack.items.size()]));
+		procced = uncurse(getCurUser(),
+				getCurUser().belongings.weapon,
+				getCurUser().belongings.armor,
+				getCurUser().belongings.ring1,
+				getCurUser().belongings.ring2) || procced;
+
+		Weakness.detach(getCurUser(), Weakness.class);
+
 		if (procced) {
-			GLog.p( TXT_PROCCED );			
-		} else {		
-			GLog.i( TXT_NOT_PROCCED );		
+			GLog.p(TXT_PROCCED);
+		} else {
+			GLog.i(TXT_NOT_PROCCED);
 		}
-		
+
 		setKnown();
-		
-		getCurUser().spendAndNext( TIME_TO_READ );
+
+		getCurUser().spendAndNext(TIME_TO_READ);
 	}
 
-	public static boolean uncurse( Hero hero, Item... items ) {
-		
+	public static boolean uncurse(Hero hero, Item... items) {
+
 		boolean procced = false;
-		for (int i=0; i < items.length; i++) {
+		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
 			if (item != null && item.cursed) {
 				item.cursed = false;
 				procced = true;
 			}
 		}
-		
+
 		if (procced) {
-			hero.getSprite().emitter().start( ShadowParticle.UP, 0.05f, 10 );
+			hero.getSprite().emitter().start(ShadowParticle.UP, 0.05f, 10);
 		}
-		
+
 		return procced;
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 30 * quantity() : super.price();

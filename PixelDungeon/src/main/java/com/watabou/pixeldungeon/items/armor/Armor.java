@@ -46,90 +46,90 @@ import java.util.ArrayList;
 
 public class Armor extends EquipableItem {
 
-	private static final String TXT_EQUIP_CURSED    = Game.getVar(R.string.Armor_EquipCursed);
-		
-	private static final String TXT_IDENTIFY        = Game.getVar(R.string.Armor_Identify);
-	
-	private static final String TXT_TO_STRING       = Game.getVar(R.string.Armor_ToString);
-	
-	private static final String TXT_INCOMPATIBLE    = Game.getVar(R.string.Armor_Incompatible);
-	
+	private static final String TXT_EQUIP_CURSED = Game.getVar(R.string.Armor_EquipCursed);
+
+	private static final String TXT_IDENTIFY = Game.getVar(R.string.Armor_Identify);
+
+	private static final String TXT_TO_STRING = Game.getVar(R.string.Armor_ToString);
+
+	private static final String TXT_INCOMPATIBLE = Game.getVar(R.string.Armor_Incompatible);
+
 	public int tier;
-	
+
 	public int STR;
 	public int DR;
-	
+
 	private int hitsToKnow = 10;
-	
+
 	public Glyph glyph;
-	
-	public Armor( int tier ) {
+
+	public Armor(int tier) {
 		imageFile = "items/armor.png";
-		
+
 		this.tier = tier;
-		
+
 		STR = typicalSTR();
 		DR = typicalDR();
 	}
-	
-	private static final String GLYPH	= "glyph";
-	
+
+	private static final String GLYPH = "glyph";
+
 	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( GLYPH, glyph );
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(GLYPH, glyph);
 	}
-	
+
 	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		glyph = (Glyph)bundle.get( GLYPH );
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		glyph = (Glyph) bundle.get(GLYPH);
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(isEquipped(hero) ? AC_UNEQUIP : AC_EQUIP);
 		return actions;
 	}
-	
+
 	@Override
-	public boolean doEquip( Hero hero ) {
-		
-		detach( hero.belongings.backpack );
-		
-		if (hero.belongings.armor == null || hero.belongings.armor.doUnequip( hero, true, false )) {
-			
+	public boolean doEquip(Hero hero) {
+
+		detach(hero.belongings.backpack);
+
+		if (hero.belongings.armor == null || hero.belongings.armor.doUnequip(hero, true, false)) {
+
 			hero.belongings.armor = this;
-			
+
 			cursedKnown = true;
 			if (cursed) {
-				equipCursed( hero );
-				GLog.n( TXT_EQUIP_CURSED, toString() );
+				equipCursed(hero);
+				GLog.n(TXT_EQUIP_CURSED, toString());
 			}
-			
+
 			hero.updateLook();
-			
-			hero.spendAndNext( 2 * time2equip( hero ) );
+
+			hero.spendAndNext(2 * time2equip(hero));
 			return true;
-			
+
 		} else {
-			
-			collect( hero.belongings.backpack );
+
+			collect(hero.belongings.backpack);
 			return false;
-			
+
 		}
 	}
-	
+
 	@Override
-	protected float time2equip( Hero hero ) {
+	protected float time2equip(Hero hero) {
 		return hero.speed();
 	}
-	
+
 	@Override
-	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
-		if (super.doUnequip( hero, collect, single )) {
-			
+	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+		if (super.doUnequip(hero, collect, single)) {
+
 			hero.belongings.armor = null;
 			hero.updateLook();
 			return true;
@@ -137,33 +137,33 @@ public class Armor extends EquipableItem {
 			return false;
 		}
 	}
-	
+
 	@Override
-	public boolean isEquipped( Hero hero ) {
+	public boolean isEquipped(Hero hero) {
 		return hero.belongings.armor == this;
 	}
-	
+
 	@Override
 	public Item upgrade() {
-		return upgrade( false );
+		return upgrade(false);
 	}
-	
-	public Item upgrade( boolean inscribe ) {
-		
+
+	public Item upgrade(boolean inscribe) {
+
 		if (glyph != null) {
-			if (!inscribe && Random.Int( level() ) > 0) {
-				GLog.w( TXT_INCOMPATIBLE );
-				inscribe( null );
+			if (!inscribe && Random.Int(level()) > 0) {
+				GLog.w(TXT_INCOMPATIBLE);
+				inscribe(null);
 			}
 		} else {
 			if (inscribe) {
-				inscribe( Glyph.random() );
+				inscribe(Glyph.random());
 			}
 		}
-		
+
 		DR += tier;
 		STR--;
-		
+
 		return super.upgrade();
 	}
 
@@ -171,51 +171,51 @@ public class Armor extends EquipableItem {
 	public Item degrade() {
 		DR -= tier;
 		STR++;
-		
+
 		return super.degrade();
 	}
-	
-	public int proc( Char attacker, Char defender, int damage ) {
-		
+
+	public int proc(Char attacker, Char defender, int damage) {
+
 		if (glyph != null) {
-			damage = glyph.proc( this, attacker, defender, damage );
+			damage = glyph.proc(this, attacker, defender, damage);
 		}
-		
+
 		if (!levelKnown) {
 			if (--hitsToKnow <= 0) {
 				levelKnown = true;
-				GLog.w( TXT_IDENTIFY, name(), toString() );
-				Badges.validateItemLevelAquired( this );
+				GLog.w(TXT_IDENTIFY, name(), toString());
+				Badges.validateItemLevelAquired(this);
 			}
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
 	public String toString() {
-		return levelKnown ? Utils.format( TXT_TO_STRING, super.toString(), STR ) : super.toString();
+		return levelKnown ? Utils.format(TXT_TO_STRING, super.toString(), STR) : super.toString();
 	}
-	
+
 	@Override
 	public String name() {
-		return glyph == null ? super.name() : glyph.name( super.name() );
+		return glyph == null ? super.name() : glyph.name(super.name());
 	}
-	
+
 	@Override
 	public String info() {
 		final String p = "\n\n";
-		
-		StringBuilder info = new StringBuilder( desc() );
-		
+
+		StringBuilder info = new StringBuilder(desc());
+
 		String name = name();
-		
+
 		if (levelKnown) {
 			info.append(p);
-			info.append(Utils.capitalize(String.format(Game.getVar(R.string.Armor_Info1), name, Math.max( DR, 0 ))));
-			
+			info.append(Utils.capitalize(String.format(Game.getVar(R.string.Armor_Info1), name, Math.max(DR, 0))));
+
 			if (STR > Dungeon.hero.effectiveSTR()) {
-				if (isEquipped( Dungeon.hero )) {
+				if (isEquipped(Dungeon.hero)) {
 					info.append(Game.getVar(R.string.Armor_Info2));
 				} else {
 					info.append(Game.getVar(R.string.Armor_Info3));
@@ -231,52 +231,52 @@ public class Armor extends EquipableItem {
 		if (glyph != null) {
 			info.append(Game.getVar(R.string.Armor_Info6));
 		}
-		
-		if (isEquipped( Dungeon.hero )) {
-			info.append(String.format(Game.getVar(R.string.Armor_Info7a), name,  
-				(cursed ? Game.getVar(R.string.Armor_Info7b) : "") )); 
+
+		if (isEquipped(Dungeon.hero)) {
+			info.append(String.format(Game.getVar(R.string.Armor_Info7a), name,
+					(cursed ? Game.getVar(R.string.Armor_Info7b) : "")));
 		} else {
 			if (cursedKnown && cursed) {
 				info.append(String.format(Game.getVar(R.string.Armor_Info8), name));
 			}
 		}
-		
+
 		return info.toString();
 	}
-	
+
 	@Override
 	public Item random() {
 		if (Random.Float() < 0.4) {
 			int n = 1;
-			if (Random.Int( 3 ) == 0) {
+			if (Random.Int(3) == 0) {
 				n++;
-				if (Random.Int( 3 ) == 0) {
+				if (Random.Int(3) == 0) {
 					n++;
 				}
 			}
-			if (Random.Int( 2 ) == 0) {
-				upgrade( n );
+			if (Random.Int(2) == 0) {
+				upgrade(n);
 			} else {
-				degrade( n );
+				degrade(n);
 				cursed = true;
 			}
 		}
-		
-		if (Random.Int( 10 ) == 0) {
-			inscribe( Glyph.random() );
+
+		if (Random.Int(10) == 0) {
+			inscribe(Glyph.random());
 		}
-		
+
 		return this;
 	}
-	
+
 	public int typicalSTR() {
 		return 7 + tier * 2;
 	}
-	
+
 	public int typicalDR() {
 		return tier * 2;
 	}
-	
+
 	@Override
 	public int price() {
 		int price = 10 * (1 << (tier - 1));
@@ -298,17 +298,17 @@ public class Armor extends EquipableItem {
 		}
 		return price;
 	}
-	
-	public Armor inscribe( Glyph glyph ) {
-		
+
+	public Armor inscribe(Glyph glyph) {
+
 		if (glyph != null && this.glyph == null) {
 			DR += tier;
 		} else if (glyph == null && this.glyph != null) {
 			DR -= tier;
 		}
-		
+
 		this.glyph = glyph;
-		
+
 		return this;
 	}
 
@@ -316,63 +316,63 @@ public class Armor extends EquipableItem {
 	public ItemSprite.Glowing glowing() {
 		return glyph != null ? glyph.glowing() : null;
 	}
-	
+
 	public static abstract class Glyph implements Bundlable {
-		
-		private static final Class<?>[] glyphs = new Class<?>[]{ 
-			Bounce.class, Affection.class, AntiEntropy.class, Multiplicity.class, 
-			Potential.class, Metabolism.class, Stench.class, Viscosity.class,
-			Displacement.class, Entanglement.class };
-		
-		private static final float[] chances= new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-			
-		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
-		
+
+		private static final Class<?>[] glyphs = new Class<?>[]{
+				Bounce.class, Affection.class, AntiEntropy.class, Multiplicity.class,
+				Potential.class, Metabolism.class, Stench.class, Viscosity.class,
+				Displacement.class, Entanglement.class};
+
+		private static final float[] chances = new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+		public abstract int proc(Armor armor, Char attacker, Char defender, int damage);
+
 		public String name() {
-			return name( Game.getVar(R.string.Armor_Glyph));
+			return name(Game.getVar(R.string.Armor_Glyph));
 		}
-		
-		public String name( String armorName ) {
+
+		public String name(String armorName) {
 			return armorName;
-		}
-		
-		@Override
-		public void restoreFromBundle( Bundle bundle ) {	
 		}
 
 		@Override
-		public void storeInBundle( Bundle bundle ) {	
+		public void restoreFromBundle(Bundle bundle) {
 		}
-		
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+		}
+
 		@Override
 		public boolean dontPack() {
 			return false;
 		}
-		
+
 		public ItemSprite.Glowing glowing() {
 			return ItemSprite.Glowing.WHITE;
 		}
-		
-		public boolean checkOwner( Char owner ) {
+
+		public boolean checkOwner(Char owner) {
 			if (!owner.isAlive() && owner instanceof Hero) {
-				
-				((Hero)owner).killerGlyph = this;
+
+				((Hero) owner).killerGlyph = this;
 				Badges.validateDeathFromGlyph();
 				return true;
-				
+
 			} else {
 				return false;
 			}
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		public static Glyph random() {
 			try {
-				return ((Class<Glyph>)glyphs[ Random.chances( chances ) ]).newInstance();
+				return ((Class<Glyph>) glyphs[Random.chances(chances)]).newInstance();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
-		
+
 	}
 }

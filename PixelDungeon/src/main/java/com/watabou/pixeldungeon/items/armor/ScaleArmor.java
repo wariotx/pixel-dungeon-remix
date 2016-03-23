@@ -24,10 +24,10 @@ import com.watabou.noosa.Game;
 public class ScaleArmor extends Armor {
 
 	public ScaleArmor() {
-		super( 4 );
+		super(4);
 		image = 3;
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.ScaleArmor_Desc);

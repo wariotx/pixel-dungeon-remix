@@ -28,31 +28,31 @@ public class Dart extends MissileWeapon {
 	{
 		name = Game.getVar(R.string.Dart_Name);
 		image = ItemSpriteSheet.DART;
-		
+
 		MIN = 1;
 		MAX = 4;
 	}
-	
+
 	public Dart() {
-		this( 1 );
+		this(1);
 	}
-	
-	public Dart( int number ) {
+
+	public Dart(int number) {
 		super();
 		quantity(number);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Dart_Info);
 	}
-	
+
 	@Override
 	public Item random() {
-		quantity(Random.Int( 5, 15 ));
+		quantity(Random.Int(5, 15));
 		return this;
 	}
-	
+
 	@Override
 	public int price() {
 		return quantity() * 2;

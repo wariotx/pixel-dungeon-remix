@@ -26,40 +26,40 @@ import com.watabou.utils.Random;
 public class Shuriken extends MissileWeapon {
 
 	public Shuriken() {
-		this( 1 );
+		this(1);
 	}
-	
-	public Shuriken( int number ) {
+
+	public Shuriken(int number) {
 		super();
-		
+
 		image = ItemSpriteSheet.SHURIKEN;
-		
+
 		STR = 13;
-		
+
 		MIN = 2;
 		MAX = 6;
-		
+
 		DLY = 0.5f;
-		
+
 		quantity(number);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Shuriken_Info);
 	}
-	
+
 	@Override
 	public Item random() {
-		quantity(Random.Int( 5, 15 ));
+		quantity(Random.Int(5, 15));
 		return this;
 	}
-	
+
 	@Override
 	public int price() {
 		return 15 * quantity();
 	}
-	
+
 	@Override
 	public boolean isFliesStraight() {
 		return false;

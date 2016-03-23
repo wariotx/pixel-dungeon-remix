@@ -1,6 +1,7 @@
 package com.watabou.pixeldungeon.items;
 
 import com.watabou.utils.Bundle;
+
 import java.util.HashSet;
 
 /**
@@ -8,9 +9,11 @@ import java.util.HashSet;
  */
 public interface Knowledge<T extends KnowableItem> {
 	void init();
+
 	void init(Bundle bundle);
 
 	HashSet<Class<? extends T>> getKnown();
+
 	HashSet<Class<? extends T>> getUnknown();
 
 	boolean allKnown();
@@ -18,5 +21,6 @@ public interface Knowledge<T extends KnowableItem> {
 	ItemStatusHandler<T> getHandler();
 
 	boolean isKnown(Class<? extends T> aClass);
+
 	void setKnown(Class<? extends T> aClass);
 }

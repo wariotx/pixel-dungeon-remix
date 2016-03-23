@@ -37,104 +37,104 @@ import java.util.ArrayList;
 
 public class TomeOfMastery extends Item {
 
-	private static final String TXT_BLINDED	= Game.getVar(R.string.TomeOfMastery_Blinded);
-	
+	private static final String TXT_BLINDED = Game.getVar(R.string.TomeOfMastery_Blinded);
+
 	public static final float TIME_TO_READ = 10;
-	
-	public static final String AC_READ	= Game.getVar(R.string.TomeOfMastery_ACRead);
-	
+
+	public static final String AC_READ = Game.getVar(R.string.TomeOfMastery_ACRead);
+
 	{
 		stackable = false;
 		image = ItemSpriteSheet.MASTERY;
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );		
-		actions.add( AC_READ );
-		
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_READ);
+
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
-		if (action.equals( AC_READ )) {
-			
-			if (hero.buff( Blindness.class ) != null) {
-				GLog.w( TXT_BLINDED );
+	public void execute(Hero hero, String action) {
+		if (action.equals(AC_READ)) {
+
+			if (hero.buff(Blindness.class) != null) {
+				GLog.w(TXT_BLINDED);
 				return;
 			}
-			
+
 			setCurUser(hero);
-			
+
 			HeroSubClass way1 = null;
 			HeroSubClass way2 = null;
 			switch (hero.heroClass) {
-			case WARRIOR:
-				way1 = HeroSubClass.GLADIATOR;
-				way2 = HeroSubClass.BERSERKER;
-				break;
-			case MAGE:
-				way1 = HeroSubClass.BATTLEMAGE;
-				way2 = HeroSubClass.WARLOCK;
-				break;
-			case ROGUE:
-				way1 = HeroSubClass.FREERUNNER;
-				way2 = HeroSubClass.ASSASSIN;
-				break;
-			case HUNTRESS:
-				way1 = HeroSubClass.SNIPER;
-				way2 = HeroSubClass.WARDEN;
-				break;
-			case ELF:
-				way1 = HeroSubClass.SCOUT;
-				way2 = HeroSubClass.SHAMAN;
-				break;
+				case WARRIOR:
+					way1 = HeroSubClass.GLADIATOR;
+					way2 = HeroSubClass.BERSERKER;
+					break;
+				case MAGE:
+					way1 = HeroSubClass.BATTLEMAGE;
+					way2 = HeroSubClass.WARLOCK;
+					break;
+				case ROGUE:
+					way1 = HeroSubClass.FREERUNNER;
+					way2 = HeroSubClass.ASSASSIN;
+					break;
+				case HUNTRESS:
+					way1 = HeroSubClass.SNIPER;
+					way2 = HeroSubClass.WARDEN;
+					break;
+				case ELF:
+					way1 = HeroSubClass.SCOUT;
+					way2 = HeroSubClass.SHAMAN;
+					break;
 			}
-			GameScene.show( new WndChooseWay( this, way1, way2 ) );
-			
+			GameScene.show(new WndChooseWay(this, way1, way2));
+
 		} else {
-			
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	@Override
-	public boolean doPickUp( Hero hero ) {
+	public boolean doPickUp(Hero hero) {
 		Badges.validateMastery();
-		return super.doPickUp( hero );
+		return super.doPickUp(hero);
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
-	public void choose( HeroSubClass way ) {
-		
-		detach( getCurUser().belongings.backpack );
-				
+
+	public void choose(HeroSubClass way) {
+
+		detach(getCurUser().belongings.backpack);
+
 		getCurUser().subClass = way;
-		
-		getCurUser().getSprite().operate( getCurUser().getPos() );
-		Sample.INSTANCE.play( Assets.SND_MASTERY );
-		
-		SpellSprite.show( getCurUser(), SpellSprite.MASTERY );
-		getCurUser().getSprite().emitter().burst( Speck.factory( Speck.MASTERY ), 12 );
-		GLog.w(Game.getVar(R.string.TomeOfMastery_Choose), Utils.capitalize( way.title() ) );
-		
+
+		getCurUser().getSprite().operate(getCurUser().getPos());
+		Sample.INSTANCE.play(Assets.SND_MASTERY);
+
+		SpellSprite.show(getCurUser(), SpellSprite.MASTERY);
+		getCurUser().getSprite().emitter().burst(Speck.factory(Speck.MASTERY), 12);
+		GLog.w(Game.getVar(R.string.TomeOfMastery_Choose), Utils.capitalize(way.title()));
+
 		getCurUser().checkIfFurious();
 		GameScene.updateHeroSprite(getCurUser());
-		
-		getCurUser().spendAndNext( TomeOfMastery.TIME_TO_READ );
+
+		getCurUser().spendAndNext(TomeOfMastery.TIME_TO_READ);
 		getCurUser().busy();
 
-		
+
 	}
 }

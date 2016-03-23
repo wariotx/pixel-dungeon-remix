@@ -24,16 +24,16 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 public class PotionOfExperience extends Potion {
 
 	@Override
-	protected void apply( Hero hero ) {
+	protected void apply(Hero hero) {
 		setKnown();
-		hero.earnExp( hero.maxExp() - hero.exp );
+		hero.earnExp(hero.maxExp() - hero.exp);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.PotionOfExperience_Info);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 80 * quantity() : super.price();

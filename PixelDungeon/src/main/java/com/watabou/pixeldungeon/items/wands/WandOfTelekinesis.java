@@ -36,97 +36,98 @@ import com.watabou.utils.Callback;
 
 public class WandOfTelekinesis extends Wand {
 
-	private static final String TXT_YOU_NOW_HAVE = Game.getVar(R.string.WandOfTelekinesis_YouNowHave); 
+	private static final String TXT_YOU_NOW_HAVE = Game.getVar(R.string.WandOfTelekinesis_YouNowHave);
+
 	{
 		hitChars = false;
 	}
-	
+
 	@Override
-	protected void onZap( int cell ) {
-		
+	protected void onZap(int cell) {
+
 		boolean mapUpdated = false;
-		
+
 		int maxDistance = effectiveLevel() + 4;
-		Ballistica.distance = Math.min( Ballistica.distance, maxDistance );
-		
+		Ballistica.distance = Math.min(Ballistica.distance, maxDistance);
+
 		Char ch;
 		Heap heap = null;
-		
-		for (int i=1; i < Ballistica.distance; i++) {
-			
-			int c = Ballistica.trace[i];
-			
-			int before = Dungeon.level.map[c];
-			
-			if ((ch = Actor.findChar( c )) != null) {
 
-				if (i == Ballistica.distance-1) {
-					
-					ch.damage( maxDistance-1 - i, this );
-					
+		for (int i = 1; i < Ballistica.distance; i++) {
+
+			int c = Ballistica.trace[i];
+
+			int before = Dungeon.level.map[c];
+
+			if ((ch = Actor.findChar(c)) != null) {
+
+				if (i == Ballistica.distance - 1) {
+
+					ch.damage(maxDistance - 1 - i, this);
+
 				} else {
-					
+
 					int next = Ballistica.trace[i + 1];
-					if ((Dungeon.level.passable[next] || Dungeon.level.avoid[next]) && Actor.findChar( next ) == null) {
-						
-						Actor.addDelayed( new Pushing( ch, ch.getPos(), next ), -1 );
-						
+					if ((Dungeon.level.passable[next] || Dungeon.level.avoid[next]) && Actor.findChar(next) == null) {
+
+						Actor.addDelayed(new Pushing(ch, ch.getPos(), next), -1);
+
 						ch.setPos(next);
-						Actor.freeCell( next );
+						Actor.freeCell(next);
 
 						// FIXME
 						if (ch instanceof Mob) {
-							Dungeon.level.mobPress( (Mob)ch );
+							Dungeon.level.mobPress((Mob) ch);
 						} else {
-							Dungeon.level.press( ch.getPos(), ch );
+							Dungeon.level.press(ch.getPos(), ch);
 						}
-						
+
 					} else {
 
-						ch.damage( maxDistance-1 - i, this );
-						
+						ch.damage(maxDistance - 1 - i, this);
+
 					}
 				}
 			}
-			
-			if (heap == null && (heap = Dungeon.level.getHeap( c )) != null) {
+
+			if (heap == null && (heap = Dungeon.level.getHeap(c)) != null) {
 				switch (heap.type) {
-				case HEAP:
-					transport( heap );
-					break;
-				case CHEST:
-				case MIMIC:
-					heap.open( getCurUser() );
-					break;
-				default:
+					case HEAP:
+						transport(heap);
+						break;
+					case CHEST:
+					case MIMIC:
+						heap.open(getCurUser());
+						break;
+					default:
 				}
 			}
-			
-			Dungeon.level.press( c, null );
-			if (before == Terrain.OPEN_DOOR && Actor.findChar( c ) == null) {
-				
-				Dungeon.level.set( c, Terrain.DOOR );
-				GameScene.updateMap( c );
-				
+
+			Dungeon.level.press(c, null);
+			if (before == Terrain.OPEN_DOOR && Actor.findChar(c) == null) {
+
+				Dungeon.level.set(c, Terrain.DOOR);
+				GameScene.updateMap(c);
+
 			} else if (Dungeon.level.water[c]) {
-				
-				GameScene.ripple( c );
-				
+
+				GameScene.ripple(c);
+
 			}
-			
+
 			if (!mapUpdated && Dungeon.level.map[c] != before) {
 				mapUpdated = true;
 			}
 		}
-		
+
 		if (mapUpdated) {
 			Dungeon.observe();
 		}
 	}
-	
+
 	private void transport(Heap heap) {
 		Item item = heap.pickUp();
-		item = item.pick(getCurUser(),heap.pos);
+		item = item.pick(getCurUser(), heap.pos);
 		if (item != null) {
 			if (item.doPickUp(getCurUser())) {
 				getCurUser().itemPickedUp(item);
@@ -135,12 +136,12 @@ public class WandOfTelekinesis extends Wand {
 			}
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.force( wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+
+	protected void fx(int cell, Callback callback) {
+		MagicMissile.force(wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback);
+		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WandOfTelekinesis_Info);

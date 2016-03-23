@@ -33,7 +33,7 @@ import com.watabou.pixeldungeon.effects.particles.ShadowParticle;
 import com.watabou.utils.Random;
 
 public class ScrollOfCurse extends Scroll {
-	
+
 	static Class<?> badBuffs[] = {
 			Blindness.class,
 			Charm.class,
@@ -41,39 +41,39 @@ public class ScrollOfCurse extends Scroll {
 			Slow.class,
 			Vertigo.class,
 			Weakness.class
-		};
+	};
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void doRead() {
 		Invisibility.dispel(getCurUser());
-		
-		if(getCurUser() instanceof Hero) {
-			Hero hero =  getCurUser();
-			
-			hero.getSprite().emitter().burst( ShadowParticle.CURSE, 6 );
-			Sample.INSTANCE.play( Assets.SND_CURSED );
-			
-			Class <? extends FlavourBuff> buffClass = (Class<? extends FlavourBuff>) Random.oneOf(badBuffs);
-			Buff.prolong( hero, buffClass, 10);
-			
-			if(getCurUser().belongings.armor != null) { 
+
+		if (getCurUser() instanceof Hero) {
+			Hero hero = getCurUser();
+
+			hero.getSprite().emitter().burst(ShadowParticle.CURSE, 6);
+			Sample.INSTANCE.play(Assets.SND_CURSED);
+
+			Class<? extends FlavourBuff> buffClass = (Class<? extends FlavourBuff>) Random.oneOf(badBuffs);
+			Buff.prolong(hero, buffClass, 10);
+
+			if (getCurUser().belongings.armor != null) {
 				getCurUser().belongings.armor.cursed = true;
 			}
-			if(getCurUser().belongings.weapon != null) {
+			if (getCurUser().belongings.weapon != null) {
 				getCurUser().belongings.weapon.cursed = true;
 			}
-			if(getCurUser().belongings.ring1 != null) {
+			if (getCurUser().belongings.ring1 != null) {
 				getCurUser().belongings.ring1.cursed = true;
 			}
-			
-			if(getCurUser().belongings.ring2 != null) {
+
+			if (getCurUser().belongings.ring2 != null) {
 				getCurUser().belongings.ring2.cursed = true;
 			}
 		}
-		
+
 		setKnown();
-		getCurUser().spendAndNext( TIME_TO_READ );
+		getCurUser().spendAndNext(TIME_TO_READ);
 	}
 
 	@Override

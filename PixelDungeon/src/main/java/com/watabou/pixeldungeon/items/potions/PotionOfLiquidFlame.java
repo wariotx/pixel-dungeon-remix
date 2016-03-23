@@ -30,31 +30,31 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 public class PotionOfLiquidFlame extends Potion {
 
 	@Override
-	public void shatter( int cell ) {
-		
+	public void shatter(int cell) {
+
 		setKnown();
-		
-		splash( cell );
-		Sample.INSTANCE.play( Assets.SND_SHATTER );
-		
-		LiquidFlame fire = Blob.seed( cell, 10, LiquidFlame.class );
-		GameScene.add( fire );
+
+		splash(cell);
+		Sample.INSTANCE.play(Assets.SND_SHATTER);
+
+		LiquidFlame fire = Blob.seed(cell, 10, LiquidFlame.class);
+		GameScene.add(fire);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.PotionOfLiquidFlame_Info);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 40 * quantity() : super.price();
 	}
-	
+
 	@Override
 	protected void moistenArrow(Arrow arrow) {
 		int quantity = reallyMoistArrows(arrow);
-		
+
 		FireArrow moistenArrows = new FireArrow(quantity);
 		getCurUser().collect(moistenArrows);
 	}

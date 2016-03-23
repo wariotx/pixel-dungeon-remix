@@ -38,14 +38,14 @@ public class Kusarigama extends SpecialWeapon {
 			if (target != null) {
 				getCurUser().spendAndNext(TIME_TO_IMPALE);
 				int hitCell = Ballistica.cast(getCurUser().getPos(), target, false, true);
-				
-				if(hitCell == getCurUser().getPos()) {
+
+				if (hitCell == getCurUser().getPos()) {
 					return;
 				}
-				
+
 				if (Dungeon.level.distance(getCurUser().getPos(), hitCell) < 4) {
 					Char chr = Actor.findChar(hitCell);
-					
+
 					if (chr != null) {
 						chr.move(Ballistica.trace[1]);
 						chr.getSprite().move(chr.getPos(), Ballistica.trace[1]);

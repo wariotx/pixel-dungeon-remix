@@ -29,38 +29,38 @@ import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.utils.GLog;
 
 public class ScrollOfLullaby extends Scroll {
-	
+
 	@Override
 	protected void doRead() {
-		
-		getCurUser().getSprite().centerEmitter().start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
-		Sample.INSTANCE.play( Assets.SND_LULLABY );
-		
+
+		getCurUser().getSprite().centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5);
+		Sample.INSTANCE.play(Assets.SND_LULLABY);
+
 		int count = 0;
 		Mob affected = null;
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])) {
 			if (Dungeon.level.fieldOfView[mob.getPos()]) {
-				Buff.affect( mob, Sleep.class );
-				if (mob.buff( Sleep.class ) != null) {
+				Buff.affect(mob, Sleep.class);
+				if (mob.buff(Sleep.class) != null) {
 					affected = mob;
 					count++;
 				}
 			}
 		}
-		
+
 		switch (count) {
-		case 0:
-			GLog.i(Game.getVar(R.string.ScrollOfLullaby_Info1));
-			break;
-		case 1:
-			GLog.i(String.format(Game.getVar(R.string.ScrollOfLullaby_Info2), affected.getName()));
-			break;
-		default:
-			GLog.i(Game.getVar(R.string.ScrollOfLullaby_Info3));
+			case 0:
+				GLog.i(Game.getVar(R.string.ScrollOfLullaby_Info1));
+				break;
+			case 1:
+				GLog.i(String.format(Game.getVar(R.string.ScrollOfLullaby_Info2), affected.getName()));
+				break;
+			default:
+				GLog.i(Game.getVar(R.string.ScrollOfLullaby_Info3));
 		}
 		setKnown();
-		
-		getCurUser().spendAndNext( TIME_TO_READ );
+
+		getCurUser().spendAndNext(TIME_TO_READ);
 	}
 
 	@Override

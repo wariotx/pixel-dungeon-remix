@@ -37,51 +37,51 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class WandOfFlock extends SimpleWand  {
+public class WandOfFlock extends SimpleWand {
 
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap(int cell) {
 		int level = effectiveLevel();
-		
+
 		int n = level + 2;
-		
-		if (Actor.findChar( cell ) != null && Ballistica.distance > 2) {
+
+		if (Actor.findChar(cell) != null && Ballistica.distance > 2) {
 			cell = Ballistica.trace[Ballistica.distance - 2];
 		}
-		
-		boolean[] passable = BArray.or( Dungeon.level.passable, Dungeon.level.avoid, null );
+
+		boolean[] passable = BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null);
 		for (Actor actor : Actor.all()) {
 			if (actor instanceof Char) {
-				passable[((Char)actor).getPos()] = false;
+				passable[((Char) actor).getPos()] = false;
 			}
 		}
-		
-		PathFinder.buildDistanceMap( cell, passable, n );
+
+		PathFinder.buildDistanceMap(cell, passable, n);
 		int dist = 0;
-		
-		if (Actor.findChar( cell ) != null) {
+
+		if (Actor.findChar(cell) != null) {
 			PathFinder.distance[cell] = Integer.MAX_VALUE;
 			dist = 1;
 		}
-		
+
 		float lifespan = level + 3;
-		
-	sheepLabel:
-		for (int i=0; i < n; i++) {
+
+		sheepLabel:
+		for (int i = 0; i < n; i++) {
 			do {
-				for (int j=0; j < Dungeon.level.getLength(); j++) {
+				for (int j = 0; j < Dungeon.level.getLength(); j++) {
 					if (PathFinder.distance[j] == dist) {
-						
+
 						Sheep sheep = new Sheep();
 						sheep.lifespan = lifespan;
 						sheep.setPos(j);
 						Dungeon.level.spawnMob(sheep);
-						Dungeon.level.mobPress( sheep );
-						
-						CellEmitter.get( j ).burst( Speck.factory( Speck.WOOL ), 4 );
-						
+						Dungeon.level.mobPress(sheep);
+
+						CellEmitter.get(j).burst(Speck.factory(Speck.WOOL), 4);
+
 						PathFinder.distance[j] = Integer.MAX_VALUE;
-						
+
 						continue sheepLabel;
 					}
 				}
@@ -89,10 +89,10 @@ public class WandOfFlock extends SimpleWand  {
 			} while (dist < n);
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.wool( wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+
+	protected void fx(int cell, Callback callback) {
+		MagicMissile.wool(wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback);
+		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
 
 	@Override
@@ -101,18 +101,18 @@ public class WandOfFlock extends SimpleWand  {
 	}
 
 	public static class Sheep extends NPC {
-		
+
 		Sheep() {
 			super();
 			spriteClass = SheepSprite.class;
 		}
 
 		private static final String[] QUOTES = Game.getVars(R.array.WandOfFlock_SheepBaa);
-		
+
 		public float lifespan;
-		
+
 		private boolean initialized = false;
-		
+
 		@Override
 		protected boolean act() {
 			if (initialized) {
@@ -120,21 +120,21 @@ public class WandOfFlock extends SimpleWand  {
 
 				destroy();
 				getSprite().die();
-				
+
 			} else {
 				initialized = true;
-				spend( lifespan + Random.Float( 2 ) );
+				spend(lifespan + Random.Float(2));
 			}
 			return true;
 		}
-		
+
 		@Override
-		public void damage( int dmg, Object src ) {
+		public void damage(int dmg, Object src) {
 		}
 
 		@Override
 		public boolean interact(final Hero hero) {
-			say( Random.element( QUOTES ) );
+			say(Random.element(QUOTES));
 			return false;
 		}
 	}

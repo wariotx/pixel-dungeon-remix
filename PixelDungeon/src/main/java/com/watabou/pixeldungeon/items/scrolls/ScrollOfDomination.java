@@ -16,29 +16,29 @@ public class ScrollOfDomination extends Scroll {
 
 	@Override
 	protected void doRead() {
-		
-		Sample.INSTANCE.play( Assets.SND_DOMINANCE );
+
+		Sample.INSTANCE.play(Assets.SND_DOMINANCE);
 		Invisibility.dispel(getCurUser());
-		
+
 		ArrayList<Mob> mobsInSight = new ArrayList<>();
-		
+
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])) {
 			if (Dungeon.level.fieldOfView[mob.getPos()] && !(mob instanceof Boss) && !mob.isPet() && !(mob instanceof NPC)) {
 				mobsInSight.add(mob);
 			}
 		}
-		
-		if(!mobsInSight.isEmpty()) {
+
+		if (!mobsInSight.isEmpty()) {
 			Mob pet = Random.element(mobsInSight);
 			Mob.makePet(pet, getCurUser());
-			new Flare( 3, 32 ).show( pet.getSprite(), 2f );
+			new Flare(3, 32).show(pet.getSprite(), 2f);
 		}
-		
+
 		Dungeon.observe();
-		
+
 		setKnown();
-		
-		getCurUser().spendAndNext( TIME_TO_READ );
+
+		getCurUser().spendAndNext(TIME_TO_READ);
 	}
 
 	@Override

@@ -33,49 +33,49 @@ import com.watabou.utils.Callback;
 public class WandOfBlink extends Wand {
 
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap(int cell) {
 
 		int level = effectiveLevel();
-		
+
 		if (Ballistica.distance > level + 4) {
 			cell = Ballistica.trace[level + 3];
-		} else if (Actor.findChar( cell ) != null && Ballistica.distance > 1) {
+		} else if (Actor.findChar(cell) != null && Ballistica.distance > 1) {
 			cell = Ballistica.trace[Ballistica.distance - 2];
 		}
-		
+
 		getCurUser().getSprite().setVisible(true);
-		appear( getCurUser(), cell );
+		appear(getCurUser(), cell);
 		Dungeon.observe();
 	}
-	
+
 	@Override
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.whiteLight( wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+	protected void fx(int cell, Callback callback) {
+		MagicMissile.whiteLight(wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback);
+		Sample.INSTANCE.play(Assets.SND_ZAP);
 		wandUser.getSprite().setVisible(false);
 	}
-	
-	public static void appear( Char ch, int pos ) {
-		
+
+	public static void appear(Char ch, int pos) {
+
 		ch.getSprite().interruptMotion();
-		
-		ch.move( pos );
-		ch.getSprite().place( pos );
-		
+
+		ch.move(pos);
+		ch.getSprite().place(pos);
+
 		if (ch.invisible == 0) {
-			ch.getSprite().alpha( 0 );
-			ch.getSprite().getParent().add( new AlphaTweener( ch.getSprite(), 1, 0.4f ) );
+			ch.getSprite().alpha(0);
+			ch.getSprite().getParent().add(new AlphaTweener(ch.getSprite(), 1, 0.4f));
 		}
-		
-		ch.getSprite().emitter().start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+
+		ch.getSprite().emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+		Sample.INSTANCE.play(Assets.SND_TELEPORT);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WandOfBlink_Info);
 	}
-	
+
 	@Override
 	public boolean affectTarget() {
 		return false;

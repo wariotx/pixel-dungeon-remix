@@ -34,55 +34,55 @@ import com.watabou.utils.Random;
 public class IncendiaryDart extends MissileWeapon {
 
 	public IncendiaryDart() {
-		this( 1 );
+		this(1);
 	}
-	
-	public IncendiaryDart( int number ) {
+
+	public IncendiaryDart(int number) {
 		super();
-		
+
 		image = ItemSpriteSheet.INCENDIARY_DART;
-		
+
 		STR = 12;
-		
+
 		MIN = 1;
 		MAX = 2;
-		
+
 		quantity(number);
 	}
-	
+
 	@Override
-	protected void onThrow( int cell ) {
-		Char enemy = Actor.findChar( cell );
+	protected void onThrow(int cell) {
+		Char enemy = Actor.findChar(cell);
 		if (enemy == null || enemy == getCurUser()) {
 			if (Dungeon.level.flammable[cell]) {
-				GameScene.add( Blob.seed( cell, 4, Fire.class ) );
+				GameScene.add(Blob.seed(cell, 4, Fire.class));
 			} else {
-				super.onThrow( cell );
+				super.onThrow(cell);
 			}
 		} else {
-			if (!getCurUser().shoot( enemy, this )) {
-				Dungeon.level.drop( this, cell ).sprite.drop();
+			if (!getCurUser().shoot(enemy, this)) {
+				Dungeon.level.drop(this, cell).sprite.drop();
 			}
 		}
 	}
-	
+
 	@Override
-	public void proc( Char attacker, Char defender, int damage ) {
-		Buff.affect( defender, Burning.class ).reignite( defender );
-		super.proc( attacker, defender, damage );
+	public void proc(Char attacker, Char defender, int damage) {
+		Buff.affect(defender, Burning.class).reignite(defender);
+		super.proc(attacker, defender, damage);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.IncendiaryDart_Info);
 	}
-	
+
 	@Override
 	public Item random() {
-		quantity(Random.Int( 3, 6 ));
+		quantity(Random.Int(3, 6));
 		return this;
 	}
-	
+
 	@Override
 	public int price() {
 		return 10 * quantity();

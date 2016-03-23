@@ -49,19 +49,19 @@ import java.util.Comparator;
 
 public class Item implements Bundlable, Identifiable<Item> {
 
-	private static final   String TXT_PACK_FULL = Game.getVar(R.string.Item_PackFull);
+	private static final String TXT_PACK_FULL = Game.getVar(R.string.Item_PackFull);
 	protected static final String TXT_DIR_THROW = Game.getVar(R.string.Item_DirThrow);
 
-	private static final String TXT_TO_STRING       = "%s";
-	private static final String TXT_TO_STRING_X     = "%s x%d";
-	private static final String TXT_TO_STRING_LVL   = "%s%+d";
+	private static final String TXT_TO_STRING = "%s";
+	private static final String TXT_TO_STRING_X = "%s x%d";
+	private static final String TXT_TO_STRING_LVL = "%s%+d";
 	private static final String TXT_TO_STRING_LVL_X = "%s%+d x%d";
 
-	protected static final float TIME_TO_THROW   = 1.0f;
+	protected static final float TIME_TO_THROW = 1.0f;
 	protected static final float TIME_TO_PICK_UP = 1.0f;
-	protected static final float TIME_TO_DROP    = 0.5f;
+	protected static final float TIME_TO_DROP = 0.5f;
 
-	public static final String AC_DROP  = Game.getVar(R.string.Item_ACDrop);
+	public static final String AC_DROP = Game.getVar(R.string.Item_ACDrop);
 	public static final String AC_THROW = Game.getVar(R.string.Item_ACThrow);
 
 	public String defaultAction;
@@ -72,11 +72,11 @@ public class Item implements Bundlable, Identifiable<Item> {
 	protected int image = 0;
 	protected String imageFile;
 
-	public  boolean stackable = false;
-	private int     quantity  = Scrambler.scramble(1);
+	public boolean stackable = false;
+	private int quantity = Scrambler.scramble(1);
 
-	private int     level      = Scrambler.scramble(0);
-	public  boolean levelKnown = false;
+	private int level = Scrambler.scramble(0);
+	public boolean levelKnown = false;
 
 	public boolean cursed;
 	public boolean cursedKnown;
@@ -393,14 +393,14 @@ public class Item implements Bundlable, Identifiable<Item> {
 		QuickSlot.refresh();
 	}
 
-	private static final String QUANTITY     = "quantity";
-	private static final String LEVEL        = "level";
-	private static final String LEVEL_KNOWN  = "levelKnown";
-	private static final String CURSED       = "cursed";
+	private static final String QUANTITY = "quantity";
+	private static final String LEVEL = "level";
+	private static final String LEVEL_KNOWN = "levelKnown";
+	private static final String CURSED = "cursed";
 	private static final String CURSED_KNOWN = "cursedKnown";
-	private static final String QUICKSLOT    = "quickslot";
-	private static final String QUICKSLOT_2  = "quickslot_2";
-	private static final String QUICKSLOT_3  = "quickslot_3";
+	private static final String QUICKSLOT = "quickslot";
+	private static final String QUICKSLOT_2 = "quickslot_2";
+	private static final String QUICKSLOT_3 = "quickslot_3";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -488,8 +488,8 @@ public class Item implements Bundlable, Identifiable<Item> {
 				});
 	}
 
-	private static   Hero                  curUser = null;
-	protected static Item                  curItem = null;
+	private static Hero curUser = null;
+	protected static Item curItem = null;
 	protected static CellSelector.Listener thrower = new CellSelector.Listener() {
 		@Override
 		public void onSelect(Integer target) {

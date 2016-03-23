@@ -25,15 +25,15 @@ public class Keyring extends Bag {
 
 	{
 		image = ItemSpriteSheet.KEYRING;
-		
+
 		size = 12;
 	}
-	
+
 	@Override
-	public boolean grab( Item item ) {
+	public boolean grab(Item item) {
 		return item instanceof Key;
 	}
-	
+
 	@Override
 	public int price() {
 		return 50;

@@ -32,46 +32,46 @@ import com.watabou.utils.Random;
 public class Bounce extends Glyph {
 
 	private static final String TXT_BOUNCE = Game.getVar(R.string.Bounce_Txt);
-	
-	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level() );
-		
-		if (Dungeon.level.adjacent( attacker.getPos(), defender.getPos() ) && Random.Int( level + 5) >= 4) {
-			
-			for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
+	@Override
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+
+		int level = Math.max(0, armor.level());
+
+		if (Dungeon.level.adjacent(attacker.getPos(), defender.getPos()) && Random.Int(level + 5) >= 4) {
+
+			for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
 				int ofs = Level.NEIGHBOURS8[i];
 				if (attacker.getPos() - defender.getPos() == ofs) {
 					int newPos = attacker.getPos() + ofs;
-					if ( newPos < 0 || newPos > Dungeon.level.passable.length){
+					if (newPos < 0 || newPos > Dungeon.level.passable.length) {
 						newPos = defender.getPos();
 					}
-					if ((Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos]) && Actor.findChar( newPos ) == null) {
-						
-						Actor.addDelayed( new Pushing( attacker, attacker.getPos(), newPos ), -1 );
-						
+					if ((Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos]) && Actor.findChar(newPos) == null) {
+
+						Actor.addDelayed(new Pushing(attacker, attacker.getPos(), newPos), -1);
+
 						attacker.setPos(newPos);
 
 						if (attacker instanceof Mob) {
-							Dungeon.level.mobPress( (Mob)attacker );
+							Dungeon.level.mobPress((Mob) attacker);
 						} else {
-							Dungeon.level.press( newPos, attacker );
+							Dungeon.level.press(newPos, attacker);
 						}
-						
+
 					}
 					break;
 				}
 			}
 
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_BOUNCE, weaponName );
+	public String name(String weaponName) {
+		return String.format(TXT_BOUNCE, weaponName);
 	}
 
 }

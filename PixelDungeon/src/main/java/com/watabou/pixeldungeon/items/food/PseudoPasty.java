@@ -14,33 +14,33 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 public class PseudoPasty extends Food {
 
 	public PseudoPasty() {
-		image  = ItemSpriteSheet.PASTY;
+		image = ItemSpriteSheet.PASTY;
 		energy = Hunger.STARVING;
 	}
-	
+
 	@Override
-	public Item pick(Char ch, int pos ) {
+	public Item pick(Char ch, int pos) {
 		int spawnPos = pos;
-		
-		if(ch.getPos() == pos) {
+
+		if (ch.getPos() == pos) {
 			spawnPos = Dungeon.level.getEmptyCellNextTo(ch.getPos());
-			
+
 			if (!Dungeon.level.cellValid(spawnPos)) {
 				return this;
 			}
 		}
-		
+
 		MimicPie mob = new MimicPie();
 		mob.setPos(spawnPos);
 		mob.state = mob.WANDERING;
 		mob.adjustStats(Dungeon.depth);
-		
-		Dungeon.level.spawnMob( mob );
-		
-		CellEmitter.get( pos ).burst( Speck.factory( Speck.STAR ), 10 );
-		Sample.INSTANCE.play( Assets.SND_MIMIC );
-		
+
+		Dungeon.level.spawnMob(mob);
+
+		CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
+		Sample.INSTANCE.play(Assets.SND_MIMIC);
+
 		return null;
 	}
-	
+
 }

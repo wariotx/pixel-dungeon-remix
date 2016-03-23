@@ -73,7 +73,7 @@ public class ItemSpritesDescription {
 
 					m_descMap.put(key,
 							new ItemSpritesDescription(itemDesc.optString("file", "items.png"),
-									itemDesc.optInt("index", 0), 
+									itemDesc.optInt("index", 0),
 									itemDesc.optBoolean("fliesStraight", false),
 									itemDesc.optBoolean("fliesFastRotating", false)));
 				} catch (JSONException e) {

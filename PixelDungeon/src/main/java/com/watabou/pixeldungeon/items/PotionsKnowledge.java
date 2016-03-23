@@ -11,12 +11,10 @@ import java.util.HashSet;
 /**
  * Created by Leopoldo on 23/03/2016.
  */
-public enum PotionsKnowledge implements Knowledge<Potion>{
+public enum PotionsKnowledge implements Knowledge<Potion> {
 	INSTANCE;
 
 	private ItemStatusHandler<Potion> handler;
-
-
 
 	private static final Class<?>[] potions = {
 			PotionOfHealing.class,
@@ -72,14 +70,14 @@ public enum PotionsKnowledge implements Knowledge<Potion>{
 		return handler.known().size() == potions.length;
 	}
 
-	private String[] getColors(){
-		if(colors == null){
+	private String[] getColors() {
+		if (colors == null) {
 			colors = Game.getVars(R.array.Potion_Colors);
 		}
 		return colors;
 	}
 
-	public ItemStatusHandler<Potion> getHandler(){
+	public ItemStatusHandler<Potion> getHandler() {
 		return handler;
 	}
 

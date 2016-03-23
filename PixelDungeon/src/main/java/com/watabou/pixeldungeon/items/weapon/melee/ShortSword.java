@@ -34,90 +34,91 @@ import com.watabou.pixeldungeon.windows.WndBag;
 import java.util.ArrayList;
 
 public class ShortSword extends MeleeWeapon {
-	
+
 	public static final String AC_REFORGE = Game.getVar(R.string.ShortSword_ACReforge);
-	
+
 	private static final String TXT_SELECT_WEAPON = Game.getVar(R.string.ShortSword_Select);
-	private static final String TXT_REFORGED      = Game.getVar(R.string.ShortSword_Reforged);
+	private static final String TXT_REFORGED = Game.getVar(R.string.ShortSword_Reforged);
 	private static final String TXT_NOT_BOOMERANG = Game.getVar(R.string.ShortSword_NotBoomerang);
-	
-	private static final float TIME_TO_REFORGE	= 2f;
-	
-	private boolean  equipped;
+
+	private static final float TIME_TO_REFORGE = 2f;
+
+	private boolean equipped;
+
 	{
 		image = ItemSpriteSheet.SHORT_SWORD;
 	}
-	
+
 	public ShortSword() {
-		super( 1, 1f, 1f );
-		
+		super(1, 1f, 1f);
+
 		STR = 11;
 		MAX = 12;
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
 		if (level() > 0) {
-			actions.add( AC_REFORGE );
+			actions.add(AC_REFORGE);
 		}
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(Hero hero, String action) {
 		if (action.equals(AC_REFORGE)) {
-			
+
 			if (hero.belongings.weapon == this) {
 				equipped = true;
 				hero.belongings.weapon = null;
 			} else {
 				equipped = false;
-				detach( hero.belongings.backpack );
+				detach(hero.belongings.backpack);
 			}
-			
+
 			setCurUser(hero);
-			
-			GameScene.selectItem( itemSelector, WndBag.Mode.WEAPON, TXT_SELECT_WEAPON );
-			
+
+			GameScene.selectItem(itemSelector, WndBag.Mode.WEAPON, TXT_SELECT_WEAPON);
+
 		} else {
-			
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.ShortSword_Info);
 	}
-	
+
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
-		public void onSelect( Item item ) {
+		public void onSelect(Item item) {
 			if (item != null && !(item instanceof Boomerang)) {
-				
-				Sample.INSTANCE.play( Assets.SND_EVOKE );
-				ScrollOfUpgrade.upgrade( getCurUser() );
-				evoke( getCurUser() );
-				
-				GLog.w( TXT_REFORGED, item.name() );
-				
-				((MeleeWeapon)item).safeUpgrade();
-				getCurUser().spendAndNext( TIME_TO_REFORGE );
-				
-				Badges.validateItemLevelAquired( item );
-				
+
+				Sample.INSTANCE.play(Assets.SND_EVOKE);
+				ScrollOfUpgrade.upgrade(getCurUser());
+				evoke(getCurUser());
+
+				GLog.w(TXT_REFORGED, item.name());
+
+				((MeleeWeapon) item).safeUpgrade();
+				getCurUser().spendAndNext(TIME_TO_REFORGE);
+
+				Badges.validateItemLevelAquired(item);
+
 			} else {
-				
+
 				if (item instanceof Boomerang) {
-					GLog.w( TXT_NOT_BOOMERANG );
+					GLog.w(TXT_NOT_BOOMERANG);
 				}
-				
+
 				if (equipped) {
 					getCurUser().belongings.weapon = ShortSword.this;
 				} else {
-					collect( getCurUser().belongings.backpack );
+					collect(getCurUser().belongings.backpack);
 				}
 			}
 		}

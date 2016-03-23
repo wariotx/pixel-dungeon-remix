@@ -28,42 +28,42 @@ import com.watabou.utils.Random;
 
 public class CurareDart extends MissileWeapon {
 
-	public static final float DURATION	= 3f;
+	public static final float DURATION = 3f;
 
 	public CurareDart() {
-		this( 1 );
+		this(1);
 	}
-	
-	public CurareDart( int number ) {
+
+	public CurareDart(int number) {
 		super();
-		
+
 		image = ItemSpriteSheet.CURARE_DART;
-		
+
 		STR = 14;
-		
+
 		MIN = 1;
 		MAX = 3;
-		
+
 		quantity(number);
 	}
-	
+
 	@Override
-	public void proc( Char attacker, Char defender, int damage ) {
-		Buff.prolong( defender, Paralysis.class, DURATION );
-		super.proc( attacker, defender, damage );
+	public void proc(Char attacker, Char defender, int damage) {
+		Buff.prolong(defender, Paralysis.class, DURATION);
+		super.proc(attacker, defender, damage);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.CurareDart_Info);
 	}
-	
+
 	@Override
 	public Item random() {
-		quantity(Random.Int( 2, 5 ));
+		quantity(Random.Int(2, 5));
 		return this;
 	}
-	
+
 	@Override
 	public int price() {
 		return 12 * quantity();

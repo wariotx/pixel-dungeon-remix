@@ -33,83 +33,83 @@ import com.watabou.pixeldungeon.windows.WndBag;
 import java.util.ArrayList;
 
 public class ArmorKit extends Item {
-	
+
 	private static final String TXT_SELECT_ARMOR = Game.getVar(R.string.ArmorKit_SelectArmor);
-	private static final String TXT_UPGRADED     = Game.getVar(R.string.ArmorKit_Upgraded);
-	
+	private static final String TXT_UPGRADED = Game.getVar(R.string.ArmorKit_Upgraded);
+
 	private static final float TIME_TO_UPGRADE = 2;
-	
+
 	private static final String AC_APPLY = Game.getVar(R.string.ArmorKit_ACAplly);
-	
+
 	{
 		name = Game.getVar(R.string.ArmorKit_Name);
 		image = ItemSpriteSheet.KIT;
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
 		//if(hero.heroClass != HeroClass.ELF) {
-			actions.add( AC_APPLY );
+		actions.add(AC_APPLY);
 		//}
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(Hero hero, String action) {
 		if (action == AC_APPLY) {
 
 			setCurUser(hero);
-			GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, TXT_SELECT_ARMOR );
-			
+			GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR, TXT_SELECT_ARMOR);
+
 		} else {
-			
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
-	private void upgrade( Armor armor ) {
-		
-		detach( getCurUser().belongings.backpack );
-		
-		getCurUser().getSprite().centerEmitter().start( Speck.factory( Speck.KIT ), 0.05f, 10 );
-		getCurUser().spend( TIME_TO_UPGRADE );
+
+	private void upgrade(Armor armor) {
+
+		detach(getCurUser().belongings.backpack);
+
+		getCurUser().getSprite().centerEmitter().start(Speck.factory(Speck.KIT), 0.05f, 10);
+		getCurUser().spend(TIME_TO_UPGRADE);
 		getCurUser().busy();
-		
-		GLog.w( TXT_UPGRADED, armor.name() );
-		
-		Armor classArmor = ClassArmor.upgrade( getCurUser(), armor );
+
+		GLog.w(TXT_UPGRADED, armor.name());
+
+		Armor classArmor = ClassArmor.upgrade(getCurUser(), armor);
 		if (getCurUser().belongings.armor == armor) {
-			
+
 			getCurUser().belongings.armor = classArmor;
 			getCurUser().updateLook();
-			
+
 		} else {
-			
-			armor.detach( getCurUser().belongings.backpack );
-			getCurUser().collect(classArmor);			
+
+			armor.detach(getCurUser().belongings.backpack);
+			getCurUser().collect(classArmor);
 		}
-		
-		getCurUser().getSprite().operate( getCurUser().getPos() );
-		Sample.INSTANCE.play( Assets.SND_EVOKE );
+
+		getCurUser().getSprite().operate(getCurUser().getPos());
+		Sample.INSTANCE.play(Assets.SND_EVOKE);
 	}
-	
+
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
-		public void onSelect( Item item ) {
+		public void onSelect(Item item) {
 			if (item != null) {
-				ArmorKit.this.upgrade( (Armor)item );
+				ArmorKit.this.upgrade((Armor) item);
 			}
 		}
 	};

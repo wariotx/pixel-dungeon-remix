@@ -24,17 +24,17 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 public class Pasty extends Food {
 
 	public Pasty() {
-		image  = ItemSpriteSheet.PASTY;
+		image = ItemSpriteSheet.PASTY;
 		energy = Hunger.STARVING;
 	}
-	
+
 	@Override
 	public int price() {
 		return 20 * quantity();
 	}
-	
+
 	@Override
-	public Item poison(int cell){
+	public Item poison(int cell) {
 		return morphTo(RottenPasty.class);
 	}
 }

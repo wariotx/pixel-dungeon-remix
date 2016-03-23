@@ -11,27 +11,27 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
 
-public class RingOfStoneWalking extends Artifact{
+public class RingOfStoneWalking extends Artifact {
 
 	public RingOfStoneWalking() {
 		image = ItemSpriteSheet.RING_OF_STONE_WALKING;
 		identify();
 	}
-	
+
 	@Override
-	protected ArtifactBuff buff( ) {
+	protected ArtifactBuff buff() {
 		return new StoneWalking();
 	}
-	
-	public class StoneWalking extends ArtifactBuff implements Hero.Doom{
+
+	public class StoneWalking extends ArtifactBuff implements Hero.Doom {
 
 		@Override
 		public void onDeath() {
 			Badges.validateDeathInStone();
-			
-			Dungeon.fail( Utils.format( ResultDescriptions.IMMURED, Dungeon.depth ) );
-			GLog.n( Game.getVar(R.string.RingOfStoneWalking_ImmuredInStone));
-			
+
+			Dungeon.fail(Utils.format(ResultDescriptions.IMMURED, Dungeon.depth));
+			GLog.n(Game.getVar(R.string.RingOfStoneWalking_ImmuredInStone));
+
 		}
 	}
 }

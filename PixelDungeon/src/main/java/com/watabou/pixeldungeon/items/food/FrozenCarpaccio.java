@@ -37,50 +37,50 @@ import com.watabou.utils.Random;
 public class FrozenCarpaccio extends Food {
 
 	{
-		image  = ItemSpriteSheet.CARPACCIO;
+		image = ItemSpriteSheet.CARPACCIO;
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
-		
-		super.execute( hero, action );
-		
-		if (action.equals( AC_EAT )) {
-			
-			switch (Random.Int( 5 )) {
-			case 0:
-				GLog.i(Game.getVar(R.string.FrozenCarpaccio_Info1));
-				Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
-				break;
-			case 1:
-				GLog.i(Game.getVar(R.string.FrozenCarpaccio_Info2));
-				Buff.affect( hero, Barkskin.class ).level( hero.ht() / 4 );
-				break;
-			case 2:
-				GLog.i(Game.getVar(R.string.FrozenCarpaccio_Info3));
-				Buff.detach( hero, Poison.class );
-				Buff.detach( hero, Cripple.class );
-				Buff.detach( hero, Weakness.class );
-				Buff.detach( hero, Bleeding.class );
-				break;
-			case 3:
-				GLog.i(Game.getVar(R.string.FrozenCarpaccio_Info4));
-				if (hero.hp() < hero.ht()) {
-					hero.hp(Math.min( hero.hp() + hero.ht() / 4, hero.ht() ));
-					hero.getSprite().emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				}
-				break;
+	public void execute(Hero hero, String action) {
+
+		super.execute(hero, action);
+
+		if (action.equals(AC_EAT)) {
+
+			switch (Random.Int(5)) {
+				case 0:
+					GLog.i(Game.getVar(R.string.FrozenCarpaccio_Info1));
+					Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
+					break;
+				case 1:
+					GLog.i(Game.getVar(R.string.FrozenCarpaccio_Info2));
+					Buff.affect(hero, Barkskin.class).level(hero.ht() / 4);
+					break;
+				case 2:
+					GLog.i(Game.getVar(R.string.FrozenCarpaccio_Info3));
+					Buff.detach(hero, Poison.class);
+					Buff.detach(hero, Cripple.class);
+					Buff.detach(hero, Weakness.class);
+					Buff.detach(hero, Bleeding.class);
+					break;
+				case 3:
+					GLog.i(Game.getVar(R.string.FrozenCarpaccio_Info4));
+					if (hero.hp() < hero.ht()) {
+						hero.hp(Math.min(hero.hp() + hero.ht() / 4, hero.ht()));
+						hero.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
+					}
+					break;
 			}
 		}
 	}
-	
+
 	public int price() {
 		return 10 * quantity();
 	}
-	
+
 	@Override
-	public Item burn(int cell){
+	public Item burn(int cell) {
 		return morphTo(MysteryMeat.class);
 	}
 }

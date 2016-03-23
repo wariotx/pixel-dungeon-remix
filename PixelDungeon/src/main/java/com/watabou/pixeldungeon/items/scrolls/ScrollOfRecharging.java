@@ -28,32 +28,32 @@ import com.watabou.pixeldungeon.effects.particles.EnergyParticle;
 import com.watabou.pixeldungeon.utils.GLog;
 
 public class ScrollOfRecharging extends Scroll {
-	
+
 	@Override
 	protected void doRead() {
-		
-		int count = getCurUser().belongings.charge( true );		
-		charge( getCurUser() );
-		
-		Sample.INSTANCE.play( Assets.SND_READ );
+
+		int count = getCurUser().belongings.charge(true);
+		charge(getCurUser());
+
+		Sample.INSTANCE.play(Assets.SND_READ);
 		Invisibility.dispel(getCurUser());
-		
+
 		if (count > 0) {
-			GLog.i((count > 1 ? Game.getVar(R.string.ScrollOfRecharging_Info1b) 
-					          : Game.getVar(R.string.ScrollOfRecharging_Info1a)) );
-			SpellSprite.show( getCurUser(), SpellSprite.CHARGE );
+			GLog.i((count > 1 ? Game.getVar(R.string.ScrollOfRecharging_Info1b)
+					: Game.getVar(R.string.ScrollOfRecharging_Info1a)));
+			SpellSprite.show(getCurUser(), SpellSprite.CHARGE);
 		} else {
 			GLog.i(Game.getVar(R.string.ScrollOfRecharging_Info2));
 		}
 		setKnown();
-		
-		getCurUser().spendAndNext( TIME_TO_READ );
+
+		getCurUser().spendAndNext(TIME_TO_READ);
 	}
 
-	public static void charge( Hero hero ) {
-		hero.getSprite().centerEmitter().burst( EnergyParticle.FACTORY, 15 );
+	public static void charge(Hero hero) {
+		hero.getSprite().centerEmitter().burst(EnergyParticle.FACTORY, 15);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 40 * quantity() : super.price();

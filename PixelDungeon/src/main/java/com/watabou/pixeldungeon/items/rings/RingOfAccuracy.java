@@ -21,17 +21,17 @@ import com.watabou.noosa.Game;
 import com.nyrds.pixeldungeon.ml.R;
 
 public class RingOfAccuracy extends Ring {
-	
+
 	@Override
-	protected RingBuff buff( ) {
+	protected RingBuff buff() {
 		return new Accuracy();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ? Game.getVar(R.string.RingOfAccuracy_Info) : super.desc();
 	}
-	
+
 	public class Accuracy extends RingBuff {
 	}
 }

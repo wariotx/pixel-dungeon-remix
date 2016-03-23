@@ -26,33 +26,33 @@ import com.watabou.pixeldungeon.items.wands.WandOfBlink;
 
 public class ScrollOfMirrorImage extends Scroll {
 
-	private static final int NIMAGES	= 3;
-	
-	
+	private static final int NIMAGES = 3;
+
+
 	@Override
 	protected void doRead() {
 
 		int nImages = NIMAGES;
-		while (nImages > 0 ) {
+		while (nImages > 0) {
 			int cell = Dungeon.level.getEmptyCellNextTo(getCurUser().getPos());
 
-			if(!Dungeon.level.cellValid(cell))
+			if (!Dungeon.level.cellValid(cell))
 				break;
 
 			MirrorImage mob = new MirrorImage(getCurUser());
 			Dungeon.level.spawnMob(mob);
-			WandOfBlink.appear( mob, cell );
+			WandOfBlink.appear(mob, cell);
 
 			nImages--;
 		}
-		
+
 		if (nImages < NIMAGES) {
 			setKnown();
 		}
-		
-		Sample.INSTANCE.play( Assets.SND_READ );
+
+		Sample.INSTANCE.play(Assets.SND_READ);
 		Invisibility.dispel(getCurUser());
-		
-		getCurUser().spendAndNext( TIME_TO_READ );
+
+		getCurUser().spendAndNext(TIME_TO_READ);
 	}
 }

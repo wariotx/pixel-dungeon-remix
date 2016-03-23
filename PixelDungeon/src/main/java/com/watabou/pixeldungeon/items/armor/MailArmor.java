@@ -24,7 +24,7 @@ import com.watabou.noosa.Game;
 public class MailArmor extends Armor {
 
 	public MailArmor() {
-		super( 3 );
+		super(3);
 		image = 2;
 	}
 

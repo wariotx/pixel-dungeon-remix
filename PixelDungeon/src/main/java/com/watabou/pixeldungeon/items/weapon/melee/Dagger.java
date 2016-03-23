@@ -25,11 +25,11 @@ public class Dagger extends MeleeWeapon {
 	{
 		image = ItemSpriteSheet.DAGGER;
 	}
-	
+
 	public Dagger() {
-		super( 1, 1.2f, 1f );
+		super(1, 1.2f, 1f);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Dagger_Info);

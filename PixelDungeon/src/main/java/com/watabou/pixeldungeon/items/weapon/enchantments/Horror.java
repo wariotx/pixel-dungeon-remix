@@ -29,29 +29,29 @@ import com.watabou.utils.Random;
 
 public class Horror extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x222222 );
-	
+	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing(0x222222);
+
 	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public boolean proc(Weapon weapon, Char attacker, Char defender, int damage) {
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
-		int level = Math.max( 0, weapon.level() );
-		
-		if (Random.Int( level + 5 ) >= 4) {
-			
+		int level = Math.max(0, weapon.level());
+
+		if (Random.Int(level + 5) >= 4) {
+
 			if (defender == Dungeon.hero) {
-				Buff.affect( defender, Vertigo.class, Vertigo.duration( defender ) );
+				Buff.affect(defender, Vertigo.class, Vertigo.duration(defender));
 			} else {
-				Buff.affect( defender, Terror.class, Terror.DURATION ).source = attacker;
+				Buff.affect(defender, Terror.class, Terror.DURATION).source = attacker;
 			}
-			
+
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public Glowing glowing() {
 		return GREY;

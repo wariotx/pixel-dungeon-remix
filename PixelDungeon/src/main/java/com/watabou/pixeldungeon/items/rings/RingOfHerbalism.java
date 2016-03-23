@@ -21,17 +21,17 @@ import com.watabou.noosa.Game;
 import com.nyrds.pixeldungeon.ml.R;
 
 public class RingOfHerbalism extends Ring {
-	
+
 	@Override
-	protected RingBuff buff( ) {
+	protected RingBuff buff() {
 		return new Herbalism();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ? Game.getVar(R.string.RingOfHerbalism_Info) : super.desc();
 	}
-	
+
 	public class Herbalism extends RingBuff {
 	}
 }

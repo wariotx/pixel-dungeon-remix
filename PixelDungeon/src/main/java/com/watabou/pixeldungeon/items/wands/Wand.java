@@ -65,7 +65,7 @@ public abstract class Wand extends KindOfWeapon {
 
 	public int maxCharges = initialCharges();
 	public int curCharges = maxCharges;
-	
+
 	protected Char wandUser;
 
 	protected Charger charger;
@@ -74,19 +74,19 @@ public abstract class Wand extends KindOfWeapon {
 
 	protected boolean hitChars = true;
 
-	private static final Class<?>[] wands = { WandOfTeleportation.class,
+	private static final Class<?>[] wands = {WandOfTeleportation.class,
 			WandOfSlowness.class, WandOfFirebolt.class, WandOfPoison.class,
 			WandOfRegrowth.class, WandOfBlink.class, WandOfLightning.class,
 			WandOfAmok.class, WandOfTelekinesis.class, WandOfFlock.class,
-			WandOfDisintegration.class, WandOfAvalanche.class };
+			WandOfDisintegration.class, WandOfAvalanche.class};
 	private static final String[] woods = Game.getVars(R.array.Wand_Wood_Types);
-	private static final Integer[] images = { ItemSpriteSheet.WAND_HOLLY,
+	private static final Integer[] images = {ItemSpriteSheet.WAND_HOLLY,
 			ItemSpriteSheet.WAND_YEW, ItemSpriteSheet.WAND_EBONY,
 			ItemSpriteSheet.WAND_CHERRY, ItemSpriteSheet.WAND_TEAK,
 			ItemSpriteSheet.WAND_ROWAN, ItemSpriteSheet.WAND_WILLOW,
 			ItemSpriteSheet.WAND_MAHOGANY, ItemSpriteSheet.WAND_BAMBOO,
 			ItemSpriteSheet.WAND_PURPLEHEART, ItemSpriteSheet.WAND_OAK,
-			ItemSpriteSheet.WAND_BIRCH };
+			ItemSpriteSheet.WAND_BIRCH};
 
 	private static ItemStatusHandler<Wand> handler;
 
@@ -112,14 +112,14 @@ public abstract class Wand extends KindOfWeapon {
 		calculateDamage();
 
 		defaultAction = AC_ZAP;
-		
+
 		try {
 			image = handler.image(this);
 			wood = handler.label(this);
 		} catch (Exception e) {
 			// Wand of Magic Missile
 		}
-		
+
 	}
 
 	@Override
@@ -128,16 +128,16 @@ public abstract class Wand extends KindOfWeapon {
 		if (curCharges > 0 || !curChargeKnown) {
 			actions.add(AC_ZAP);
 		}
-		
-		
+
+
 		actions.remove(AC_EQUIP);
 		actions.remove(AC_UNEQUIP);
-		
+
 		if (hero.heroClass == HeroClass.MAGE
-			|| hero.subClass == HeroSubClass.SHAMAN) {
-			
-			if(hero.belongings.weapon == this) {
-				actions.add(AC_UNEQUIP); 
+				|| hero.subClass == HeroSubClass.SHAMAN) {
+
+			if (hero.belongings.weapon == this) {
+				actions.add(AC_UNEQUIP);
 			} else {
 				actions.add(AC_EQUIP);
 			}
@@ -175,7 +175,7 @@ public abstract class Wand extends KindOfWeapon {
 	public void zap(int cell) {
 		onZap(cell);
 	}
-	
+
 	protected abstract void onZap(int cell);
 
 	@Override
@@ -188,7 +188,9 @@ public abstract class Wand extends KindOfWeapon {
 		} else {
 			return false;
 		}
-	};
+	}
+
+	;
 
 	public void charge(Char owner) {
 		(charger = new Charger()).attachTo(owner);
@@ -329,16 +331,16 @@ public abstract class Wand extends KindOfWeapon {
 
 	public void mobWandUse(Char user, final int tgt) {
 		wandUser = user;
-		
+
 		fx(tgt, new Callback() {
 			@Override
 			public void call() {
 				onZap(tgt);
 			}
 		});
-		
+
 	}
-	
+
 	protected void fx(int cell, Callback callback) {
 		MagicMissile.blueLight(wandUser.getSprite().getParent(), wandUser.getPos(), cell,
 				callback);
@@ -453,10 +455,10 @@ public abstract class Wand extends KindOfWeapon {
 				}
 
 				final Wand curWand = (Wand) Wand.curItem;
-				
+
 				final int cell = Ballistica.cast(getCurUser().getPos(), target, true, curWand.hitChars);
 				getCurUser().getSprite().zap(cell);
-				
+
 				curWand.wandEffect(cell);
 			}
 		}
@@ -471,7 +473,7 @@ public abstract class Wand extends KindOfWeapon {
 		private static final float TIME_TO_CHARGE = 40f;
 
 		@Override
-		public boolean dontPack(){
+		public boolean dontPack() {
 			return true;
 		}
 

@@ -30,46 +30,46 @@ import com.watabou.pixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
 
 public class PotionOfFrost extends Potion {
-	
-	private static final int DISTANCE	= 2;
-	
+
+	private static final int DISTANCE = 2;
+
 	@Override
-	public void shatter( int cell ) {
-		
-		if( !canShatter() ) {
+	public void shatter(int cell) {
+
+		if (!canShatter()) {
 			return;
 		}
-		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.losBlocking, null ), DISTANCE );
-		
-		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
-		
-		for (int i=0; i < Dungeon.level.getLength(); i++) {
+
+		PathFinder.buildDistanceMap(cell, BArray.not(Dungeon.level.losBlocking, null), DISTANCE);
+
+		Fire fire = (Fire) Dungeon.level.blobs.get(Fire.class);
+
+		for (int i = 0; i < Dungeon.level.getLength(); i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				Freezing.affect( i, fire );
+				Freezing.affect(i, fire);
 			}
 		}
-		
-		splash( cell );
-		Sample.INSTANCE.play( Assets.SND_SHATTER );
-		
+
+		splash(cell);
+		Sample.INSTANCE.play(Assets.SND_SHATTER);
+
 		setKnown();
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.PotionOfFrost_Info);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 50 * quantity() : super.price();
 	}
-	
+
 	@Override
 	protected void moistenArrow(Arrow arrow) {
 		int quantity = reallyMoistArrows(arrow);
-		
+
 		FrostArrow moistenArrows = new FrostArrow(quantity);
 		getCurUser().collect(moistenArrows);
 	}

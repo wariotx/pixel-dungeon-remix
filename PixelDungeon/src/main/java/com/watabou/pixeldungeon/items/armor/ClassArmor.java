@@ -26,115 +26,116 @@ import com.watabou.utils.Bundle;
 import java.util.ArrayList;
 
 abstract public class ClassArmor extends Armor {
-	
-	private static final String TXT_LOW_HEALTH   = Game.getVar(R.string.ClassArmor_LowHealt);
+
+	private static final String TXT_LOW_HEALTH = Game.getVar(R.string.ClassArmor_LowHealt);
 	private static final String TXT_NOT_EQUIPPED = Game.getVar(R.string.ClassArmor_NotEquipped);
-	
+
 	{
 		levelKnown = true;
 		cursedKnown = true;
 		defaultAction = special();
 	}
-	
+
 	public ClassArmor() {
-		super( 6 );
+		super(6);
 	}
-	
-	public static Armor upgrade ( Hero owner, Armor armor ) {
+
+	public static Armor upgrade(Hero owner, Armor armor) {
 
 		ClassArmor classArmor;
 
 		switch (owner.heroClass) {
-		case WARRIOR:
-			classArmor = new WarriorArmor();
-			break;
-		case ROGUE:
-			classArmor = new RogueArmor();
-			break;
-		case MAGE:
-			classArmor = new MageArmor();
-			break;
-		case HUNTRESS:
-			classArmor = new HuntressArmor();
-			break;
-		case ELF:
-			classArmor = new ElfArmor();
-			break;
-			
-		default:
-			return armor;
+			case WARRIOR:
+				classArmor = new WarriorArmor();
+				break;
+			case ROGUE:
+				classArmor = new RogueArmor();
+				break;
+			case MAGE:
+				classArmor = new MageArmor();
+				break;
+			case HUNTRESS:
+				classArmor = new HuntressArmor();
+				break;
+			case ELF:
+				classArmor = new ElfArmor();
+				break;
+
+			default:
+				return armor;
 		}
-		
+
 		classArmor.STR = armor.STR;
 		classArmor.DR = armor.DR;
-		
-		classArmor.inscribe( armor.glyph );
-		
+
+		classArmor.inscribe(armor.glyph);
+
 		return classArmor;
 	}
-	
-	private static final String ARMOR_STR	= "STR";
-	private static final String ARMOR_DR	= "DR";
-	
+
+	private static final String ARMOR_STR = "STR";
+	private static final String ARMOR_DR = "DR";
+
 	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( ARMOR_STR, STR );
-		bundle.put( ARMOR_DR, DR );
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(ARMOR_STR, STR);
+		bundle.put(ARMOR_DR, DR);
 	}
-	
+
 	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		STR = bundle.getInt( ARMOR_STR );
-		DR = bundle.getInt( ARMOR_DR );
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		STR = bundle.getInt(ARMOR_STR);
+		DR = bundle.getInt(ARMOR_DR);
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		if (hero.hp() >= 3 && isEquipped( hero )) {
-			actions.add( special() );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		if (hero.hp() >= 3 && isEquipped(hero)) {
+			actions.add(special());
 		}
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(Hero hero, String action) {
 		if (action == special()) {
-			
+
 			if (hero.hp() < 3) {
-				GLog.w( TXT_LOW_HEALTH );
-			} else if (!isEquipped( hero )) {
-				GLog.w( TXT_NOT_EQUIPPED );
+				GLog.w(TXT_LOW_HEALTH);
+			} else if (!isEquipped(hero)) {
+				GLog.w(TXT_NOT_EQUIPPED);
 			} else {
 				setCurUser(hero);
 				doSpecial();
 			}
-			
-		} else {	
-			super.execute( hero, action );		
+
+		} else {
+			super.execute(hero, action);
 		}
 	}
-	
+
 	abstract public String special();
+
 	abstract public void doSpecial();
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public int price() {
 		return 0;
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.ClassArmor_Desc);

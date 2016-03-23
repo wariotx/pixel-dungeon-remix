@@ -30,59 +30,59 @@ import java.util.ArrayList;
 
 public class Torch extends Item {
 
-	public static final String AC_LIGHT	= Game.getVar(R.string.Torch_ACLight);
-	
+	public static final String AC_LIGHT = Game.getVar(R.string.Torch_ACLight);
+
 	public static final float TIME_TO_LIGHT = 1;
-	
+
 	{
 		name = Game.getVar(R.string.Torch_Name);
 		image = ItemSpriteSheet.TORCH;
-		
+
 		stackable = true;
-		
+
 		defaultAction = AC_LIGHT;
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_LIGHT );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_LIGHT);
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
-		
+	public void execute(Hero hero, String action) {
+
 		if (action == AC_LIGHT) {
-			
-			hero.spend( TIME_TO_LIGHT );
+
+			hero.spend(TIME_TO_LIGHT);
 			hero.busy();
-			
-			hero.getSprite().operate( hero.getPos() );
-			
-			detach( hero.belongings.backpack );
-			Buff.affect( hero, Light.class, Light.DURATION );
-			
+
+			hero.getSprite().operate(hero.getPos());
+
+			detach(hero.belongings.backpack);
+			Buff.affect(hero, Light.class, Light.DURATION);
+
 			Emitter emitter = hero.getSprite().centerEmitter();
-			emitter.start( FlameParticle.FACTORY, 0.2f, 3 );
-			
+			emitter.start(FlameParticle.FACTORY, 0.2f, 3);
+
 		} else {
-			
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public int price() {
 		return 10 * quantity();

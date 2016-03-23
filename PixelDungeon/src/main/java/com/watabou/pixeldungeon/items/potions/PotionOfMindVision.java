@@ -27,25 +27,25 @@ import com.watabou.pixeldungeon.utils.GLog;
 
 public class PotionOfMindVision extends Potion {
 
-	
+
 	@Override
-	protected void apply( Hero hero ) {
+	protected void apply(Hero hero) {
 		setKnown();
-		Buff.affect( hero, MindVision.class, MindVision.DURATION );
+		Buff.affect(hero, MindVision.class, MindVision.DURATION);
 		Dungeon.observe();
-		
+
 		if (Dungeon.level.mobs.size() > 0) {
 			GLog.i(Game.getVar(R.string.PotionOfMindVision_Apply1));
 		} else {
 			GLog.i(Game.getVar(R.string.PotionOfMindVision_Apply2));
 		}
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.PotionOfMindVision_Info);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 35 * quantity() : super.price();

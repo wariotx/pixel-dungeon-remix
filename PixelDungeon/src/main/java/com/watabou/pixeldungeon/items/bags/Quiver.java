@@ -25,15 +25,15 @@ public class Quiver extends Bag {
 
 	{
 		image = ItemSpriteSheet.QUIVER_COMMON;
-		
+
 		size = 12;
 	}
-	
+
 	@Override
-	public boolean grab( Item item ) {
+	public boolean grab(Item item) {
 		return item instanceof Arrow;
 	}
-	
+
 	@Override
 	public int price() {
 		return 50;

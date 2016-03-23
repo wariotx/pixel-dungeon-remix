@@ -31,35 +31,35 @@ public class ScrollOfTeleportation extends Scroll {
 
 	public static final String TXT_TELEPORTED = Game.getVar(R.string.ScrollOfTeleportation_Teleport);
 	public static final String TXT_NO_TELEPORT = Game.getVar(R.string.ScrollOfTeleportation_NoTeleport);
-	
+
 	@Override
 	protected void doRead() {
 
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play(Assets.SND_READ);
 		Invisibility.dispel(getCurUser());
-		
-		teleportHero( getCurUser() );
+
+		teleportHero(getCurUser());
 		setKnown();
-		
-		getCurUser().spendAndNext( TIME_TO_READ );
+
+		getCurUser().spendAndNext(TIME_TO_READ);
 	}
-	
-	public static void teleportHero( Hero  hero ) {
+
+	public static void teleportHero(Hero hero) {
 
 		int pos = Dungeon.level.randomRespawnCell();
 
 		if (!Dungeon.level.cellValid(pos)) {
-			
-			GLog.w( TXT_NO_TELEPORT );
-			
+
+			GLog.w(TXT_NO_TELEPORT);
+
 		} else {
 
-			WandOfBlink.appear( hero, pos );
-			Dungeon.level.press( pos, hero );
+			WandOfBlink.appear(hero, pos);
+			Dungeon.level.press(pos, hero);
 			Dungeon.observe();
-			
-			GLog.i( TXT_TELEPORTED );
-			
+
+			GLog.i(TXT_TELEPORTED);
+
 		}
 	}
 

@@ -24,37 +24,37 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.items.Item;
 
 public class RingOfThorns extends Ring {
-	
+
 	@Override
-	protected RingBuff buff( ) {
+	protected RingBuff buff() {
 		return new Thorns();
 	}
-	
+
 	@Override
 	public Item random() {
 		level(+1);
 		return this;
 	}
-	
+
 	@Override
-	public boolean doPickUp( Hero hero ) {
+	public boolean doPickUp(Hero hero) {
 		identify();
 		Badges.validateRingOfThorns();
-		Badges.validateItemLevelAquired( this );
+		Badges.validateItemLevelAquired(this);
 		return super.doPickUp(hero);
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
-	
+
+
 	@Override
 	public String desc() {
 		return isKnown() ? Game.getVar(R.string.RingOfThorns_Info) : super.desc();
 	}
-	
-	public class Thorns extends RingBuff {	
+
+	public class Thorns extends RingBuff {
 	}
 }

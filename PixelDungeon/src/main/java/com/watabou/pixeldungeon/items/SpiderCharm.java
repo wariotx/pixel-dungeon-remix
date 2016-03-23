@@ -19,33 +19,33 @@ public class SpiderCharm extends UsableArtifact {
 		image = ItemSpriteSheet.SPIDER_CHARM;
 	}
 
-	private static final Glowing WHITE = new Glowing( 0xFFFFFF );
-	
+	private static final Glowing WHITE = new Glowing(0xFFFFFF);
+
 	@Override
 	public Glowing glowing() {
 		return WHITE;
 	}
-	
+
 	@Override
-	public void execute( final Hero ch, String action ) {
+	public void execute(final Hero ch, String action) {
 		setCurUser(ch);
-		
-		if (action.equals( AC_USE )) {
+
+		if (action.equals(AC_USE)) {
 			Wound.hit(ch);
-			ch.damage(ch.ht()/4, this);
+			ch.damage(ch.ht() / 4, this);
 			Buff.detach(ch, Health.class);
-			
+
 			int spawnPos = Dungeon.level.getEmptyCellNextTo(ch.getPos());
-			
+
 			if (Dungeon.level.cellValid(spawnPos)) {
 				Mob pet = Mob.makePet(new SpiderServant(), getCurUser());
 				pet.setPos(spawnPos);
-				
-				Dungeon.level.spawnMob(pet );
-				Actor.addDelayed( new Pushing( pet, ch.getPos(), pet.getPos() ), -1 );
+
+				Dungeon.level.spawnMob(pet);
+				Actor.addDelayed(new Pushing(pet, ch.getPos(), pet.getPos()), -1);
 			}
 			return;
 		}
-		super.execute( ch, action );
+		super.execute(ch, action);
 	}
 }

@@ -21,17 +21,17 @@ import com.watabou.noosa.Game;
 import com.nyrds.pixeldungeon.ml.R;
 
 public class RingOfEvasion extends Ring {
-	
+
 	@Override
-	protected RingBuff buff( ) {
+	protected RingBuff buff() {
 		return new Evasion();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ? Game.getVar(R.string.RingOfEvasion_Info) : super.desc();
 	}
-	
-	public class Evasion extends RingBuff {	
+
+	public class Evasion extends RingBuff {
 	}
 }

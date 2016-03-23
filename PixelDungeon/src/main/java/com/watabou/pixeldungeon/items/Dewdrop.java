@@ -30,45 +30,45 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Dewdrop extends Item {
 
-	private static final String TXT_VALUE	= "%+dHP";
-	
+	private static final String TXT_VALUE = "%+dHP";
+
 	{
 		name = Game.getVar(R.string.Dewdrop_Name);
 		image = ItemSpriteSheet.DEWDROP;
-		
+
 		stackable = true;
 	}
-	
+
 	@Override
-	public boolean doPickUp( Hero hero ) {
-		
-		DewVial vial = hero.belongings.getItem( DewVial.class );
-		
+	public boolean doPickUp(Hero hero) {
+
+		DewVial vial = hero.belongings.getItem(DewVial.class);
+
 		if (hero.hp() < hero.ht() || vial == null || vial.isFull()) {
-			
+
 			int value = 1 + (Dungeon.depth - 1) / 5;
 			if (hero.heroClass == HeroClass.HUNTRESS) {
 				value++;
 			}
-			
-			int effect = Math.min( hero.ht() - hero.hp(), value * quantity() );
+
+			int effect = Math.min(hero.ht() - hero.hp(), value * quantity());
 			if (effect > 0) {
 				hero.hp(hero.hp() + effect);
-				hero.getSprite().emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				hero.getSprite().showStatus( CharSprite.POSITIVE, TXT_VALUE, effect );
+				hero.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
+				hero.getSprite().showStatus(CharSprite.POSITIVE, TXT_VALUE, effect);
 			}
 		} else {
-			vial.collectDew( this );
+			vial.collectDew(this);
 		}
-		
-		Sample.INSTANCE.play( Assets.SND_DEWDROP );
-		hero.spendAndNext( TIME_TO_PICK_UP );
-		
+
+		Sample.INSTANCE.play(Assets.SND_DEWDROP);
+		hero.spendAndNext(TIME_TO_PICK_UP);
+
 		return true;
 	}
-	
+
 	@Override
-	public Item burn(int cell){
+	public Item burn(int cell) {
 		return null;
 	}
 }

@@ -33,40 +33,40 @@ import com.watabou.utils.Random;
 public class Metabolism extends Glyph {
 
 	private static final String TXT_METABOLISM = Game.getVar(R.string.Metabolism_Txt);
-	
-	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0xCC0000 );
-	
-	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level() );
-		if (Random.Int( level / 2 + 5 ) >= 4) {
-			
-			int healing = Math.min( defender.ht() - defender.hp(), Random.Int( 1, defender.ht() / 5 ) );
+	private static ItemSprite.Glowing RED = new ItemSprite.Glowing(0xCC0000);
+
+	@Override
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+
+		int level = Math.max(0, armor.level());
+		if (Random.Int(level / 2 + 5) >= 4) {
+
+			int healing = Math.min(defender.ht() - defender.hp(), Random.Int(1, defender.ht() / 5));
 
 			if (healing > 0) {
-				
-				Hunger hunger = defender.buff( Hunger.class );
+
+				Hunger hunger = defender.buff(Hunger.class);
 
 				if (hunger != null && !hunger.isStarving()) {
 
-					hunger.satisfy( -Hunger.STARVING / 10 );
+					hunger.satisfy(-Hunger.STARVING / 10);
 					BuffIndicator.refreshHero();
-					
+
 					defender.hp(defender.hp() + healing);
-					defender.getSprite().emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-					defender.getSprite().showStatus( CharSprite.POSITIVE, Integer.toString( healing ) );
+					defender.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
+					defender.getSprite().showStatus(CharSprite.POSITIVE, Integer.toString(healing));
 				}
 			}
 
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_METABOLISM, weaponName );
+	public String name(String weaponName) {
+		return String.format(TXT_METABOLISM, weaponName);
 	}
 
 	@Override

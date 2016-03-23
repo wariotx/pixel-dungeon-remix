@@ -24,10 +24,10 @@ import com.watabou.noosa.Game;
 public class PlateArmor extends Armor {
 
 	public PlateArmor() {
-		super( 5 );
+		super(5);
 		image = 4;
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.PlateArmor_Desc);

@@ -31,42 +31,42 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
-public class WandOfRegrowth extends SimpleWand  {
-	
+public class WandOfRegrowth extends SimpleWand {
+
 	@Override
-	protected void onZap( int cell ) {
-		
-		for (int i=1; i < Ballistica.distance-1; i++) {
+	protected void onZap(int cell) {
+
+		for (int i = 1; i < Ballistica.distance - 1; i++) {
 			int p = Ballistica.trace[i];
 			int c = Dungeon.level.map[p];
-			if (c == Terrain.EMPTY || 
-				c == Terrain.EMBERS || 
-				c == Terrain.EMPTY_DECO) {
-				
-				Dungeon.level.set( p, Terrain.GRASS );
-				
+			if (c == Terrain.EMPTY ||
+					c == Terrain.EMBERS ||
+					c == Terrain.EMPTY_DECO) {
+
+				Dungeon.level.set(p, Terrain.GRASS);
+
 			}
 		}
-		
+
 		int c = Dungeon.level.map[cell];
-		if (c == Terrain.EMPTY || 
-			c == Terrain.EMBERS || 
-			c == Terrain.EMPTY_DECO || 
-			c == Terrain.GRASS ||
-			c == Terrain.HIGH_GRASS) {
-			
-			GameScene.add( Blob.seed( cell, (effectiveLevel() + 2) * 20, Regrowth.class ) );
-			
+		if (c == Terrain.EMPTY ||
+				c == Terrain.EMBERS ||
+				c == Terrain.EMPTY_DECO ||
+				c == Terrain.GRASS ||
+				c == Terrain.HIGH_GRASS) {
+
+			GameScene.add(Blob.seed(cell, (effectiveLevel() + 2) * 20, Regrowth.class));
+
 		} else {
 			GLog.i(Game.getVar(R.string.WandOfRegrowth_Info1));
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.foliage( wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+
+	protected void fx(int cell, Callback callback) {
+		MagicMissile.foliage(wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback);
+		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WandOfRegrowth_Info);

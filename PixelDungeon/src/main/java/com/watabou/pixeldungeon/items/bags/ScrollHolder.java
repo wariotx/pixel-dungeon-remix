@@ -25,15 +25,15 @@ public class ScrollHolder extends Bag {
 
 	{
 		image = ItemSpriteSheet.HOLDER;
-		
+
 		size = 12;
 	}
-	
+
 	@Override
-	public boolean grab( Item item ) {
+	public boolean grab(Item item) {
 		return item instanceof Scroll;
 	}
-	
+
 	@Override
 	public int price() {
 		return 50;

@@ -24,38 +24,38 @@ import com.watabou.utils.Bundle;
 public class Key extends Item {
 
 	public static final float TIME_TO_UNLOCK = 1f;
-	
+
 	public int depth;
-	
+
 	public Key() {
 		depth = Dungeon.depth;
 		stackable = false;
 	}
-	
+
 	private static final String DEPTH = "depth";
-	
+
 	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( DEPTH, depth );
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(DEPTH, depth);
 	}
-	
+
 	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		depth = bundle.getInt( DEPTH );
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		depth = bundle.getInt(DEPTH);
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public String status() {
 		return depth + "*";

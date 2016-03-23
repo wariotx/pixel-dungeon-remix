@@ -27,21 +27,21 @@ import com.watabou.pixeldungeon.utils.GLog;
 public class PotionOfStrength extends Potion {
 
 	@Override
-	protected void apply( Hero hero ) {
+	protected void apply(Hero hero) {
 		setKnown();
-		
+
 		hero.STR(hero.STR() + 1);
-		hero.getSprite().showStatus( CharSprite.POSITIVE, Game.getVar(R.string.PotionOfStrength_StaApply));
+		hero.getSprite().showStatus(CharSprite.POSITIVE, Game.getVar(R.string.PotionOfStrength_StaApply));
 		GLog.p(Game.getVar(R.string.PotionOfStrength_Apply));
-		
+
 		Badges.validateStrengthAttained();
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.PotionOfStrength_Info);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 100 * quantity() : super.price();

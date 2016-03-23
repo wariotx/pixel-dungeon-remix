@@ -27,34 +27,34 @@ import com.watabou.pixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Fire extends Weapon.Enchantment {
-	
-	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
-	
+
+	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing(0xFF4400);
+
 	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public boolean proc(Weapon weapon, Char attacker, Char defender, int damage) {
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
-		int level = Math.max( 0, weapon.level() );
-		
-		if (Random.Int( level + 3 ) >= 2) {
-			
-			if (Random.Int( 2 ) == 0) {
-				Buff.affect( defender, Burning.class ).reignite( defender );
+		int level = Math.max(0, weapon.level());
+
+		if (Random.Int(level + 3) >= 2) {
+
+			if (Random.Int(2) == 0) {
+				Buff.affect(defender, Burning.class).reignite(defender);
 			}
-			defender.damage( Random.Int( 1, level + 2 ), this );
-			
-			defender.getSprite().emitter().burst( FlameParticle.FACTORY, level + 1 );
-			
+			defender.damage(Random.Int(1, level + 2), this);
+
+			defender.getSprite().emitter().burst(FlameParticle.FACTORY, level + 1);
+
 			return true;
-			
+
 		} else {
-			
+
 			return false;
-			
+
 		}
 	}
-	
+
 	@Override
 	public Glowing glowing() {
 		return ORANGE;

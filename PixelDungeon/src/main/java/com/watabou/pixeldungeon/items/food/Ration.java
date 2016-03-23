@@ -9,14 +9,14 @@ public class Ration extends Food {
 		image = ItemSpriteSheet.RATION;
 		energy = Hunger.HUNGRY;
 	}
-	
+
 	@Override
 	public int price() {
 		return 10 * quantity();
 	}
-	
+
 	@Override
-	public Item poison(int cell){
+	public Item poison(int cell) {
 		return morphTo(RottenRation.class);
 	}
 }

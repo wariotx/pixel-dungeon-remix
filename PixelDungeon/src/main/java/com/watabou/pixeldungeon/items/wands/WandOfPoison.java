@@ -29,23 +29,23 @@ import com.watabou.pixeldungeon.effects.MagicMissile;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
-public class WandOfPoison extends SimpleWand  {
+public class WandOfPoison extends SimpleWand {
 
 	@Override
-	protected void onZap( int cell ) {
-		Char ch = Actor.findChar( cell );
+	protected void onZap(int cell) {
+		Char ch = Actor.findChar(cell);
 		if (ch != null) {
-			Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (5 + effectiveLevel()) );
+			Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (5 + effectiveLevel()));
 		} else {
 			GLog.i(Game.getVar(R.string.WandOfPoison_Info1));
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.poison( wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+
+	protected void fx(int cell, Callback callback) {
+		MagicMissile.poison(wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback);
+		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WandOfPoison_Info);

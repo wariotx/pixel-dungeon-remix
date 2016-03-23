@@ -21,23 +21,23 @@ import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class DarkGold extends Item {
-	
+
 	{
 		image = ItemSpriteSheet.ORE;
-		
+
 		stackable = true;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public int price() {
 		return quantity();

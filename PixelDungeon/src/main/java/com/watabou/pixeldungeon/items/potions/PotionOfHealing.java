@@ -36,46 +36,46 @@ import com.watabou.pixeldungeon.utils.GLog;
 public class PotionOfHealing extends Potion {
 
 	@Override
-	protected void apply( Hero hero ) {
+	protected void apply(Hero hero) {
 		setKnown();
-		heal( Dungeon.hero, 1f );
+		heal(Dungeon.hero, 1f);
 		GLog.p(Game.getVar(R.string.PotionOfHealing_Apply));
 	}
-	
-	public static void heal( Char ch, float portion ) {
 
-		ch.hp((int) Math.min(ch.ht(),ch.hp()+ch.ht()*portion));
-		Buff.detach( ch, Poison.class );
-		Buff.detach( ch, Cripple.class );
-		Buff.detach( ch, Weakness.class );
-		Buff.detach( ch, Bleeding.class );
-		
-		ch.getSprite().emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
+	public static void heal(Char ch, float portion) {
+
+		ch.hp((int) Math.min(ch.ht(), ch.hp() + ch.ht() * portion));
+		Buff.detach(ch, Poison.class);
+		Buff.detach(ch, Cripple.class);
+		Buff.detach(ch, Weakness.class);
+		Buff.detach(ch, Bleeding.class);
+
+		ch.getSprite().emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.PotionOfHealing_Info);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 30 * quantity() : super.price();
 	}
-	
+
 	@Override
-	public void shatter( int cell ) {
-		
+	public void shatter(int cell) {
+
 		setKnown();
-		
-		splash( cell );
-		Sample.INSTANCE.play( Assets.SND_SHATTER );
-		
+
+		splash(cell);
+		Sample.INSTANCE.play(Assets.SND_SHATTER);
+
 		Char ch = Actor.findChar(cell);
-		
-		if(ch != null) {
+
+		if (ch != null) {
 			heal(ch, 0.5f);
 		}
-		
+
 	}
 }

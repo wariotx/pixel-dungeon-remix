@@ -34,146 +34,146 @@ import java.util.ArrayList;
 
 public class DewVial extends Item {
 
-	private static final int MAX_VOLUME	= 10;
-	
-	private static final String AC_DRINK	= Game.getVar(R.string.DewVial_ACDRINK);
-	
+	private static final int MAX_VOLUME = 10;
+
+	private static final String AC_DRINK = Game.getVar(R.string.DewVial_ACDRINK);
+
 	private static final float TIME_TO_DRINK = 1f;
-	
-	private static final String TXT_VALUE	= "%+dHP";
-	private static final String TXT_STATUS	= "%d/%d";
-	
-	private static final String TXT_AUTO_DRINK	= Game.getVar(R.string.DewVial_AutoDrink);
-	private static final String TXT_COLLECTED	= Game.getVar(R.string.DewVial_Collected);
-	private static final String TXT_FULL		= Game.getVar(R.string.DewVial_Full);
-	private static final String TXT_EMPTY		= Game.getVar(R.string.DewVial_Empty);
-	
+
+	private static final String TXT_VALUE = "%+dHP";
+	private static final String TXT_STATUS = "%d/%d";
+
+	private static final String TXT_AUTO_DRINK = Game.getVar(R.string.DewVial_AutoDrink);
+	private static final String TXT_COLLECTED = Game.getVar(R.string.DewVial_Collected);
+	private static final String TXT_FULL = Game.getVar(R.string.DewVial_Full);
+	private static final String TXT_EMPTY = Game.getVar(R.string.DewVial_Empty);
+
 	{
 		imageFile = "items/vials.png";
 		image = 0;
-		
+
 		defaultAction = AC_DRINK;
 	}
-	
+
 	private int volume = 0;
-	
-	private static final String VOLUME	= "volume";
-	
+
+	private static final String VOLUME = "volume";
+
 	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( VOLUME, getVolume() );
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(VOLUME, getVolume());
 	}
-	
+
 	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		setVolume(bundle.getInt( VOLUME ));
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		setVolume(bundle.getInt(VOLUME));
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
 		if (getVolume() > 0) {
-			actions.add( AC_DRINK );
+			actions.add(AC_DRINK);
 		}
 		return actions;
 	}
-	
+
 	private static final double NUM = 20;
-	private static final double POW = Math.log10( NUM );
-	
+	private static final double POW = Math.log10(NUM);
+
 	@Override
-	public void execute( final Hero hero, String action ) {
-		if (action.equals( AC_DRINK )) {
-			
+	public void execute(final Hero hero, String action) {
+		if (action.equals(AC_DRINK)) {
+
 			if (getVolume() > 0) {
 
-				int value = (int)Math.ceil( Math.pow( getVolume(), POW ) / NUM * hero.ht() );
-				int effect = Math.min( hero.ht() - hero.hp(), value );
+				int value = (int) Math.ceil(Math.pow(getVolume(), POW) / NUM * hero.ht());
+				int effect = Math.min(hero.ht() - hero.hp(), value);
 				if (effect > 0) {
 					hero.hp(hero.hp() + effect);
-					hero.getSprite().emitter().burst( Speck.factory( Speck.HEALING ), getVolume() > 5 ? 2 : 1 );
-					hero.getSprite().showStatus( CharSprite.POSITIVE, TXT_VALUE, effect );
+					hero.getSprite().emitter().burst(Speck.factory(Speck.HEALING), getVolume() > 5 ? 2 : 1);
+					hero.getSprite().showStatus(CharSprite.POSITIVE, TXT_VALUE, effect);
 				}
-				
+
 				setVolume(0);
-				
-				hero.spend( TIME_TO_DRINK );
+
+				hero.spend(TIME_TO_DRINK);
 				hero.busy();
-				
-				Sample.INSTANCE.play( Assets.SND_DRINK );
-				hero.getSprite().operate( hero.getPos() );
-				
+
+				Sample.INSTANCE.play(Assets.SND_DRINK);
+				hero.getSprite().operate(hero.getPos());
+
 				updateQuickslot();
-				
+
 			} else {
-				GLog.w( TXT_EMPTY );
+				GLog.w(TXT_EMPTY);
 			}
-			
+
 		} else {
-			
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	public boolean isFull() {
 		return getVolume() >= MAX_VOLUME;
 	}
-	
-	public void collectDew( Dewdrop dew ) {
-		
-		GLog.i( TXT_COLLECTED );
+
+	public void collectDew(Dewdrop dew) {
+
+		GLog.i(TXT_COLLECTED);
 		setVolume(getVolume() + dew.quantity());
 		if (getVolume() >= MAX_VOLUME) {
 			setVolume(MAX_VOLUME);
-			GLog.p( TXT_FULL );
+			GLog.p(TXT_FULL);
 		}
-		
+
 		updateQuickslot();
 	}
-	
+
 	public void fill() {
 		setVolume(MAX_VOLUME);
 		updateQuickslot();
 	}
-	
-	public static void autoDrink( Hero hero ) {
-		DewVial vial = hero.belongings.getItem( DewVial.class );
+
+	public static void autoDrink(Hero hero) {
+		DewVial vial = hero.belongings.getItem(DewVial.class);
 		if (vial != null && vial.isFull()) {
-			vial.execute( hero );
-			hero.getSprite().emitter().start( ShaftParticle.FACTORY, 0.2f, 3 );
-			
-			GLog.w( TXT_AUTO_DRINK );
+			vial.execute(hero);
+			hero.getSprite().emitter().start(ShaftParticle.FACTORY, 0.2f, 3);
+
+			GLog.w(TXT_AUTO_DRINK);
 		}
 	}
-	
-	private static final Glowing WHITE = new Glowing( 0xFFFFCC );
-	
+
+	private static final Glowing WHITE = new Glowing(0xFFFFCC);
+
 	@Override
 	public Glowing glowing() {
 		return isFull() ? WHITE : null;
 	}
-	
+
 	@Override
 	public String status() {
-		return Utils.format( TXT_STATUS, getVolume(), MAX_VOLUME );
+		return Utils.format(TXT_STATUS, getVolume(), MAX_VOLUME);
 	}
-	
+
 	@Override
 	public String toString() {
-		return super.toString() + " (" + status() +  ")" ;
+		return super.toString() + " (" + status() + ")";
 	}
 
 	private int getVolume() {
@@ -182,11 +182,11 @@ public class DewVial extends Item {
 
 	private void setVolume(int volume) {
 		this.volume = volume;
-		if(volume == 0) {
+		if (volume == 0) {
 			image = 0;
-		} else if(volume < MAX_VOLUME/2) {
+		} else if (volume < MAX_VOLUME / 2) {
 			image = 1;
-		} else if(volume < MAX_VOLUME) {
+		} else if (volume < MAX_VOLUME) {
 			image = 2;
 		} else {
 			image = 3;

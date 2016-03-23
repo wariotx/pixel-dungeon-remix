@@ -27,14 +27,14 @@ public class ChargrilledMeat extends Food {
 		image = ItemSpriteSheet.STEAK;
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 	}
-	
+
 	@Override
 	public int price() {
 		return 5 * quantity();
 	}
-	
+
 	@Override
-	public Item poison(int cell){
+	public Item poison(int cell) {
 		return morphTo(RottenMeat.class);
 	}
 }

@@ -40,134 +40,134 @@ import java.util.ArrayList;
 public class LloydsBeacon extends Item {
 
 	private static final String TXT_PREVENTING = Game.getVar(R.string.LloidsBeacon_Preventing);
-	private static final String TXT_CREATURES  = Game.getVar(R.string.LloidsBeacon_Creatures);
-	private static final String TXT_RETURN     = Game.getVar(R.string.LloidsBeacon_Return);
-	private static final String TXT_INFO       = Game.getVar(R.string.LloidsBeacon_Info);
-	private static final String TXT_SET        = Game.getVar(R.string.LloidsBeacon_Set);
-	
+	private static final String TXT_CREATURES = Game.getVar(R.string.LloidsBeacon_Creatures);
+	private static final String TXT_RETURN = Game.getVar(R.string.LloidsBeacon_Return);
+	private static final String TXT_INFO = Game.getVar(R.string.LloidsBeacon_Info);
+	private static final String TXT_SET = Game.getVar(R.string.LloidsBeacon_Set);
+
 	public static final float TIME_TO_USE = 1;
-	
-	public static final String AC_SET		= Game.getVar(R.string.LloidsBeacon_ACSet);
-	public static final String AC_RETURN	= Game.getVar(R.string.LloidsBeacon_ACReturn);
-	
+
+	public static final String AC_SET = Game.getVar(R.string.LloidsBeacon_ACSet);
+	public static final String AC_RETURN = Game.getVar(R.string.LloidsBeacon_ACReturn);
+
 	private Position returnTo;
-	
+
 	public LloydsBeacon() {
 		image = ItemSpriteSheet.BEACON;
 		returnTo = new Position();
-		returnTo.levelDepth = -1;	
-		
+		returnTo.levelDepth = -1;
+
 		name = Game.getVar(R.string.LloidsBeacon_Name);
 	}
-	
-	private static final String DEPTH	 = "depth";
-	private static final String POS		 = "pos";
-	
+
+	private static final String DEPTH = "depth";
+	private static final String POS = "pos";
+
 	private static final String POSITION = "position";
-	
+
 	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+
 		bundle.put(POSITION, returnTo);
 	}
-	
+
 	@Override
-	public void restoreFromBundle( Bundle bundle ) {
+	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		
+
 		returnTo = (Position) bundle.get(POSITION);
-		if(returnTo == null) { //pre remix.19.0 code, remove in future
+		if (returnTo == null) { //pre remix.19.0 code, remove in future
 			returnTo = new Position(DungeonGenerator.getEntryLevelKind(),
-									DungeonGenerator.getEntryLevel(),
-									bundle.getInt( DEPTH ),
-									bundle.getInt( POS ));
+					DungeonGenerator.getEntryLevel(),
+					bundle.getInt(DEPTH),
+					bundle.getInt(POS));
 		}
 	}
-	
+
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_SET );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_SET);
 		if (returnTo.levelDepth != -1) {
-			actions.add( AC_RETURN );
+			actions.add(AC_RETURN);
 		}
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( Hero hero, String action ) {
-		
+	public void execute(Hero hero, String action) {
+
 		if (action == AC_SET || action == AC_RETURN) {
-			
+
 			if (Dungeon.bossLevel()) {
-				hero.spend( LloydsBeacon.TIME_TO_USE );
-				GLog.w( TXT_PREVENTING );
+				hero.spend(LloydsBeacon.TIME_TO_USE);
+				GLog.w(TXT_PREVENTING);
 				return;
 			}
-			
-			for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-				if (Actor.findChar( hero.getPos() + Level.NEIGHBOURS8[i] ) != null) {
-					GLog.w( TXT_CREATURES );
+
+			for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
+				if (Actor.findChar(hero.getPos() + Level.NEIGHBOURS8[i]) != null) {
+					GLog.w(TXT_CREATURES);
 					return;
 				}
 			}
 		}
-		
+
 		if (action == AC_SET) {
-			
+
 			returnTo = Dungeon.currentPosition();
-			
-			hero.spend( LloydsBeacon.TIME_TO_USE );
+
+			hero.spend(LloydsBeacon.TIME_TO_USE);
 			hero.busy();
-			
-			hero.getSprite().operate( hero.getPos() );
-			Sample.INSTANCE.play( Assets.SND_BEACON );
-			
-			GLog.i( TXT_RETURN );
-			
+
+			hero.getSprite().operate(hero.getPos());
+			Sample.INSTANCE.play(Assets.SND_BEACON);
+
+			GLog.i(TXT_RETURN);
+
 		} else if (action == AC_RETURN) {
 			if (returnTo.levelDepth == Dungeon.depth && returnTo.levelKind.equals(hero.levelKind)) {
 				reset();
-				WandOfBlink.appear( hero, returnTo.cellId );
-				Dungeon.level.press( returnTo.cellId, hero );
+				WandOfBlink.appear(hero, returnTo.cellId);
+				Dungeon.level.press(returnTo.cellId, hero);
 				Dungeon.observe();
 			} else {
 				InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 				InterlevelScene.returnTo = new Position(returnTo);
 				reset();
-				Game.switchScene( InterlevelScene.class );
+				Game.switchScene(InterlevelScene.class);
 			}
 		} else {
-			
-			super.execute( hero, action );
-			
+
+			super.execute(hero, action);
+
 		}
 	}
-	
+
 	public void reset() {
 		returnTo.levelDepth = -1;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
-	private static final Glowing WHITE = new Glowing( 0xFFFFFF );
-	
+
+	private static final Glowing WHITE = new Glowing(0xFFFFFF);
+
 	@Override
 	public Glowing glowing() {
 		return returnTo.levelDepth != -1 ? WHITE : null;
 	}
-	
+
 	@Override
 	public String info() {
-		return TXT_INFO + (returnTo.levelDepth == -1 ? "" : Utils.format( TXT_SET, returnTo.levelDepth ) );
+		return TXT_INFO + (returnTo.levelDepth == -1 ? "" : Utils.format(TXT_SET, returnTo.levelDepth));
 	}
 }

@@ -4,9 +4,9 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class RottenRation extends RottenFood {
 	public RottenRation() {
-		image   = ItemSpriteSheet.ROTTEN_RATION;
+		image = ItemSpriteSheet.ROTTEN_RATION;
 	}
-	
+
 	@Override
 	public Food purify() {
 		return new Ration();

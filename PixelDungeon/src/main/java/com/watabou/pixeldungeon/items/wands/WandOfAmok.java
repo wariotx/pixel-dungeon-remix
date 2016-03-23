@@ -34,24 +34,24 @@ import com.watabou.utils.Callback;
 public class WandOfAmok extends SimpleWand {
 
 	@Override
-	protected void onZap( int cell ) {
-		Char ch = Actor.findChar( cell );
+	protected void onZap(int cell) {
+		Char ch = Actor.findChar(cell);
 		if (ch != null) {
 			if (ch == Dungeon.hero) {
-				Buff.affect( ch, Vertigo.class, Vertigo.duration( ch ) );
+				Buff.affect(ch, Vertigo.class, Vertigo.duration(ch));
 			} else {
-				Buff.affect( ch, Amok.class, 3f + effectiveLevel() );
+				Buff.affect(ch, Amok.class, 3f + effectiveLevel());
 			}
 		} else {
 			GLog.i(Game.getVar(R.string.WandOfAmok_Info1));
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.purpleLight( wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+
+	protected void fx(int cell, Callback callback) {
+		MagicMissile.purpleLight(wandUser.getSprite().getParent(), wandUser.getPos(), cell, callback);
+		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.WandOfAmok_Info);

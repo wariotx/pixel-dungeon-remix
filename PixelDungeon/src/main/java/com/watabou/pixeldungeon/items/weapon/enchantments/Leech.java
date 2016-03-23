@@ -27,35 +27,35 @@ import com.watabou.utils.Random;
 
 public class Leech extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0x660022 );
-	
+	private static ItemSprite.Glowing RED = new ItemSprite.Glowing(0x660022);
+
 	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		
-		int level = Math.max( 0, weapon.level() );
-		
+	public boolean proc(Weapon weapon, Char attacker, Char defender, int damage) {
+
+		int level = Math.max(0, weapon.level());
+
 		// lvl 0 - 33%
 		// lvl 1 - 43%
 		// lvl 2 - 50%
 		int maxValue = damage * (level + 2) / (level + 6);
-		int effValue = Math.min( Random.IntRange( 0, maxValue ), attacker.ht() - attacker.hp() );
-		
+		int effValue = Math.min(Random.IntRange(0, maxValue), attacker.ht() - attacker.hp());
+
 		if (effValue > 0) {
-		
+
 			attacker.hp(attacker.hp() + effValue);
-			attacker.getSprite().emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
-			attacker.getSprite().showStatus( CharSprite.POSITIVE, Integer.toString( effValue ) );
-			
+			attacker.getSprite().emitter().start(Speck.factory(Speck.HEALING), 0.4f, 1);
+			attacker.getSprite().showStatus(CharSprite.POSITIVE, Integer.toString(effValue));
+
 			return true;
-			
+
 		} else {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public Glowing glowing() {
 		return RED;
 	}
-	
+
 }

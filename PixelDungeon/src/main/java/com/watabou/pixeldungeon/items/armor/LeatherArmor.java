@@ -24,10 +24,10 @@ import com.watabou.noosa.Game;
 public class LeatherArmor extends Armor {
 
 	public LeatherArmor() {
-		super( 2 );
+		super(2);
 		image = 1;
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.LeatherArmor_Desc);

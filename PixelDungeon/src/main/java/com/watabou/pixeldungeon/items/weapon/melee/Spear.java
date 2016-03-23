@@ -24,16 +24,16 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 public class Spear extends SpecialWeapon {
 
 	public Spear() {
-		super( 2, 1f, 1.5f );
+		super(2, 1f, 1.5f);
 		range = 2;
 		image = ItemSpriteSheet.SPEAR;
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.Spear_Info);
 	}
-	
+
 	@Override
 	public boolean isFliesStraight() {
 		return true;

@@ -32,52 +32,52 @@ import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.effects.particles.ElmoParticle;
 import com.watabou.pixeldungeon.utils.GLog;
 
-public class MageArmor extends ClassArmor {	
-	
-	private static final String AC_SPECIAL = Game.getVar(R.string.MageArmor_ACSpecial); 
-	
+public class MageArmor extends ClassArmor {
+
+	private static final String AC_SPECIAL = Game.getVar(R.string.MageArmor_ACSpecial);
+
 	private static final String TXT_NOT_MAGE = Game.getVar(R.string.MageArmor_NotMage);
-	
+
 	{
 		image = 11;
 	}
-	
+
 	@Override
 	public String special() {
 		return AC_SPECIAL;
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.MageArmor_Desc);
 	}
-	
+
 	@Override
-	public void doSpecial() {	
+	public void doSpecial() {
 
 		for (Mob mob : Dungeon.level.mobs) {
 			if (Dungeon.level.fieldOfView[mob.getPos()]) {
-				Buff.affect( mob, Burning.class ).reignite( mob );
-				Buff.prolong( mob, Roots.class, 3 );
+				Buff.affect(mob, Burning.class).reignite(mob);
+				Buff.prolong(mob, Roots.class, 3);
 			}
 		}
-		
+
 		getCurUser().hp(getCurUser().hp() - (getCurUser().hp() / 3));
-		
-		getCurUser().spend( Actor.TICK );
-		getCurUser().getSprite().operate( getCurUser().getPos() );
+
+		getCurUser().spend(Actor.TICK);
+		getCurUser().getSprite().operate(getCurUser().getPos());
 		getCurUser().busy();
-		
-		getCurUser().getSprite().centerEmitter().start( ElmoParticle.FACTORY, 0.15f, 4 );
-		Sample.INSTANCE.play( Assets.SND_READ );
+
+		getCurUser().getSprite().centerEmitter().start(ElmoParticle.FACTORY, 0.15f, 4);
+		Sample.INSTANCE.play(Assets.SND_READ);
 	}
-	
+
 	@Override
-	public boolean doEquip( Hero hero ) {
+	public boolean doEquip(Hero hero) {
 		if (hero.heroClass == HeroClass.MAGE) {
-			return super.doEquip( hero );
+			return super.doEquip(hero);
 		} else {
-			GLog.w( TXT_NOT_MAGE );
+			GLog.w(TXT_NOT_MAGE);
 			return false;
 		}
 	}

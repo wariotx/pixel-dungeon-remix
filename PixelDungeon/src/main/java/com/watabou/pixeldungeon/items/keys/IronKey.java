@@ -29,29 +29,29 @@ public class IronKey extends Key {
 	private static final String TXT_FROM_DEPTH = Game.getVar(R.string.IronKey_FromDepth);
 
 	public static int curDepthQuantity = 0;
-	
+
 	{
 		image = ItemSpriteSheet.IRON_KEY;
 	}
-	
+
 	@Override
-	public boolean collect( Bag bag ) {
-		boolean result = super.collect( bag );
+	public boolean collect(Bag bag) {
+		boolean result = super.collect(bag);
 		if (result && depth == Dungeon.depth && Dungeon.hero != null) {
 			Dungeon.hero.belongings.countIronKeys();
 		}
 		return result;
 	}
-	
+
 	@Override
-	public void onDetach( ) {
+	public void onDetach() {
 		if (depth == Dungeon.depth) {
 			Dungeon.hero.belongings.countIronKeys();
 		}
 	}
-	
+
 	@Override
 	public String toString() {
-		return Utils.format( TXT_FROM_DEPTH, depth );
+		return Utils.format(TXT_FROM_DEPTH, depth);
 	}
 }

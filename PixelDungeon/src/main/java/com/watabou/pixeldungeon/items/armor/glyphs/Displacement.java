@@ -32,35 +32,35 @@ import com.watabou.utils.Random;
 public class Displacement extends Glyph {
 
 	private static final String TXT_DISPLACEMENT = Game.getVar(R.string.Displacement_Txt);
-	
-	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x66AAFF );
-	
+
+	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing(0x66AAFF);
+
 	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage ) {
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
 		if (Dungeon.bossLevel()) {
 			return damage;
 		}
-		
+
 		int nTries = (armor.level() < 0 ? 1 : armor.level() + 1) * 5;
-		for (int i=0; i < nTries; i++) {
-			int pos = Random.Int( Dungeon.level.getLength() );
-			if (Dungeon.visible[pos] && Dungeon.level.passable[pos] && Actor.findChar( pos ) == null) {
-				
-				WandOfBlink.appear( defender, pos );
-				Dungeon.level.press( pos, defender );
+		for (int i = 0; i < nTries; i++) {
+			int pos = Random.Int(Dungeon.level.getLength());
+			if (Dungeon.visible[pos] && Dungeon.level.passable[pos] && Actor.findChar(pos) == null) {
+
+				WandOfBlink.appear(defender, pos);
+				Dungeon.level.press(pos, defender);
 				Dungeon.observe();
 
 				break;
 			}
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_DISPLACEMENT, weaponName );
+	public String name(String weaponName) {
+		return String.format(TXT_DISPLACEMENT, weaponName);
 	}
 
 	@Override

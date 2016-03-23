@@ -33,10 +33,10 @@ import com.watabou.utils.Random;
 public class RingOfElements extends Ring {
 
 	@Override
-	protected RingBuff buff( ) {
+	protected RingBuff buff() {
 		return new Resistance();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ? Game.getVar(R.string.RingOfElements_Info) : super.desc();
@@ -44,27 +44,28 @@ public class RingOfElements extends Ring {
 
 	private static final HashSet<Class<?>> EMPTY = new HashSet<>();
 	private static final HashSet<Class<?>> FULL;
+
 	static {
 		FULL = new HashSet<>();
-		FULL.add( Burning.class );
-		FULL.add( ToxicGas.class );
-		FULL.add( Poison.class );
-		FULL.add( LightningTrap.Electricity.class );
-		FULL.add( Warlock.class );
-		FULL.add( Eye.class );
-		FULL.add( Yog.BurningFist.class );
+		FULL.add(Burning.class);
+		FULL.add(ToxicGas.class);
+		FULL.add(Poison.class);
+		FULL.add(LightningTrap.Electricity.class);
+		FULL.add(Warlock.class);
+		FULL.add(Eye.class);
+		FULL.add(Yog.BurningFist.class);
 	}
-	
+
 	public class Resistance extends RingBuff {
-		
+
 		public HashSet<Class<?>> resistances() {
-			if (Random.Int( level + 3 ) >= 3) {
+			if (Random.Int(level + 3) >= 3) {
 				return FULL;
 			} else {
 				return EMPTY;
 			}
 		}
-		
+
 		public float durationFactor() {
 			return level < 0 ? 1 : (2 + 0.5f * level) / (2 + level);
 		}

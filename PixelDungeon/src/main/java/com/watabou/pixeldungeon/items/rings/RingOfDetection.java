@@ -23,27 +23,27 @@ import com.nyrds.pixeldungeon.ml.R;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 
 public class RingOfDetection extends Ring {
-	
+
 	@Override
-	public boolean doEquip( Hero hero ) {
-		if (super.doEquip( hero )) {
-			Dungeon.hero.search( false );
+	public boolean doEquip(Hero hero) {
+		if (super.doEquip(hero)) {
+			Dungeon.hero.search(false);
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	@Override
-	protected RingBuff buff( ) {
+	protected RingBuff buff() {
 		return new Detection();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ? Game.getVar(R.string.RingOfDetection_Info) : super.desc();
 	}
-	
+
 	public class Detection extends RingBuff {
 	}
 }

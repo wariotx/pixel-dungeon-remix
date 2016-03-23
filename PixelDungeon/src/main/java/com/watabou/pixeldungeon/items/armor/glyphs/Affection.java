@@ -50,12 +50,12 @@ public class Affection extends Glyph {
 			float attackerFactor = 1;
 			float defenderFactor = 1;
 
-			if(defender.buff(DriedRose.OneWayLoveBuff.class)!= null) {
+			if (defender.buff(DriedRose.OneWayLoveBuff.class) != null) {
 				attackerFactor *= 2;
 				defenderFactor *= 0;
 			}
 
-			if(defender.buff(DriedRose.OneWayCursedLoveBuff.class)!=null) {
+			if (defender.buff(DriedRose.OneWayCursedLoveBuff.class) != null) {
 				attackerFactor *= 0;
 				defenderFactor *= 2;
 			}

@@ -30,14 +30,14 @@ public class OverpricedRation extends Food {
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 		message = Game.getVar(R.string.OverpricedRation_Message);
 	}
-	
+
 	@Override
 	public int price() {
 		return 20 * quantity();
 	}
-	
+
 	@Override
-	public Item poison(int cell){
+	public Item poison(int cell) {
 		return morphTo(RottenRation.class);
 	}
 }

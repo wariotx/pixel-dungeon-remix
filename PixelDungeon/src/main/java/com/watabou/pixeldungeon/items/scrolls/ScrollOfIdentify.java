@@ -31,16 +31,16 @@ public class ScrollOfIdentify extends InventoryScroll {
 		inventoryTitle = Game.getVar(R.string.ScrollOfIdentify_InvTitle);
 		mode = WndBag.Mode.UNIDENTIFED;
 	}
-	
+
 	@Override
-	protected void onItemSelected( Item item ) {
-		
-		getCurUser().getSprite().getParent().add( new Identification( getCurUser().getSprite().center().offset( 0, -16 ) ) );
-		
+	protected void onItemSelected(Item item) {
+
+		getCurUser().getSprite().getParent().add(new Identification(getCurUser().getSprite().center().offset(0, -16)));
+
 		item.identify();
 		GLog.i(String.format(Game.getVar(R.string.ScrollOfIdentify_Info1), item));
-		
-		Badges.validateItemLevelAquired( item );
+
+		Badges.validateItemLevelAquired(item);
 	}
 
 	@Override

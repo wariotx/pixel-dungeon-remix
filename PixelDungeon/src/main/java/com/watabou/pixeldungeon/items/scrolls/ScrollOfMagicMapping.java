@@ -37,57 +37,57 @@ public class ScrollOfMagicMapping extends Scroll {
 
 	@Override
 	protected void doRead() {
-		
+
 		int length = Dungeon.level.getLength();
 		int[] map = Dungeon.level.map;
 		boolean[] mapped = Dungeon.level.mapped;
 		boolean[] discoverable = Dungeon.level.discoverable;
-		
+
 		boolean noticed = false;
-		
-		for (int i=0; i < length; i++) {
-			
+
+		for (int i = 0; i < length; i++) {
+
 			int terr = map[i];
-			
+
 			if (discoverable[i]) {
-				
+
 				mapped[i] = true;
 				if ((TerrainFlags.flags[terr] & TerrainFlags.SECRET) != 0) {
-					
-					Dungeon.level.set( i, Terrain.discover( terr ) );						
-					GameScene.updateMap( i );
-					
+
+					Dungeon.level.set(i, Terrain.discover(terr));
+					GameScene.updateMap(i);
+
 					if (Dungeon.visible[i]) {
-						GameScene.discoverTile( i, terr );
-						discover( i );
-						
+						GameScene.discoverTile(i, terr);
+						discover(i);
+
 						noticed = true;
 					}
 				}
 			}
 		}
 		Dungeon.observe();
-		
-		GLog.i( TXT_LAYOUT );
+
+		GLog.i(TXT_LAYOUT);
 		if (noticed) {
-			Sample.INSTANCE.play( Assets.SND_SECRET );
+			Sample.INSTANCE.play(Assets.SND_SECRET);
 		}
-		
-		SpellSprite.show( getCurUser(), SpellSprite.MAP );
-		Sample.INSTANCE.play( Assets.SND_READ );
+
+		SpellSprite.show(getCurUser(), SpellSprite.MAP);
+		Sample.INSTANCE.play(Assets.SND_READ);
 		Invisibility.dispel(getCurUser());
-		
+
 		setKnown();
-		
-		getCurUser().spendAndNext( TIME_TO_READ );
+
+		getCurUser().spendAndNext(TIME_TO_READ);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 25 * quantity() : super.price();
 	}
-	
-	public static void discover( int cell ) {
-		CellEmitter.get( cell ).start( Speck.factory( Speck.DISCOVER ), 0.1f, 4 );
+
+	public static void discover(int cell) {
+		CellEmitter.get(cell).start(Speck.factory(Speck.DISCOVER), 0.1f, 4);
 	}
 }

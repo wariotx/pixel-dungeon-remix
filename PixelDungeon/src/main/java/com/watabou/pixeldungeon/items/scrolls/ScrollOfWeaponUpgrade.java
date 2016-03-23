@@ -30,24 +30,24 @@ import com.watabou.pixeldungeon.windows.WndBag;
 public class ScrollOfWeaponUpgrade extends InventoryScroll {
 
 	private static final String TXT_LOOKS_BETTER = Game.getVar(R.string.ScrollOfWeaponUpgrade_LooksBetter);
-	
+
 	{
 		inventoryTitle = Game.getVar(R.string.ScrollOfWeaponUpgrade_InvTitle);
 		mode = WndBag.Mode.UPGRADABLE_WEAPON;
 	}
-	
+
 	@Override
-	protected void onItemSelected( Item item ) {
-		
-		Weapon weapon = (Weapon)item;
-		
-		ScrollOfRemoveCurse.uncurse( Dungeon.hero, weapon );
-		weapon.upgrade( true );
-		
-		GLog.p( TXT_LOOKS_BETTER, weapon.name() );
-		
-		Badges.validateItemLevelAquired( weapon );
-		
-		getCurUser().getSprite().emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
+	protected void onItemSelected(Item item) {
+
+		Weapon weapon = (Weapon) item;
+
+		ScrollOfRemoveCurse.uncurse(Dungeon.hero, weapon);
+		weapon.upgrade(true);
+
+		GLog.p(TXT_LOOKS_BETTER, weapon.name());
+
+		Badges.validateItemLevelAquired(weapon);
+
+		getCurUser().getSprite().emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
 	}
 }

@@ -30,41 +30,41 @@ import com.watabou.pixeldungeon.utils.GLog;
 public class PotionOfLevitation extends Potion {
 
 	@Override
-	protected void apply( Hero hero ) {
+	protected void apply(Hero hero) {
 		setKnown();
-		Buff.affect( hero, Levitation.class, Levitation.DURATION );
+		Buff.affect(hero, Levitation.class, Levitation.DURATION);
 		GLog.i(Game.getVar(R.string.PotionOfLevitation_Apply));
 	}
-	
+
 	@Override
 	public String desc() {
 		return Game.getVar(R.string.PotionOfLevitation_Info);
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 35 * quantity() : super.price();
 	}
-	
+
 	@Override
 	protected void moistenArrow(Arrow arrow) {
 		detachMoistenItems(arrow, 10);
-		GLog.i(TXT_ITEM_FLIES_AWAY , arrow.name());
+		GLog.i(TXT_ITEM_FLIES_AWAY, arrow.name());
 		moistenEffective();
 	}
-	
+
 	@Override
 	protected void moistenScroll(Scroll scroll) {
-		detachMoistenItems(scroll,3);
-		GLog.i(TXT_ITEM_FLIES_AWAY , scroll.name());
+		detachMoistenItems(scroll, 3);
+		GLog.i(TXT_ITEM_FLIES_AWAY, scroll.name());
 		moistenEffective();
 	}
-	
+
 	@Override
 	protected void moistenRottenFood(RottenFood rfood) {
-		detachMoistenItems(rfood,1);
-		
-		GLog.i(TXT_ITEM_FLIES_AWAY , rfood.name());
+		detachMoistenItems(rfood, 1);
+
+		GLog.i(TXT_ITEM_FLIES_AWAY, rfood.name());
 		moistenEffective();
 	}
 }

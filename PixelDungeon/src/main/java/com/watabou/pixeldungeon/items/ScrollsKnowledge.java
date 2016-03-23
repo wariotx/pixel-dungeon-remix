@@ -11,7 +11,7 @@ import java.util.HashSet;
 /**
  * Created by Leopoldo on 23/03/2016.
  */
-public enum ScrollsKnowledge implements Knowledge<Scroll>{
+public enum ScrollsKnowledge implements Knowledge<Scroll> {
 	INSTANCE;
 
 	private ItemStatusHandler<Scroll> handler;
@@ -74,14 +74,14 @@ public enum ScrollsKnowledge implements Knowledge<Scroll>{
 		return handler.known().size() == scrolls.length;
 	}
 
-	private String[] getRunes(){
-		if(runes == null){
+	private String[] getRunes() {
+		if (runes == null) {
 			runes = Game.getVars(R.array.Scroll_Runes);
 		}
 		return runes;
 	}
 
-	public ItemStatusHandler<Scroll> getHandler(){
+	public ItemStatusHandler<Scroll> getHandler() {
 		return handler;
 	}
 

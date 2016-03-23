@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Item implements Bundlable {
+public class Item implements Bundlable, Identifiable<Item> {
 
 	private static final   String TXT_PACK_FULL = Game.getVar(R.string.Item_PackFull);
 	protected static final String TXT_DIR_THROW = Game.getVar(R.string.Item_DirThrow);
@@ -284,6 +284,7 @@ public class Item implements Bundlable {
 		return true;
 	}
 
+	@Override
 	public boolean isIdentified() {
 		return levelKnown && cursedKnown;
 	}
@@ -305,6 +306,7 @@ public class Item implements Bundlable {
 		updateQuickslot();
 	}
 
+	@Override
 	public Item identify() {
 
 		levelKnown = true;

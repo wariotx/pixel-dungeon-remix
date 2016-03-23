@@ -120,9 +120,9 @@ public enum HeroClass {
 
 		Badges.validateBossSlain(Badges.Badge.BOSS_SLAIN_3);
 
-		hero.collect(new Glaive().upgrade(100));
+		hero.collect(new Glaive().upgrade(100).identify());
 
-		hero.collect(new ChaosCrystal());
+		hero.collect(new ChaosCrystal().identify().identify());
 		hero.ht(1000);
 		hero.hp(1000);
 		hero.attackSkill = 1000;

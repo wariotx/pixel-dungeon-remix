@@ -18,7 +18,6 @@
 package com.watabou.pixeldungeon.items.scrolls;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import com.watabou.noosa.Game;
 import com.watabou.pixeldungeon.Badges;
@@ -26,36 +25,19 @@ import com.nyrds.pixeldungeon.ml.R;
 import com.watabou.pixeldungeon.actors.buffs.Blindness;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.ItemStatusHandler;
-import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.pixeldungeon.items.KnowableItem;
+import com.watabou.pixeldungeon.items.ScrollsKnowledge;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public abstract class Scroll extends Item {
+public abstract class Scroll extends KnowableItem {
 
 	private static final String TXT_BLINDED	= Game.getVar(R.string.Scroll_Blinded);
 	
 	public static final String AC_READ    	= Game.getVar(R.string.Scroll_ACRead);
 	
 	protected static final float TIME_TO_READ	= 1f;
-	
-	private static final Class<?>[] scrolls = {
-		ScrollOfIdentify.class, 
-		ScrollOfMagicMapping.class, 
-		ScrollOfRecharging.class, 
-		ScrollOfRemoveCurse.class, 
-		ScrollOfTeleportation.class, 
-		ScrollOfUpgrade.class, 
-		ScrollOfChallenge.class,
-		ScrollOfTerror.class,
-		ScrollOfLullaby.class,
-		ScrollOfWeaponUpgrade.class,
-		ScrollOfPsionicBlast.class,
-		ScrollOfMirrorImage.class,
-		ScrollOfDomination.class,
-		ScrollOfCurse.class
-	};
 
 	private static final Class<?>[] inscribableScrolls = {
 		ScrollOfIdentify.class, 
@@ -72,50 +54,21 @@ public abstract class Scroll extends Item {
 		ScrollOfDomination.class,
 		ScrollOfCurse.class
 	};
-	
-	private static String[] runes = null;
-	
-	private static final Integer[] images = {
-		ItemSpriteSheet.SCROLL_KAUNAN, 
-		ItemSpriteSheet.SCROLL_SOWILO, 
-		ItemSpriteSheet.SCROLL_LAGUZ, 
-		ItemSpriteSheet.SCROLL_YNGVI, 
-		ItemSpriteSheet.SCROLL_GYFU, 
-		ItemSpriteSheet.SCROLL_RAIDO, 
-		ItemSpriteSheet.SCROLL_ISAZ, 
-		ItemSpriteSheet.SCROLL_MANNAZ, 
-		ItemSpriteSheet.SCROLL_NAUDIZ, 
-		ItemSpriteSheet.SCROLL_BERKANAN, 
-		ItemSpriteSheet.SCROLL_ODAL, 
-		ItemSpriteSheet.SCROLL_TIWAZ,
-		ItemSpriteSheet.SCROLL_ANSUZ,
-		ItemSpriteSheet.SCROLL_IWAZ,
-		ItemSpriteSheet.SCROLL_ALGIZ,
-		ItemSpriteSheet.SCROLL_DAGAZ};
-	
-	private static ItemStatusHandler<Scroll> handler;
-	
-	private static String[] getRunes(){
-		if(runes == null){
-			runes = Game.getVars(R.array.Scroll_Runes);
-		}
-		return runes;
-	}
-	
+
 	private String rune;
 	
 	@SuppressWarnings("unchecked")
 	public static void initLabels() {
-		handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls, getRunes(), images);
+		ScrollsKnowledge.getInstance().init();
 	}
-	
+
 	public static void save( Bundle bundle ) {
-		handler.save( bundle );
+		ScrollsKnowledge.getInstance().getHandler().save(bundle);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls, getRunes(), images, bundle);
+		ScrollsKnowledge.getInstance().init(bundle);
 	}
 	
 	public Scroll() {
@@ -126,8 +79,8 @@ public abstract class Scroll extends Item {
 			return;
 		}
 		
-		image = handler.image( this );
-		rune  = handler.label( this );
+		image = ScrollsKnowledge.getInstance().getHandler().image( this );
+		rune  = ScrollsKnowledge.getInstance().getHandler().label( this );
 	}
 	
 	static public Scroll createRandomScroll(){
@@ -168,17 +121,17 @@ public abstract class Scroll extends Item {
 	abstract protected void doRead();
 	
 	public boolean isKnown() {
-		return handler.isKnown( this );
+		return ScrollsKnowledge.getInstance().isKnown(this.getClass());
 	}
-	
+
 	public void setKnown() {
 		if (!isKnown()) {
-			handler.know( this );
+			ScrollsKnowledge.getInstance().setKnown(this.getClass());
 		}
-		
+
 		Badges.validateAllScrollsIdentified();
 	}
-	
+
 	@Override
 	public Item identify() {
 		setKnown();
@@ -199,29 +152,12 @@ public abstract class Scroll extends Item {
 	public boolean isUpgradable() {
 		return false;
 	}
-	
-	@Override
-	public boolean isIdentified() {
-		return isKnown();
-	}
-	
-	public static HashSet<Class<? extends Scroll>> getKnown() {
-		return handler.known();
-	}
-	
-	public static HashSet<Class<? extends Scroll>> getUnknown() {
-		return handler.unknown();
-	}
-	
-	public static boolean allKnown() {
-		return handler.known().size() == scrolls.length;
-	}
-	
+
 	@Override
 	public int price() {
 		return 15 * quantity();
 	}
-	
+
 	@Override
 	public Item burn(int cell){
 		return null;

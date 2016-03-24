@@ -24,10 +24,7 @@ import com.nyrds.pixeldungeon.ml.R;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.hero.HeroClass;
-import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.ItemStatusHandler;
-import com.watabou.pixeldungeon.items.Knowable;
-import com.watabou.pixeldungeon.items.RingsKnowledge;
+import com.watabou.pixeldungeon.items.*;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -43,16 +40,16 @@ public class Ring extends Artifact implements Knowable{
 
 	@SuppressWarnings("unchecked")
 	public static void initGems() {
-		RingsKnowledge.getInstance().init();
+		getKnowledge().init();
 	}
 
 	public static void save(Bundle bundle) {
-		RingsKnowledge.getInstance().getHandler().save(bundle);
+		getKnowledge().getHandler().save(bundle);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void restore(Bundle bundle) {
-		RingsKnowledge.getInstance().init(bundle);
+		getKnowledge().init(bundle);
 	}
 
 	public Ring() {
@@ -61,8 +58,8 @@ public class Ring extends Artifact implements Knowable{
 	}
 
 	public void syncGem() {
-		image = RingsKnowledge.getInstance().getHandler().image(this);
-		gem = RingsKnowledge.getInstance().getHandler().label(this);
+		image = getKnowledge().getHandler().image(this);
+		gem = getKnowledge().getHandler().label(this);
 	}
 
 	@Override
@@ -84,13 +81,13 @@ public class Ring extends Artifact implements Knowable{
 
 	@Override
 	public boolean isKnown() {
-		return RingsKnowledge.getInstance().isKnown( this.getClass() );
+		return getKnowledge().isKnown( this.getClass() );
 	}
 
 	@Override
 	public void setKnown() {
 		if (!isKnown()) {
-			RingsKnowledge.getInstance().setKnown( this.getClass() );
+			getKnowledge().setKnown( this.getClass() );
 		}
 
 		Badges.validateAllRingsIdentified();
@@ -197,6 +194,65 @@ public class Ring extends Artifact implements Knowable{
 			spend(TICK);
 
 			return true;
+		}
+	}
+
+	private static RingKnowledge INSTANCE = null;
+	static {
+		INSTANCE = new RingKnowledge();
+	}
+	@SuppressWarnings("unchecked")
+	public static <T extends Knowable> Knowledge<T> getKnowledge() {
+		return (Knowledge<T>) INSTANCE;
+	}
+
+	public static class RingKnowledge extends ItemKnowledge<Ring> {
+
+		private ItemStatusHandler<Ring> handler;
+
+		private static final Class<?>[] rings = {
+			RingOfMending.class,
+			RingOfDetection.class,
+			RingOfShadows.class,
+			RingOfPower.class,
+			RingOfHerbalism.class,
+			RingOfAccuracy.class,
+			RingOfEvasion.class,
+			RingOfSatiety.class,
+			RingOfHaste.class,
+			RingOfHaggler.class,
+			RingOfElements.class,
+			RingOfThorns.class
+		};
+		private static final String[] gems = Game.getVars(R.array.Ring_Gems);
+		private static final Integer[] images = {
+			ItemSpriteSheet.RING_DIAMOND,
+			ItemSpriteSheet.RING_OPAL,
+			ItemSpriteSheet.RING_GARNET,
+			ItemSpriteSheet.RING_RUBY,
+			ItemSpriteSheet.RING_AMETHYST,
+			ItemSpriteSheet.RING_TOPAZ,
+			ItemSpriteSheet.RING_ONYX,
+			ItemSpriteSheet.RING_TOURMALINE,
+			ItemSpriteSheet.RING_EMERALD,
+			ItemSpriteSheet.RING_SAPPHIRE,
+			ItemSpriteSheet.RING_QUARTZ,
+			ItemSpriteSheet.RING_AGATE
+		};
+
+		@Override
+		public void init() {
+			handler = new ItemStatusHandler<>((Class<? extends Ring>[]) rings, gems, images);
+		}
+
+		@Override
+		public void init(Bundle bundle) {
+			handler = new ItemStatusHandler<>((Class<? extends Ring>[]) rings, gems, images, bundle);
+		}
+
+		@Override
+		public boolean allKnown() {
+			return handler.known().size() == rings.length - 2;
 		}
 	}
 }

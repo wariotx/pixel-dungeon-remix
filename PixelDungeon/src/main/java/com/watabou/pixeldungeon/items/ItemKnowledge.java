@@ -6,7 +6,7 @@ import java.util.HashSet;
  * Created by Leopoldo on 24/03/2016.
  */
 public abstract class ItemKnowledge<T extends Knowable> implements Knowledge<T>{
-	private ItemStatusHandler<T> handler;
+	protected ItemStatusHandler<T> handler;
 	protected ItemKnowledge(){}
 
 	public HashSet<Class<? extends T>> getKnown() {

@@ -534,7 +534,7 @@ public abstract class Wand extends KindOfWeapon implements Knowable {
 
 		@Override
 		public void init(Bundle bundle) {
-			handler.save(bundle);
+			handler = new ItemStatusHandler<>((Class<? extends Wand>[]) wands, woods, images, bundle);
 		}
 
 		@Override

@@ -381,14 +381,13 @@ public class WndBag extends WndTabbed {
 				if (item.name() == null) {
 					enable( false );
 				} else {
-					enable( checkMode(mode) );
+					enable( checkMode(mode, item) );
 				}
 			} else {
 				bg.color( NORMAL );
 			}
 		}
-		private boolean checkMode(Mode mode) {
-			boolean result = false;
+		private boolean checkMode(Mode mode, Item item) {
 			switch (mode) {
 				case FOR_SALE:
 					return (item.price() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed);
@@ -411,7 +410,7 @@ public class WndBag extends WndTabbed {
 				case MOISTABLE:
 					return ( item instanceof Arrow || item instanceof Scroll || item instanceof RottenFood );
 				case FUSEABLE:
-					return ((item instanceof Scroll || item instanceof MeleeWeapon || item instanceof Bow || item instanceof Wand) && !(item instanceof IChaosItem));
+					return ((item instanceof Scroll || item instanceof MeleeWeapon || (Bow.class.isAssignableFrom(item.getClass())) || item instanceof Wand) && !(item instanceof IChaosItem));
 				case UPGRADABLE_WEAPON:
 					return ((item instanceof MeleeWeapon || item instanceof Boomerang ) && (item.isUpgradable()));
 				case ALL:

@@ -90,7 +90,7 @@ public class Ring extends Artifact implements Knowable{
 	@Override
 	public void setKnown() {
 		if (!isKnown()) {
-			RingsKnowledge.getInstance().getHandler().know(this);
+			RingsKnowledge.getInstance().setKnown( this.getClass() );
 		}
 
 		Badges.validateAllRingsIdentified();

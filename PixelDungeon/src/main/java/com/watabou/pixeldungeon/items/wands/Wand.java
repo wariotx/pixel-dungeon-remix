@@ -203,7 +203,7 @@ public abstract class Wand extends KindOfWeapon implements Knowable {
 
 	public void setKnown() {
 		if (!isKnown()) {
-			WandsKnowledge.getInstance().getHandler().know(this);
+			WandsKnowledge.getInstance().setKnown( this.getClass() );
 		}
 
 		Badges.validateAllWandsIdentified();

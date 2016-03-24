@@ -76,16 +76,16 @@ public abstract class Wand extends KindOfWeapon implements Knowable {
 
 	@SuppressWarnings("unchecked")
 	public static void initWoods() {
-		WandsKnowledge.getInstance().init();
+		getKnowledge().init();
 	}
 
 	public static void save(Bundle bundle) {
-		WandsKnowledge.getInstance().getHandler().save(bundle);
+		getKnowledge().getHandler().save(bundle);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void restore(Bundle bundle) {
-		WandsKnowledge.getInstance().init(bundle);
+		getKnowledge().init(bundle);
 	}
 
 	public Wand() {
@@ -94,8 +94,8 @@ public abstract class Wand extends KindOfWeapon implements Knowable {
 		defaultAction = AC_ZAP;
 
 		try {
-			image = WandsKnowledge.getInstance().getHandler().image(this);
-			wood = WandsKnowledge.getInstance().getHandler().label(this);
+			image = getKnowledge().getHandler().image(this);
+			wood = getKnowledge().getHandler().label(this);
 		} catch (Exception e) {
 			// Wand of Magic Missile
 		}
@@ -198,12 +198,12 @@ public abstract class Wand extends KindOfWeapon implements Knowable {
 	}
 
 	public boolean isKnown() {
-		return WandsKnowledge.getInstance().isKnown( this.getClass() );
+		return getKnowledge().isKnown( this.getClass() );
 	}
 
 	public void setKnown() {
 		if (!isKnown()) {
-			WandsKnowledge.getInstance().setKnown( this.getClass() );
+			getKnowledge().setKnown( this.getClass() );
 		}
 
 		Badges.validateAllWandsIdentified();
@@ -484,5 +484,64 @@ public abstract class Wand extends KindOfWeapon implements Knowable {
 
 	public boolean affectTarget() {
 		return true;
+	}
+
+	private static WandKnowledge KNOWLEDGE = null;
+	static {
+		KNOWLEDGE = new WandKnowledge();
+	}
+	@SuppressWarnings("unchecked")
+	public static <T extends Knowable> Knowledge<T> getKnowledge() {
+		return (Knowledge<T>) KNOWLEDGE;
+	}
+
+	private static class WandKnowledge extends ItemKnowledge<Wand> {
+
+		private ItemStatusHandler<Wand> handler;
+
+		private static final Class<?>[] wands = {
+			WandOfTeleportation.class,
+			WandOfSlowness.class,
+			WandOfFirebolt.class,
+			WandOfPoison.class,
+			WandOfRegrowth.class,
+			WandOfBlink.class,
+			WandOfLightning.class,
+			WandOfAmok.class,
+			WandOfTelekinesis.class,
+			WandOfFlock.class,
+			WandOfDisintegration.class,
+			WandOfAvalanche.class
+		};
+		private static final String[] woods = Game.getVars(R.array.Wand_Wood_Types);
+		private static final Integer[] images = {
+			ItemSpriteSheet.WAND_HOLLY,
+			ItemSpriteSheet.WAND_YEW,
+			ItemSpriteSheet.WAND_EBONY,
+			ItemSpriteSheet.WAND_CHERRY,
+			ItemSpriteSheet.WAND_TEAK,
+			ItemSpriteSheet.WAND_ROWAN,
+			ItemSpriteSheet.WAND_WILLOW,
+			ItemSpriteSheet.WAND_MAHOGANY,
+			ItemSpriteSheet.WAND_BAMBOO,
+			ItemSpriteSheet.WAND_PURPLEHEART,
+			ItemSpriteSheet.WAND_OAK,
+			ItemSpriteSheet.WAND_BIRCH
+		};
+
+		@Override
+		public void init() {
+			handler = new ItemStatusHandler<>((Class<? extends Wand>[]) wands, woods, images);
+		}
+
+		@Override
+		public void init(Bundle bundle) {
+			handler.save(bundle);
+		}
+
+		@Override
+		public boolean allKnown() {
+			return handler.known().size() == wands.length;
+		}
 	}
 }

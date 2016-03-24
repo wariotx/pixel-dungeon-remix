@@ -290,6 +290,9 @@ public class Item implements Bundlable, Identifiable<Item> {
 	}
 
 	public boolean isEquipped(Hero hero) {
+		if(!(this instanceof EquipableItem)) {
+			return false;
+		}
 		return this.equals(hero.belongings.weapon) ||
 				this.equals(hero.belongings.armor) ||
 				this.equals(hero.belongings.ring1) ||
@@ -299,7 +302,7 @@ public class Item implements Bundlable, Identifiable<Item> {
 	public void removeItemFrom(Hero hero) {
 		onDetach();
 		cursed = false;
-		if (!(this instanceof EquipableItem) || !isEquipped(hero) || !((EquipableItem) this).doUnequip(hero, false)) {
+		if (!isEquipped(hero) || !(this instanceof EquipableItem && ((EquipableItem) this).doUnequip(hero, false))) {
 			hero.belongings.removeItem(this);
 		}
 

@@ -27,19 +27,13 @@ import com.watabou.pixeldungeon.actors.mobs.Bandit;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.actors.mobs.Senior;
 import com.watabou.pixeldungeon.actors.mobs.Shielded;
-import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.PotionsKnowledge;
-import com.watabou.pixeldungeon.items.WandsKnowledge;
+import com.watabou.pixeldungeon.items.*;
 import com.watabou.pixeldungeon.items.bags.PotionBelt;
 import com.watabou.pixeldungeon.items.bags.ScrollHolder;
 import com.watabou.pixeldungeon.items.bags.SeedPouch;
 import com.watabou.pixeldungeon.items.bags.WandHolster;
-import com.watabou.pixeldungeon.items.potions.Potion;
-import com.watabou.pixeldungeon.items.rings.Ring;
 import com.watabou.pixeldungeon.items.rings.RingOfHaggler;
 import com.watabou.pixeldungeon.items.rings.RingOfThorns;
-import com.watabou.pixeldungeon.items.ScrollsKnowledge;
-import com.watabou.pixeldungeon.items.wands.Wand;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -459,7 +453,7 @@ public class Badges {
 
 	public static void validateAllRingsIdentified() {
 		if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-				!local.contains(Badge.ALL_RINGS_IDENTIFIED) && Ring.allKnown()) {
+				!local.contains(Badge.ALL_RINGS_IDENTIFIED) && RingsKnowledge.getInstance().allKnown()) {
 
 			Badge badge = Badge.ALL_RINGS_IDENTIFIED;
 			local.add(badge);

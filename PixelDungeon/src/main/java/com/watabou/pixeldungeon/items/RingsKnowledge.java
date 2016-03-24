@@ -9,7 +9,7 @@ import com.watabou.utils.Bundle;
 /**
  * Created by Leopoldo on 24/03/2016.
  */
-public class RingsKnowledge extends ItemKnowledge<Ring>{
+public final class RingsKnowledge extends ItemKnowledge<Ring>{
 	private static PotionsKnowledge INSTANCE = null;
 
 	static {

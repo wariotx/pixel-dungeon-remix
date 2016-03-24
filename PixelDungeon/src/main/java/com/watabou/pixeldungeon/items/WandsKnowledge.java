@@ -2,7 +2,6 @@ package com.watabou.pixeldungeon.items;
 
 import com.nyrds.pixeldungeon.ml.R;
 import com.watabou.noosa.Game;
-import com.watabou.pixeldungeon.items.rings.Ring;
 import com.watabou.pixeldungeon.items.wands.*;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
@@ -10,7 +9,7 @@ import com.watabou.utils.Bundle;
 /**
  * Created by Leopoldo on 24/03/2016.
  */
-public class WandsKnowledge extends ItemKnowledge<Wand> {
+public final class WandsKnowledge extends ItemKnowledge<Wand> {
 	private static WandsKnowledge INSTANCE = null;
 
 	static {

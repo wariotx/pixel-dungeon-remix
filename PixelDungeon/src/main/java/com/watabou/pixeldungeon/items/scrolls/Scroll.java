@@ -167,8 +167,6 @@ public abstract class Scroll extends KnowableItem {
 
 	private static class ScrollKnowledge extends ItemKnowledge<Scroll> {
 
-		private ItemStatusHandler<Scroll> handler;
-
 		private final Class<?>[] scrolls = {
 			ScrollOfIdentify.class,
 			ScrollOfMagicMapping.class,

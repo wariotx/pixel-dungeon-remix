@@ -497,8 +497,6 @@ public abstract class Wand extends KindOfWeapon implements Knowable {
 
 	private static class WandKnowledge extends ItemKnowledge<Wand> {
 
-		private ItemStatusHandler<Wand> handler;
-
 		private static final Class<?>[] wands = {
 			WandOfTeleportation.class,
 			WandOfSlowness.class,

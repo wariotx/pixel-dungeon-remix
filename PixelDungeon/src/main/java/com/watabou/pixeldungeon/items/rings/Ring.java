@@ -208,8 +208,6 @@ public class Ring extends Artifact implements Knowable{
 
 	public static class RingKnowledge extends ItemKnowledge<Ring> {
 
-		private ItemStatusHandler<Ring> handler;
-
 		private static final Class<?>[] rings = {
 			RingOfMending.class,
 			RingOfDetection.class,

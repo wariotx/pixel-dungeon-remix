@@ -18,8 +18,6 @@ public final class PotionsKnowledge extends ItemKnowledge<Potion> {
 		INSTANCE = new PotionsKnowledge();
 	}
 
-	private ItemStatusHandler<Potion> handler;
-
 	private static final Class<?>[] potions = {
 			PotionOfHealing.class,
 			PotionOfExperience.class,

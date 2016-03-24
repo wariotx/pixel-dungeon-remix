@@ -26,12 +26,13 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.hero.HeroClass;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.ItemStatusHandler;
+import com.watabou.pixeldungeon.items.Knowable;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Ring extends Artifact {
+public class Ring extends Artifact implements Knowable{
 
 	private static final String TXT_IDENTIFY = Game.getVar(R.string.Ring_Identify);
 
@@ -111,11 +112,13 @@ public class Ring extends Artifact {
 		return this;
 	}
 
+	@Override
 	public boolean isKnown() {
 		return handler.isKnown(this);
 	}
 
-	protected void setKnown() {
+	@Override
+	public void setKnown() {
 		if (!isKnown()) {
 			handler.know(this);
 		}

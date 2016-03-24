@@ -11,8 +11,12 @@ import java.util.HashSet;
 /**
  * Created by Leopoldo on 23/03/2016.
  */
-public enum ScrollsKnowledge implements Knowledge<Scroll> {
-	INSTANCE;
+public final class ScrollsKnowledge extends ItemKnowledge<Scroll> {
+	private static ScrollsKnowledge INSTANCE = null;
+
+	static {
+		INSTANCE = new ScrollsKnowledge();
+	}
 
 	private ItemStatusHandler<Scroll> handler;
 
@@ -62,14 +66,6 @@ public enum ScrollsKnowledge implements Knowledge<Scroll> {
 		handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls, getRunes(), images, bundle);
 	}
 
-	public HashSet<Class<? extends Scroll>> getKnown() {
-		return handler.known();
-	}
-
-	public HashSet<Class<? extends Scroll>> getUnknown() {
-		return handler.unknown();
-	}
-
 	public boolean allKnown() {
 		return handler.known().size() == scrolls.length;
 	}
@@ -81,20 +77,8 @@ public enum ScrollsKnowledge implements Knowledge<Scroll> {
 		return runes;
 	}
 
-	public ItemStatusHandler<Scroll> getHandler() {
-		return handler;
-	}
-
-	public boolean isKnown(Class<? extends Scroll> aClass) {
-		return handler.isKnown(aClass);
-	}
-
-	public void setKnown(Class<? extends Scroll> aClass) {
-		handler.know(aClass);
-	}
-
 	@SuppressWarnings("unchecked")
-	public static <T extends KnowableItem> Knowledge<T> getInstance() {
+	public static <T extends Knowable> Knowledge<T> getInstance() {
 		return (Knowledge<T>) INSTANCE;
 	}
 }

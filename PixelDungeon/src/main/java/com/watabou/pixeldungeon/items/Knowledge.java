@@ -7,7 +7,7 @@ import java.util.HashSet;
 /**
  * Created by Leopoldo on 23/03/2016.
  */
-public interface Knowledge<T extends KnowableItem> {
+public interface Knowledge<T extends Knowable> {
 	void init();
 
 	void init(Bundle bundle);

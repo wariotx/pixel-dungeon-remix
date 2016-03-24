@@ -11,8 +11,12 @@ import java.util.HashSet;
 /**
  * Created by Leopoldo on 23/03/2016.
  */
-public enum PotionsKnowledge implements Knowledge<Potion> {
-	INSTANCE;
+public final class PotionsKnowledge extends ItemKnowledge<Potion> {
+	private static PotionsKnowledge INSTANCE = null;
+
+	static {
+		INSTANCE = new PotionsKnowledge();
+	}
 
 	private ItemStatusHandler<Potion> handler;
 
@@ -58,14 +62,6 @@ public enum PotionsKnowledge implements Knowledge<Potion> {
 		handler = new ItemStatusHandler<>((Class<? extends Potion>[]) potions, getColors(), images, bundle);
 	}
 
-	public HashSet<Class<? extends Potion>> getKnown() {
-		return handler.known();
-	}
-
-	public HashSet<Class<? extends Potion>> getUnknown() {
-		return handler.unknown();
-	}
-
 	public boolean allKnown() {
 		return handler.known().size() == potions.length;
 	}
@@ -77,20 +73,8 @@ public enum PotionsKnowledge implements Knowledge<Potion> {
 		return colors;
 	}
 
-	public ItemStatusHandler<Potion> getHandler() {
-		return handler;
-	}
-
-	public boolean isKnown(Class<? extends Potion> aClass) {
-		return handler.isKnown(aClass);
-	}
-
-	public void setKnown(Class<? extends Potion> aClass) {
-		handler.know(aClass);
-	}
-
 	@SuppressWarnings("unchecked")
-	public static <T extends KnowableItem> Knowledge<T> getInstance() {
+	public static <T extends Knowable> Knowledge<T> getInstance() {
 		return (Knowledge<T>) INSTANCE;
 	}
 }

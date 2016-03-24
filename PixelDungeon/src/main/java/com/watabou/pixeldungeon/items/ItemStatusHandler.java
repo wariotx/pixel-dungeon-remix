@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class ItemStatusHandler<T extends Item> {
+public class ItemStatusHandler<T extends Knowable> {
 
 	private Class<? extends T>[] items;
 

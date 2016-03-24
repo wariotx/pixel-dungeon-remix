@@ -24,9 +24,8 @@ import com.watabou.pixeldungeon.Badges;
 import com.nyrds.pixeldungeon.ml.R;
 import com.watabou.pixeldungeon.actors.buffs.Blindness;
 import com.watabou.pixeldungeon.actors.hero.Hero;
-import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.KnowableItem;
-import com.watabou.pixeldungeon.items.ScrollsKnowledge;
+import com.watabou.pixeldungeon.items.*;
+import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -59,16 +58,16 @@ public abstract class Scroll extends KnowableItem {
 
 	@SuppressWarnings("unchecked")
 	public static void initLabels() {
-		ScrollsKnowledge.getInstance().init();
+		getKnowledge().init();
 	}
 
 	public static void save(Bundle bundle) {
-		ScrollsKnowledge.getInstance().getHandler().save(bundle);
+		getKnowledge().getHandler().save(bundle);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void restore(Bundle bundle) {
-		ScrollsKnowledge.getInstance().init(bundle);
+		getKnowledge().init(bundle);
 	}
 
 	public Scroll() {
@@ -79,8 +78,8 @@ public abstract class Scroll extends KnowableItem {
 			return;
 		}
 
-		image = ScrollsKnowledge.getInstance().getHandler().image(this);
-		rune = ScrollsKnowledge.getInstance().getHandler().label(this);
+		image = getKnowledge().getHandler().image(this);
+		rune = getKnowledge().getHandler().label(this);
 	}
 
 	static public Scroll createRandomScroll() {
@@ -121,12 +120,12 @@ public abstract class Scroll extends KnowableItem {
 	abstract protected void doRead();
 
 	public boolean isKnown() {
-		return ScrollsKnowledge.getInstance().isKnown(this.getClass());
+		return getKnowledge().isKnown(this.getClass());
 	}
 
 	public void setKnown() {
 		if (!isKnown()) {
-			ScrollsKnowledge.getInstance().setKnown(this.getClass());
+			getKnowledge().setKnown(this.getClass());
 		}
 
 		Badges.validateAllScrollsIdentified();
@@ -155,5 +154,76 @@ public abstract class Scroll extends KnowableItem {
 	@Override
 	public Item burn(int cell) {
 		return null;
+	}
+
+	private static ScrollKnowledge KNOWLEDGE = null;
+	static {
+		KNOWLEDGE = new ScrollKnowledge();
+	}
+	@SuppressWarnings("unchecked")
+	public static <T extends Knowable> Knowledge<T> getKnowledge() {
+		return (Knowledge<T>) KNOWLEDGE;
+	}
+
+	private static class ScrollKnowledge extends ItemKnowledge<Scroll> {
+
+		private ItemStatusHandler<Scroll> handler;
+
+		private final Class<?>[] scrolls = {
+			ScrollOfIdentify.class,
+			ScrollOfMagicMapping.class,
+			ScrollOfRecharging.class,
+			ScrollOfRemoveCurse.class,
+			ScrollOfTeleportation.class,
+			ScrollOfUpgrade.class,
+			ScrollOfChallenge.class,
+			ScrollOfTerror.class,
+			ScrollOfLullaby.class,
+			ScrollOfWeaponUpgrade.class,
+			ScrollOfPsionicBlast.class,
+			ScrollOfMirrorImage.class,
+			ScrollOfDomination.class,
+			ScrollOfCurse.class
+		};
+		private String[] runes = null;
+		private final Integer[] images = {
+			ItemSpriteSheet.SCROLL_KAUNAN,
+			ItemSpriteSheet.SCROLL_SOWILO,
+			ItemSpriteSheet.SCROLL_LAGUZ,
+			ItemSpriteSheet.SCROLL_YNGVI,
+			ItemSpriteSheet.SCROLL_GYFU,
+			ItemSpriteSheet.SCROLL_RAIDO,
+			ItemSpriteSheet.SCROLL_ISAZ,
+			ItemSpriteSheet.SCROLL_MANNAZ,
+			ItemSpriteSheet.SCROLL_NAUDIZ,
+			ItemSpriteSheet.SCROLL_BERKANAN,
+			ItemSpriteSheet.SCROLL_ODAL,
+			ItemSpriteSheet.SCROLL_TIWAZ,
+			ItemSpriteSheet.SCROLL_ANSUZ,
+			ItemSpriteSheet.SCROLL_IWAZ,
+			ItemSpriteSheet.SCROLL_ALGIZ,
+			ItemSpriteSheet.SCROLL_DAGAZ
+		};
+
+		@SuppressWarnings("unchecked")
+		public void init() {
+			handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls, getRunes(), images);
+		}
+
+		@SuppressWarnings("unchecked")
+		public void init(Bundle bundle) {
+			handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls, getRunes(), images, bundle);
+		}
+
+		public boolean allKnown() {
+			return handler.known().size() == scrolls.length;
+		}
+
+		private String[] getRunes() {
+			if (runes == null) {
+				runes = Game.getVars(R.array.Scroll_Runes);
+			}
+			return runes;
+		}
 	}
 }

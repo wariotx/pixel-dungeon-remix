@@ -34,6 +34,7 @@ import com.watabou.pixeldungeon.items.bags.SeedPouch;
 import com.watabou.pixeldungeon.items.bags.WandHolster;
 import com.watabou.pixeldungeon.items.rings.RingOfHaggler;
 import com.watabou.pixeldungeon.items.rings.RingOfThorns;
+import com.watabou.pixeldungeon.items.scrolls.Scroll;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -441,7 +442,7 @@ public class Badges {
 
 	public static void validateAllScrollsIdentified() {
 		if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-				!local.contains(Badge.ALL_SCROLLS_IDENTIFIED) && ScrollsKnowledge.getInstance().allKnown()) {
+				!local.contains(Badge.ALL_SCROLLS_IDENTIFIED) && Scroll.getKnowledge().allKnown()) {
 
 			Badge badge = Badge.ALL_SCROLLS_IDENTIFIED;
 			local.add(badge);

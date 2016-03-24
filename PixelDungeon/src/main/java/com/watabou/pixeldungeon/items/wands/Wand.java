@@ -31,9 +31,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.hero.HeroClass;
 import com.watabou.pixeldungeon.actors.hero.HeroSubClass;
 import com.watabou.pixeldungeon.effects.MagicMissile;
-import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.ItemStatusHandler;
-import com.watabou.pixeldungeon.items.KindOfWeapon;
+import com.watabou.pixeldungeon.items.*;
 import com.watabou.pixeldungeon.items.bags.Bag;
 import com.watabou.pixeldungeon.items.rings.RingOfPower.Power;
 import com.watabou.pixeldungeon.mechanics.Ballistica;
@@ -48,7 +46,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public abstract class Wand extends KindOfWeapon {
+public abstract class Wand extends KindOfWeapon implements Knowable {
 
 	public static final String AC_ZAP = Game.getVar(R.string.Wand_ACZap);
 
@@ -74,38 +72,20 @@ public abstract class Wand extends KindOfWeapon {
 
 	protected boolean hitChars = true;
 
-	private static final Class<?>[] wands = {WandOfTeleportation.class,
-			WandOfSlowness.class, WandOfFirebolt.class, WandOfPoison.class,
-			WandOfRegrowth.class, WandOfBlink.class, WandOfLightning.class,
-			WandOfAmok.class, WandOfTelekinesis.class, WandOfFlock.class,
-			WandOfDisintegration.class, WandOfAvalanche.class};
-	private static final String[] woods = Game.getVars(R.array.Wand_Wood_Types);
-	private static final Integer[] images = {ItemSpriteSheet.WAND_HOLLY,
-			ItemSpriteSheet.WAND_YEW, ItemSpriteSheet.WAND_EBONY,
-			ItemSpriteSheet.WAND_CHERRY, ItemSpriteSheet.WAND_TEAK,
-			ItemSpriteSheet.WAND_ROWAN, ItemSpriteSheet.WAND_WILLOW,
-			ItemSpriteSheet.WAND_MAHOGANY, ItemSpriteSheet.WAND_BAMBOO,
-			ItemSpriteSheet.WAND_PURPLEHEART, ItemSpriteSheet.WAND_OAK,
-			ItemSpriteSheet.WAND_BIRCH};
-
-	private static ItemStatusHandler<Wand> handler;
-
 	private String wood;
 
 	@SuppressWarnings("unchecked")
 	public static void initWoods() {
-		handler = new ItemStatusHandler<>((Class<? extends Wand>[]) wands,
-				woods, images);
+		WandsKnowledge.getInstance().init();
 	}
 
 	public static void save(Bundle bundle) {
-		handler.save(bundle);
+		WandsKnowledge.getInstance().getHandler().save(bundle);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void restore(Bundle bundle) {
-		handler = new ItemStatusHandler<>((Class<? extends Wand>[]) wands,
-				woods, images, bundle);
+		WandsKnowledge.getInstance().init(bundle);
 	}
 
 	public Wand() {
@@ -114,8 +94,8 @@ public abstract class Wand extends KindOfWeapon {
 		defaultAction = AC_ZAP;
 
 		try {
-			image = handler.image(this);
-			wood = handler.label(this);
+			image = WandsKnowledge.getInstance().getHandler().image(this);
+			wood = WandsKnowledge.getInstance().getHandler().label(this);
 		} catch (Exception e) {
 			// Wand of Magic Missile
 		}
@@ -217,13 +197,13 @@ public abstract class Wand extends KindOfWeapon {
 		}
 	}
 
-	protected boolean isKnown() {
-		return handler.isKnown(this);
+	public boolean isKnown() {
+		return WandsKnowledge.getInstance().isKnown( this.getClass() );
 	}
 
 	public void setKnown() {
 		if (!isKnown()) {
-			handler.know(this);
+			WandsKnowledge.getInstance().getHandler().know(this);
 		}
 
 		Badges.validateAllWandsIdentified();
@@ -364,10 +344,6 @@ public abstract class Wand extends KindOfWeapon {
 		}
 
 		return this;
-	}
-
-	public static boolean allKnown() {
-		return handler.known().size() == wands.length;
 	}
 
 	@Override

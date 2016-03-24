@@ -28,9 +28,7 @@ import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.effects.Splash;
-import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.KnowableItem;
-import com.watabou.pixeldungeon.items.PotionsKnowledge;
+import com.watabou.pixeldungeon.items.*;
 import com.watabou.pixeldungeon.items.food.Food;
 import com.watabou.pixeldungeon.items.food.RottenFood;
 import com.watabou.pixeldungeon.items.scrolls.Scroll;
@@ -38,6 +36,7 @@ import com.watabou.pixeldungeon.items.weapon.missiles.Arrow;
 import com.watabou.pixeldungeon.levels.Terrain;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.ItemSprite;
+import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.windows.WndBag;
 import com.watabou.pixeldungeon.windows.WndOptions;
@@ -79,21 +78,21 @@ public class Potion extends KnowableItem {
 
 	@SuppressWarnings("unchecked")
 	public static void initColors() {
-		PotionsKnowledge.getInstance().init();
+		getKnowledge().init();
 	}
 
 	public static void save(Bundle bundle) {
-		PotionsKnowledge.getInstance().getHandler().save(bundle);
+		getKnowledge().getHandler().save(bundle);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void restore(Bundle bundle) {
-		PotionsKnowledge.getInstance().init(bundle);
+		getKnowledge().init(bundle);
 	}
 
 	public Potion() {
-		image = PotionsKnowledge.getInstance().getHandler().image(this);
-		color = PotionsKnowledge.getInstance().getHandler().label(this);
+		image = getKnowledge().getHandler().image(this);
+		color = getKnowledge().getHandler().label(this);
 	}
 
 	@Override
@@ -229,12 +228,12 @@ public class Potion extends KnowableItem {
 	}
 
 	public boolean isKnown() {
-		return PotionsKnowledge.getInstance().isKnown(this.getClass());
+		return getKnowledge().isKnown(this.getClass());
 	}
 
 	public void setKnown() {
 		if (!isKnown()) {
-			PotionsKnowledge.getInstance().setKnown(this.getClass());
+			getKnowledge().setKnown(this.getClass());
 		}
 
 		Badges.validateAllPotionsIdentified();
@@ -350,5 +349,70 @@ public class Potion extends KnowableItem {
 		getCurUser().getSprite().operate(getCurUser().getPos());
 		getCurUser().spend(TIME_TO_MOISTEN);
 		getCurUser().busy();
+	}
+
+	private static PotionKnowledge KNOWLEDGE = null;
+	static {
+		KNOWLEDGE = new PotionKnowledge();
+	}
+	@SuppressWarnings("unchecked")
+	public static Knowledge<Potion> getKnowledge() {
+		return KNOWLEDGE;
+	}
+
+	public static class PotionKnowledge extends ItemKnowledge<Potion> {
+
+		private static final Class<?>[] potions = {
+				PotionOfHealing.class,
+				PotionOfExperience.class,
+				PotionOfToxicGas.class,
+				PotionOfLiquidFlame.class,
+				PotionOfStrength.class,
+				PotionOfParalyticGas.class,
+				PotionOfLevitation.class,
+				PotionOfMindVision.class,
+				PotionOfPurity.class,
+				PotionOfInvisibility.class,
+				PotionOfMight.class,
+				PotionOfFrost.class
+		};
+
+		private static String[] colors = null;
+
+		private static final Integer[] images = {
+				ItemSpriteSheet.POTION_TURQUOISE,
+				ItemSpriteSheet.POTION_CRIMSON,
+				ItemSpriteSheet.POTION_AZURE,
+				ItemSpriteSheet.POTION_JADE,
+				ItemSpriteSheet.POTION_GOLDEN,
+				ItemSpriteSheet.POTION_MAGENTA,
+				ItemSpriteSheet.POTION_CHARCOAL,
+				ItemSpriteSheet.POTION_IVORY,
+				ItemSpriteSheet.POTION_AMBER,
+				ItemSpriteSheet.POTION_BISTRE,
+				ItemSpriteSheet.POTION_INDIGO,
+				ItemSpriteSheet.POTION_SILVER
+		};
+
+		@SuppressWarnings("unchecked")
+		public void init() {
+			handler = new ItemStatusHandler<>((Class<? extends Potion>[]) potions, getColors(), images);
+		}
+
+		@SuppressWarnings("unchecked")
+		public void init(Bundle bundle) {
+			handler = new ItemStatusHandler<>((Class<? extends Potion>[]) potions, getColors(), images, bundle);
+		}
+
+		public boolean allKnown() {
+			return handler.known().size() == potions.length;
+		}
+
+		private String[] getColors() {
+			if (colors == null) {
+				colors = Game.getVars(R.array.Potion_Colors);
+			}
+			return colors;
+		}
 	}
 }

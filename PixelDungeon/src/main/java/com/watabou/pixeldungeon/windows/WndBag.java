@@ -41,9 +41,11 @@ import com.watabou.pixeldungeon.items.bags.ScrollHolder;
 import com.watabou.pixeldungeon.items.bags.SeedPouch;
 import com.watabou.pixeldungeon.items.bags.WandHolster;
 import com.watabou.pixeldungeon.items.food.RottenFood;
+import com.watabou.pixeldungeon.items.quest.Pickaxe;
 import com.watabou.pixeldungeon.items.scrolls.BlankScroll;
 import com.watabou.pixeldungeon.items.scrolls.Scroll;
 import com.watabou.pixeldungeon.items.wands.Wand;
+import com.watabou.pixeldungeon.items.weapon.Weapon;
 import com.watabou.pixeldungeon.items.weapon.melee.Bow;
 import com.watabou.pixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.watabou.pixeldungeon.items.weapon.missiles.Arrow;
@@ -379,24 +381,43 @@ public class WndBag extends WndTabbed {
 				if (item.name() == null) {
 					enable( false );
 				} else {
-					enable( 
-						mode == Mode.FOR_SALE && (item.price() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed) ||
-						mode == Mode.UPGRADEABLE && item.isUpgradable() || 
-						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
-						mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
-						mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof Boomerang) ||
-						mode == Mode.ARMOR && (item instanceof Armor) ||
-						mode == Mode.WAND && (item instanceof Wand) ||
-						mode == Mode.SEED && (item instanceof Seed) ||
-						mode == Mode.INSCRIBABLE && (item instanceof Armor || item instanceof BlankScroll) || 
-						mode == Mode.MOISTABLE && ( item instanceof Arrow || item instanceof Scroll || item instanceof RottenFood ) ||
-						mode == Mode.FUSEABLE && ((item instanceof Scroll || item instanceof MeleeWeapon || item instanceof Bow || item instanceof Wand) && !(item instanceof IChaosItem)) ||
-						mode == Mode.UPGRADABLE_WEAPON && ((item instanceof MeleeWeapon || item instanceof Boomerang ) && (item.isUpgradable())) ||
-						mode == Mode.ALL
-					);
+					enable( checkMode(mode) );
 				}
 			} else {
 				bg.color( NORMAL );
+			}
+		}
+		private boolean checkMode(Mode mode) {
+			boolean result = false;
+			switch (mode) {
+				case FOR_SALE:
+					return (item.price() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed);
+				case UPGRADEABLE:
+					return item.isUpgradable();
+				case UNIDENTIFED:
+					return !item.isIdentified();
+				case QUICKSLOT:
+					return (item.defaultAction != null);
+				case WEAPON:
+					return (item instanceof Weapon && !(item instanceof Pickaxe));
+				case ARMOR:
+					return (item instanceof Armor);
+				case WAND:
+					return (item instanceof Wand);
+				case SEED:
+					return (item instanceof Seed);
+				case INSCRIBABLE:
+					return (item instanceof Armor || item instanceof BlankScroll);
+				case MOISTABLE:
+					return ( item instanceof Arrow || item instanceof Scroll || item instanceof RottenFood );
+				case FUSEABLE:
+					return ((item instanceof Scroll || item instanceof MeleeWeapon || item instanceof Bow || item instanceof Wand) && !(item instanceof IChaosItem));
+				case UPGRADABLE_WEAPON:
+					return ((item instanceof MeleeWeapon || item instanceof Boomerang ) && (item.isUpgradable()));
+				case ALL:
+					return true;
+				default:
+					return false;
 			}
 		}
 		

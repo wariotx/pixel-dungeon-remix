@@ -491,8 +491,8 @@ public abstract class Wand extends KindOfWeapon implements Knowable {
 		KNOWLEDGE = new WandKnowledge();
 	}
 	@SuppressWarnings("unchecked")
-	public static <T extends Knowable> Knowledge<T> getKnowledge() {
-		return (Knowledge<T>) KNOWLEDGE;
+	public static Knowledge<Wand> getKnowledge() {
+		return KNOWLEDGE;
 	}
 
 	private static class WandKnowledge extends ItemKnowledge<Wand> {

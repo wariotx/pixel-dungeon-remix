@@ -202,8 +202,8 @@ public class Ring extends Artifact implements Knowable{
 		INSTANCE = new RingKnowledge();
 	}
 	@SuppressWarnings("unchecked")
-	public static <T extends Knowable> Knowledge<T> getKnowledge() {
-		return (Knowledge<T>) INSTANCE;
+	public static Knowledge<Ring> getKnowledge() {
+		return INSTANCE;
 	}
 
 	public static class RingKnowledge extends ItemKnowledge<Ring> {

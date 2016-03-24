@@ -161,8 +161,8 @@ public abstract class Scroll extends KnowableItem {
 		KNOWLEDGE = new ScrollKnowledge();
 	}
 	@SuppressWarnings("unchecked")
-	public static <T extends Knowable> Knowledge<T> getKnowledge() {
-		return (Knowledge<T>) KNOWLEDGE;
+	public static Knowledge<Scroll> getKnowledge() {
+		return KNOWLEDGE;
 	}
 
 	private static class ScrollKnowledge extends ItemKnowledge<Scroll> {
